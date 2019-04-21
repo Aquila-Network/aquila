@@ -24,6 +24,7 @@ message initFaissRequest {
     int32 bpv = 3;
     int32 bpsv = 4;
     int32 vd = 5;
+    repeated vectorType matrix = 6;
 }
 
 message initFaissResponse {
