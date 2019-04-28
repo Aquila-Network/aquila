@@ -1,11 +1,14 @@
 const atob = require('atob')
 const crypto = require('crypto')
+const utils = require('../../utils')
 
 module.exports = {
+    // add new docs, modify if already present
     addOrModify (documents, cbk) {
         var doclength = documents.length
         var itrcnt = 0
         var id_list = []
+        // get data dor each docs
         documents.forEach((document) => {
             // get vector
             var vector = {}
@@ -32,66 +35,24 @@ module.exports = {
                 payload.vector = vector
 
                 var db = __g__PDBs.documentsDB
-                db.get(_id, (err, doc) => {
-                    if(!err) {
-                        // already exists
-                        payload._rev = doc._rev
-                        // update latest revision
-                        db.put(payload, (err, response) => {
-                            if (!err) {
-                                // success update
-                                id_list.push(_id)
-                                console.log('success update')
-                                // count iteration
-                                itrcnt ++
-                                if (itrcnt === doclength) {
-                                    cbk (null, {_id:id_list})
-                                }
-                            }
-                            else {
-                                // failed update
-                                console.log(err)
-                                // count iteration
-                                itrcnt ++
-                                if (itrcnt === doclength) {
-                                    cbk (null, {_id:id_list})
-                                }
-                            }
-                        })
+                utils.documentUpdate (db, payload, (err, response) => {
+                    if (!err) {
+                        // success update
+                        id_list.push(_id)
+                        console.log('success update')
+                        // count iteration
+                        itrcnt ++
+                        if (itrcnt === doclength) {
+                            cbk (null, {_id:id_list})
+                        }
                     }
                     else {
-                        // create new if not found error
-                        if (err.status === 404) {
-                            db.put(payload, (err, response) => {
-                                if (!err) {
-                                    // success create
-                                    id_list.push(_id)
-                                    console.log('success create')
-                                    // count iteration
-                                    itrcnt ++
-                                    if (itrcnt === doclength) {
-                                        cbk (null, {_id:id_list})
-                                    }
-                                }
-                                else {
-                                    // failed create
-                                    console.log(err)
-                                    // count iteration
-                                    itrcnt ++
-                                    if (itrcnt === doclength) {
-                                        cbk (null, {_id:id_list})
-                                    }
-                                }
-                            })
-                        }
-                        else {
-                            // failed get
-                            console.log(err)
-                            // count iteration
-                            itrcnt ++
-                            if (itrcnt === doclength) {
-                                cbk (null, {_id:id_list})
-                            }
+                        // failed update
+                        console.log(err)
+                        // count iteration
+                        itrcnt ++
+                        if (itrcnt === doclength) {
+                            cbk (null, {_id:id_list})
                         }
                     }
                 })

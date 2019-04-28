@@ -16,32 +16,14 @@ class Faiss:
         self.bytesPerSubVec = bytesPerSubVec
         self.dim = dim
 
-        #self.train_data = np.matrix(matrix)
-        #self.f_quantizer = faiss.IndexFlatL2(self.dim)
-        #self.f_index = faiss.IndexIVFPQ(self.f_quantizer, self.dim, self.nlist, self.bytesPerVec, self.bytesPerSubVec)
-        #self.f_index.train(self.train_data)
-        nlist = self.nlist
-        m = self.bytesPerVec             # number of bytes per vector
-        k = 4
-        d = self.dim                     # dimension
-        nb = 10000                      # database size
-        nq = 100                       # nb of queries
-        np.random.seed(1234)             # make reproducible
-        xb = np.random.random((nb, d)).astype('float32')
-        xb[:, 0] += np.arange(nb) / 1000.
-        xq = np.random.random((nq, d)).astype('float32')
-        xq[:, 0] += np.arange(nq) / 1000.
-        quantizer = faiss.IndexFlatL2(d)  # this remains the same
-        index = faiss.IndexIVFPQ(quantizer, d, nlist, m, self.bytesPerSubVec)
-                                            # 8 specifies that each sub-vector is encoded as 8 bits
-        index.train(xb)
-        index.add(xb)
-        D, I = index.search(xb[:5], k) # sanity check
-        print(I)
-        print(D)
-        index.nprobe = self.nprobe     # make comparable with experiment above
-        D, I = index.search(xq, k)     # search
-        print(I[-5:])
+        self.train_data = np.matrix(matrix).astype('float32')
+        print('init quantizer', self.train_data)
+        self.f_quantizer = faiss.IndexFlatL2(self.dim)
+        print('init index')
+        self.f_index = faiss.IndexIVFPQ(self.f_quantizer, self.dim, self.nlist, self.bytesPerVec, self.bytesPerSubVec)
+        print('train index')
+        self.f_index.train(self.train_data)
+        print('train index finished')
         return True
 
     def addVectors(self, documents):

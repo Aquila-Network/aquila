@@ -69,8 +69,8 @@ class FaissServicer (proto_server.FaissServiceServicer):
 server = grpc.server(futures.ThreadPoolExecutor(max_workers = 1))
 proto_server.add_FaissServiceServicer_to_server (FaissServicer(), server)
 
-print('Starting server. Listening on port 50051.')
-server.add_insecure_port('[::]:50051')
+print('Starting server. Listening on port 50052.')
+server.add_insecure_port('[::]:50052')
 server.start()
 
 try:
