@@ -1,0 +1,14 @@
+faiss:
+  init:
+    nlist: 1
+    nprobe: 1
+    bpv: 8
+    bpsv: 8
+    vd: 8
+couchDB:
+  DBInstance: test1
+  host: http://localhost:5984
+  user:
+  password:
+vectorID:
+  sync_t: 5000
