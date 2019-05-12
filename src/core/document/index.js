@@ -39,7 +39,7 @@ module.exports = {
                     if (!err) {
                         // success update
                         id_list.push(_id)
-                        console.log('success update')
+                        // console.log('success update')
                         // count iteration
                         itrcnt ++
                         if (itrcnt === doclength) {

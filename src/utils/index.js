@@ -74,49 +74,27 @@ module.exports = {
         }
     },
     mapDoc2VecID (mdb, doc_id, vec_id, cbk) {
-         // check if doc already availavle
-         mdb.get(doc_id, function(err, doc) {
-            var counter_ = null
-            var data = {
-                _id: ''+doc_id,
-                val: vec_id
+        var data = {
+            _id: ''+doc_id,
+            val: vec_id
+        }
+        this.documentUpdate(mdb, data, function(err, doc) {
+            if (err) {
+                console.log('Doc2Vec mapping failed')
             }
-
-            if (doc) {
-                data['_rev'] = doc._rev
-            }
-            
-            mdb.put(data, function(err, response) {
-                if (err) { 
-                    console.log(err)
-                    cbk (true)
-                }
-                // handle response
-                cbk (false)
-            })
+            cbk(err)
         })
     },
     mapVec2DocID (mdb, doc_id, vec_id, cbk) {
-         // check if doc already availavle
-         mdb.get(vec_id, function(err, doc) {
-            var counter_ = null
-            var data = {
-                _id: ''+vec_id,
-                val: doc_id
+        var data = {
+            _id: ''+vec_id,
+            val: doc_id
+        }
+        this.documentUpdate(mdb, data, function(err, doc) {
+            if (err) {
+                console.log('Vec2Doc mapping failed')
             }
-
-            if (doc) {
-                data['_rev'] = doc._rev
-            }
-            
-            mdb.put(data, function(err, response) {
-                if (err) { 
-                    console.log(err)
-                    cbk (true)
-                }
-                // handle response
-                cbk (false)
-            })
+            cbk(err)
         })
     },
     bulkGetVectors (db, cbk) {
@@ -125,6 +103,7 @@ module.exports = {
             // fields: ['vector']
             include_docs: true
           }, function (err, result) {
+              console.log(err, result)
             // handle result
             f_array = []
             for(let i=0;i<result.rows.length;i++) {

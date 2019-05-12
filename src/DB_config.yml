@@ -1,5 +1,6 @@
 faiss:
   init:
+    vecount: 10000
     nlist: 1
     nprobe: 1
     bpv: 8

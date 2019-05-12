@@ -31,7 +31,7 @@ class FaissServicer (proto_server.FaissServiceServicer):
         response = proto.addVecResponse()
         
         documents = request.documents
-        
+        print(documents[0])
         ret = faiss_.addVectors(documents)
         response.status = ret[0]
         response._id.extend(ret[1])

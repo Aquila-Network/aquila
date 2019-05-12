@@ -6,10 +6,12 @@ module.exports = {
     // if multiple documents are changed at a time, logic here should 
     // be chabged.
     handle(change) {
-        // get the number of times the same document is updated.
-        var r_times = change.changes[0].rev.split('-')[0]
-        var id = change.doc._id
-        var vector = change.doc.vector
-        faiss_client.addNewVector(r_times, id, vector)
+        for(let i=0; i<change.changes.length; i++){
+            // get the number of times the same document is updated.
+            var r_times = change.changes[i].rev.split('-')[0]
+            var id = change.doc._id
+            var vector = change.doc.vector
+            faiss_client.addNewVector(r_times, id, vector)
+        }
     }
 }

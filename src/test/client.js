@@ -4,8 +4,8 @@ const btoa = require('btoa')
 const atob = require('atob')
 const njs = require('numjs')
 
-var itercnt = 1
-var rawcnt = 2
+var itercnt = 10 //1000
+var rawcnt = 10
 
 
 var PROTO_PATH = __dirname + '/../proto/vecdb.proto'
@@ -36,7 +36,7 @@ function run() {
     var docs_gen = []
     for(let i=0;i<train_matrix.length;i++) {
         docs_gen.push({
-            _id: ''+i+Math.floor((Math.random() * 10000) + 1), 
+            //_id: ''+i+Math.floor((Math.random() * 10000) + 1), 
             vector: { e: train_matrix[i] }, 
             b64data: btoa(JSON.stringify({hello: 'world', hey: 'there'}))
         })
@@ -45,7 +45,7 @@ function run() {
     // console.log(docs_gen)
 
     vecdb.addDocuments({ documents: docs_gen}, (err, resp) => {
-        console.log(resp)
+        console.log(resp._id.length)
         // vecdb.deleteDocuments({ documents: [{_id: '201a4f637b03efc172d75cbeffa981bd', vector: { e: [1.0, 2.2, 3.3, 4.4]}}, {_id: 'eaac1225dac47f44598361394454a545', vector: { e: [1.0, 2.2, 3.3, 4.4]}}]}, (err, resp) => {
         //     console.log(resp)
         //     vecdb.getNearest({ k:3, matrix: [ { e: [1.0, 2.2, 3.3, 4.4]}, { e: [1.0, 2.2, 3.3, 4.4]} ] }, (err, resp) => {
