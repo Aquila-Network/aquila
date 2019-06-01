@@ -15,7 +15,7 @@ __g__iPDB.plugin(require('pouchdb-find'))
 global.__g__PDBs = {
     documentsDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_docsdb'), // to keep all documents stored (synced on user request)
     mapperDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_mapperdb'), // to keep vecID - docID mappings (not synced)
-    swarmDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_swarmdb'), // to keep swarm & peers data (synced by default with all nodes)mapperDB: new __g__iPDB('http://localhost:5984/mapperdb'), // to keep vecID - docID mappings (not synced)
+    swarmDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_swarmdb'), // to keep swarm & peers data (not synced)
     sessionDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_sessiondb') // to keep local session data to work properly (not synced)
 }
 
@@ -92,7 +92,7 @@ server.addService(proto.vecdb.VecdbService.service, {
         
         searchUtil.getKNDocumentsToVec(k, vector, (err, resp) => {
             if (!err) {
-                callback (null, { status: true, matrix: resp.matrix, documents: resp.documents })
+                callback (null, { status: true, matrix: resp.dist_matrix, documents: resp.documents })
             }
             else {
                 console.log('Error while getting KNND.')

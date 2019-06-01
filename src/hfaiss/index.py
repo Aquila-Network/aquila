@@ -8,6 +8,7 @@ class Faiss:
         self.bytesPerVec = 8
         self.bytesPerSubVec = 8
         self.dim = 300
+        self.init = None
 
     def initFaiss(self, nlist, nprobe, bytesPerVec, bytesPerSubVec, dim, matrix):
         self.nlist = nlist
@@ -17,7 +18,7 @@ class Faiss:
         self.dim = dim
 
         self.train_data = np.matrix(matrix).astype('float32')
-        print('init quantizer', self.train_data)
+        print('init quantizer', self.train_data, self.train_data.shape)
         self.f_quantizer = faiss.IndexFlatL2(self.dim)
         print('init index')
         self.f_index = faiss.IndexIVFPQ(self.f_quantizer, self.dim, self.nlist, self.bytesPerVec, self.bytesPerSubVec)
@@ -31,10 +32,18 @@ class Faiss:
         vecs = []
         for document in documents:
             _id = document._id
+            print(_id)
             vec = document.vector
             ids.append(_id)
-            vecs.append(vec)
-        
+            vecs.append(vec.e)
+        # convert to np matrix
+        vec_data = np.matrix(vecs).astype('float32')
+        id_data = np.array(ids).astype('int')
+        if not self.init:
+            self.init = id_data
+        print(id_data, self.init)
+        # add vector
+        self.f_index.add_with_ids(vec_data, id_data)
         return True, ids
 
     def deleteVectors(self, ids):
@@ -42,5 +51,8 @@ class Faiss:
         return True, ids
 
     def getNearest(self, matrix, k):
-        
-        return True, [], [[1.0, 2.0, 3.0]]
+        # convert to np matrix
+        vec_data = np.matrix(matrix).astype('float32')
+        D, I = self.f_index.search(vec_data, k)
+        print(D,I)
+        return True, I.tolist(), D.tolist()

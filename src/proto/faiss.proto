@@ -56,6 +56,6 @@ message getNearestRequest {
 
 message getNearestResponse {
     bool status = 1;
-    repeated string _id = 2;
-    string matrix = 3;
+    string ids = 2;
+    string dist_matrix = 3;
 }

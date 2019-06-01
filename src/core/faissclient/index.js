@@ -3,6 +3,7 @@ const protoLoader = require('@grpc/proto-loader')
 const btoa = require('btoa')
 const atob = require('atob')
 const njs = require('numjs')
+const crypto = require('crypto')
 const utils = require('../../utils')
 
 var PROTO_PATH = __dirname + '/../../proto/faiss.proto'
@@ -19,6 +20,9 @@ const proto = grpc.loadPackageDefinition(packageDefinition)
 
 var faissRPC = new proto.faiss.FaissService('localhost:50052',
                 grpc.credentials.createInsecure())
+
+// temporarily keep vectors in memory until next faiss write
+var faissTempVecStore = []
 
 function proto_matrix_transform (matrix_in) {
     var ret = []
@@ -113,7 +117,6 @@ function getVecId (cbk) {
 
 var faissIndexBuilt = false
 var faissIndexBuildProgress = false
-var faissTempVecStore = []
 
 // get faiss status already
 var sdb = __g__PDBs.sessionDB
@@ -125,24 +128,44 @@ sdb.get('local_faissStatus', (err, doc) => {
 
 function addToFaiss(new_matrix, vec_id, cbk) {
     var init_config = __g__vDBConfig.faiss.init
+    // faiss index is not built yet
     if (!faissIndexBuilt && !faissIndexBuildProgress) {
         faissIndexBuildProgress = true
+        // keep data for addition to faiss
+        faissTempVecStore.push({m: new_matrix, i: vec_id})
         // train index only once and update db session
         initFaiss(init_config.nlist, init_config.nprobe, init_config.bpv, init_config.bpsv, init_config.vd, (err, resp) => {
+            // update local status about faiss initialization
             sdb.put({_id:'local_faissStatus', index_trained: true}, (err, resp) => {
                 if (!err) {
                     faissIndexBuildProgress = false
                     faissIndexBuilt = true
-                    // console.log(faissTempVecStore)
+
+                    // add pending data to faiss
+                    var tmp_arr = faissTempVecStore
+                    faissTempVecStore = []
+
+                    addToFaiss_(tmp_arr, (err, resp) => {
+                        if (!err) {
+                            console.log("added to faiss")
+                        }
+                        else {
+                            console.log("can't add vector to faiss", err)
+                        }
+                    })
                 }
             })
         })
     }
+    // faiss indexing is in progress
     if (!faissIndexBuilt && faissIndexBuildProgress) {
         faissTempVecStore.push({m: new_matrix, i: vec_id})
     }
+    // faiss index is built. We are ready to add new docs
     if (faissIndexBuilt && !faissIndexBuildProgress) {
         faissTempVecStore.push({m: new_matrix, i: vec_id})
+
+        // add pending data to faiss
         var tmp_arr = faissTempVecStore
         faissTempVecStore = []
 
@@ -151,7 +174,7 @@ function addToFaiss(new_matrix, vec_id, cbk) {
                 console.log("added to faiss")
             }
             else {
-                console.log("can't add vector to faiss")
+                console.log("can't add vector to faiss", err)
             }
         })
     }
@@ -172,6 +195,11 @@ module.exports = {
                     mapVecDocId (doc_id, vec_id, (err) => {
                         if(!err) {
                             var init_config = __g__vDBConfig.faiss.init
+
+                            // keep vector to be added in memory
+                            faissTempVecStore.push({m: new_matrix, i: vec_id})
+                            
+                            // check if vector count reached trainable min. requirement
                             if (vec_id >= init_config.vecount) {
                                 addToFaiss(new_matrix, vec_id, (err, resp) => {
                                     if (!err) {
@@ -193,5 +221,66 @@ module.exports = {
                 }
             })  
         }  
+    },
+    getKNN(k, matrix, cbk){
+        var faiss_search_data = {
+            "matrix": matrix,
+            "k": k
+        }
+        
+        faissRPC.getNearest(faiss_search_data, (err, resp) => {
+            var db = __g__PDBs.documentsDB
+            var mdb = __g__PDBs.mapperDB
+
+            if (!err) {
+                var dist_matrix_str = resp.dist_matrix
+                var vec_ids = JSON.parse(resp.ids)
+                var vec_ids_ = []
+                
+                // create ids list
+                for(let i=0;i<vec_ids.length;i++){
+                    for(let j=0;j<vec_ids[i].length;j++){
+                        vec_ids_.push(''+vec_ids[i][j])
+                    }
+                }
+
+                // get real doc ids from mapping
+                mdb.allDocs({
+                    include_docs: true,
+                    keys: vec_ids_
+                }, function(err, resp) {
+                    if(!err) {
+                        var doc_ids_ = []
+                        for(let i=0;i<resp.rows.length;i++){
+                            doc_ids_.push(resp.rows[i].doc.val)
+                        }
+
+                        // get real docs
+                        db.allDocs({
+                            include_docs: true,
+                            keys: doc_ids_
+                        }, function(err, resp) {
+                            if(!err) {
+                                resp_ = {
+                                    status: true,
+                                    dist_matrix: dist_matrix_str,
+                                    documents: btoa(JSON.stringify(resp.rows))
+                                }
+                                cbk(err, resp_)
+                            }
+                            else{
+                                cbk(err, resp)
+                            }
+                        })
+                    }
+                    else{
+                        cbk(err, resp)
+                    }
+                })
+            }
+            else {
+                cbk (err, null)
+            }
+        })
     }
 }

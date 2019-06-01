@@ -57,6 +57,6 @@ message getNearestRequest {
 
 message getNearestResponse {
     bool status = 1;
-    repeated vectorType matrix = 2;
+    bytes dist_matrix = 2;
     bytes documents = 3;
 }

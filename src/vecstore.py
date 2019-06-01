@@ -31,7 +31,6 @@ class FaissServicer (proto_server.FaissServiceServicer):
         response = proto.addVecResponse()
         
         documents = request.documents
-        print(documents[0])
         ret = faiss_.addVectors(documents)
         response.status = ret[0]
         response._id.extend(ret[1])
@@ -59,11 +58,16 @@ class FaissServicer (proto_server.FaissServiceServicer):
 
         ret = faiss_.getNearest(matrix, k)
         response.status = ret[0]
-        response._id.extend(ret[1])
-        matrix_ = []
-        for vector in ret[2]:
-            matrix_.append({"e": vector})
-        response.matrix = json.dumps(matrix_)
+        # ids_ = []
+        # for id_ in ret[1]:
+        #     ids_.append({"e": id_})
+        # response.ids = json.dumps(ids_)
+        # matrix_ = []
+        # for vector in ret[2]:
+        #     matrix_.append({"e": vector})
+        # response.matrix = json.dumps(matrix_)
+        response.ids = json.dumps(ret[1])
+        response.dist_matrix = json.dumps(ret[2])
         return response
 
 server = grpc.server(futures.ThreadPoolExecutor(max_workers = 1))
