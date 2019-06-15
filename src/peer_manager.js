@@ -21,9 +21,12 @@ __g__iPDB.plugin(require('pouchdb-find'))
 // Initialize pouchDB by connecting to local instance of couchDB with default databases
 global.__g__PDBs = {
     swarmDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_swarmdb'), // to keep swarm & peers data (not synced)
+    replicationDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_replicationdb'), // to keep replication data (not synced)
 }
 
 const p2p_rtable = require('./p2p/routing_table')
+// init event subscription rightaway
+p2p_rtable.init(()=>{console.log('peer events subscription done')})
 
 // ping peers and cleanup `routing table`
 function ping_and_cleanup_routing_table (cbk) {

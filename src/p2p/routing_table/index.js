@@ -1,4 +1,7 @@
 const fetch = require('node-fetch')
+const crypto = require('crypto')
+const events = require('./events')
+
 const routing_table_limit = 10
 const routing_table_get_location = '/peers-table'
 const peer_secret = 'machi machoo'
@@ -33,7 +36,6 @@ async function ping_and_cleanup_ (routing_table, cbk) {
                 }
             })
             .catch((err) => {
-                // remove item
                 console.log(err)
                 // remove item
                 return pdb.remove(routing_table[i].doc)
@@ -86,13 +88,19 @@ async function routing_table_update_ (routing_table, cbk) {
                                 pdb.find({
                                     selector: {url: {$eq: url_}},
                                     fields: ['_id']
-                                }).then(function (result) {
+                                }).then(async function (result) {
                                     // add this url to routing table if not exists already
                                     if(result.docs.length == 0) {
+                                        _id = crypto.createHash('md5').update(JSON.stringify(url_+secret_)).digest('hex')
                                         // add url & secret
-                                        pdb.put({
+                                        await pdb.put({
+                                            _id: _id,
                                             url: url_,
                                             secret: secret_
+                                        }).then(function (response) {
+                                            // handle response
+                                        }).catch(function (err) {
+                                            console.log(err)
                                         })
                                         // adjust remaining positions
                                         remaining_positions --
@@ -124,6 +132,10 @@ async function routing_table_update_ (routing_table, cbk) {
 }
 
 module.exports = {
+    init(cbk){
+        events.registerEvents()
+        cbk()
+    },
     // do ping and cleanup of routing table
     ping_and_cleanup (cbk) {
         var pdb = __g__PDBs.swarmDB

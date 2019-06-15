@@ -16,6 +16,7 @@ global.__g__PDBs = {
     documentsDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_docsdb'), // to keep all documents stored (synced on user request)
     mapperDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_mapperdb'), // to keep vecID - docID mappings (not synced)
     swarmDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_swarmdb'), // to keep swarm & peers data (not synced)
+    replicationDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_replicationdb'), // to keep replication data (not synced)
     sessionDB: new __g__iPDB(__g__vDBConfig.couchDB.host + '/' + __g__vDBConfig.couchDB.DBInstance + '_sessiondb') // to keep local session data to work properly (not synced)
 }
 
