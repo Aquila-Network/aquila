@@ -27,9 +27,13 @@ AquilaDB is not built from scratch. Thanks to OSS community, it is based on a co
 You need `docker` installed.
 
 # Usage
+#### Option 1: build from source
 * clone this repository
-* build image: `docker build -t a_mma/aquiladb:0.1 .`
-* deploy: `docker run -d -i -p 50051:50051 -t a_mma/aquiladb:0.1`
+* build image: `docker build -t ammaorg/aquiladb:0.1 .`
+#### Option 2: pull from dockerhub
+* pull image: `docker pull ammaorg/aquiladb:0.1`
+#### Finally, deploy
+* deploy: `docker run -d -i -p 50051:50051 -t ammaorg/aquiladb:0.1`
 
 # Test
 To test this, you need some knowledge of `GRPC`. 
