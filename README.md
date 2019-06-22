@@ -1,6 +1,8 @@
 # AquilaDB
 **AquilaDB** is a **Resillient**, **Replicated**, **Decentralized**, **Host neutral** storage for **Feature Vectors** along with **Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is easy to setup and scales as the universe expands.
 
+[https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
+
 ![constellation](http://astronomyonline.org/Observation/Images/Constellations/ConstellationBig/Aquila.gif)
 
 #### Resillient
@@ -29,11 +31,11 @@ You need `docker` installed.
 # Usage
 #### Option 1: build from source
 * clone this repository
-* build image: `docker build -t ammaorg/aquiladb:0.1 .`
+* build image: `docker build -t ammaorg/aquiladb:latest .`
 #### Option 2: pull from dockerhub
-* pull image: `docker pull ammaorg/aquiladb:0.1`
+* pull image: `docker pull ammaorg/aquiladb:latest`
 #### Finally, deploy
-* deploy: `docker run -d -i -p 50051:50051 -t ammaorg/aquiladb:0.1`
+* deploy: `docker run -d -i -p 50051:50051 -t ammaorg/aquiladb:latest`
 
 # Test
 To test this, you need some knowledge of `GRPC`. 
