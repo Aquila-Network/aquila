@@ -135,26 +135,31 @@ function addToFaiss(new_matrix, vec_id, cbk) {
         faissTempVecStore.push({m: new_matrix, i: vec_id})
         // train index only once and update db session
         initFaiss(init_config.nlist, init_config.nprobe, init_config.bpv, init_config.bpsv, init_config.vd, (err, resp) => {
-            // update local status about faiss initialization
-            sdb.put({_id:'local_faissStatus', index_trained: true}, (err, resp) => {
-                if (!err) {
-                    faissIndexBuildProgress = false
-                    faissIndexBuilt = true
+            if (!err) {
+                // update local status about faiss initialization
+                sdb.put({_id:'local_faissStatus', index_trained: true}, (err, resp) => {
+                    if (!err) {
+                        faissIndexBuildProgress = false
+                        faissIndexBuilt = true
 
-                    // add pending data to faiss
-                    var tmp_arr = faissTempVecStore
-                    faissTempVecStore = []
+                        // add pending data to faiss
+                        var tmp_arr = faissTempVecStore
+                        faissTempVecStore = []
 
-                    addToFaiss_(tmp_arr, (err, resp) => {
-                        if (!err) {
-                            console.log("added to faiss")
-                        }
-                        else {
-                            console.log("can't add vector to faiss", err)
-                        }
-                    })
-                }
-            })
+                        addToFaiss_(tmp_arr, (err, resp) => {
+                            if (!err) {
+                                console.log("added to faiss")
+                            }
+                            else {
+                                console.log("can't add vector to faiss", err)
+                            }
+                        })
+                    }
+                })
+            }
+            else {
+                console.log(err)
+            }
         })
     }
     // faiss indexing is in progress

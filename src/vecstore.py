@@ -70,7 +70,9 @@ class FaissServicer (proto_server.FaissServiceServicer):
         response.dist_matrix = json.dumps(ret[2])
         return response
 
-server = grpc.server(futures.ThreadPoolExecutor(max_workers = 1))
+server = grpc.server(futures.ThreadPoolExecutor(max_workers = 1),  options=[
+          ('grpc.max_send_message_length', 100 * 1024 * 1024),
+          ('grpc.max_receive_message_length', 100 * 1024 * 1024) ])
 proto_server.add_FaissServiceServicer_to_server (FaissServicer(), server)
 
 print('Starting server. Listening on port 50052.')
