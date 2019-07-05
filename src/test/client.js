@@ -4,8 +4,9 @@ const btoa = require('btoa')
 const atob = require('atob')
 const njs = require('numjs')
 
-var itercnt = 1
-var rawcnt = 4
+var itercnt = 201
+var rawcnt = 50
+var veclen = 785
 
 
 var PROTO_PATH = __dirname + '/../proto/vecdb.proto'
@@ -35,7 +36,7 @@ setTimeout (function(){
 }, (itercnt+1)*1000)
 
 function finish(){
-    var train_matrix = njs.random([rawcnt,8]).tolist()
+    var train_matrix = njs.random([rawcnt, veclen]).tolist()
     console.log(train_matrix[0])
     console.log('FINISHING...')
     vecdb.getNearest({ k:20, matrix: [ { e: train_matrix[0]}, { e: train_matrix[1]} ] }, (err, resp) => {
@@ -44,7 +45,7 @@ function finish(){
 }
 
 function run() {
-    var train_matrix = njs.random([rawcnt,8])
+    var train_matrix = njs.random([rawcnt, veclen])
     train_matrix = train_matrix.tolist()
     var docs_gen = []
     for(let i=0;i<train_matrix.length;i++) {

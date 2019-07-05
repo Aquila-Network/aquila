@@ -5,7 +5,7 @@ faiss:
     nprobe: 1
     bpv: 8
     bpsv: 8
-    vd: 8
+    vd: 784
 couchDB:
   DBInstance: test1
   host: http://localhost:5984

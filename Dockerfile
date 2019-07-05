@@ -33,5 +33,8 @@ ENV PATH /opt/conda/bin:$PATH
 RUN conda create -n myenv python && conda install faiss-cpu -c pytorch
 RUN python -m pip install grpcio-tools
 
+# install pm2 to run services
+RUN npm install pm2 -g
+
 RUN chmod +x /aquiladb/src/init_aquila_db.sh
 CMD /aquiladb/src/init_aquila_db.sh && tail -f /dev/null
