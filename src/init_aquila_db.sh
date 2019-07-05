@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# start couchdb service
 service couchdb start
-# /etc/init.d/couchdb start
+
+# wait for couchdb to start
 sleep 5
+
+# start micro services
 cd /aquiladb/src/
-node vecdb.js &
-node peer_manager.js &
-python vecstore.py &
+pm2 start vecdb.js
+pm2 start peer_manager.js
+pm2 start vecstore.py

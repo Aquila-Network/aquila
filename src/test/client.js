@@ -6,7 +6,7 @@ const njs = require('numjs')
 
 var itercnt = 201
 var rawcnt = 50
-var veclen = 784
+var veclen = 785
 
 
 var PROTO_PATH = __dirname + '/../proto/vecdb.proto'

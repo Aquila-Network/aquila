@@ -28,7 +28,14 @@ module.exports = {
                 // get document data
                 var payload = {}
                 if (document.b64data) {
-                    payload = JSON.parse(atob(document.b64data))
+                    try {
+                        payload = JSON.parse(atob(document.b64data))
+                    }
+                    catch (err) {
+                        console.log(err)
+                        console.log('Adding empty metadata..')
+                        payload = {}
+                    }
                 }
                 // add more data to store in DB
                 payload._id = _id

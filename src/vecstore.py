@@ -22,7 +22,15 @@ class FaissServicer (proto_server.FaissServiceServicer):
         matrix = []
         # convert rpc matrix_ to python matrix
         for vector in matrix_:
-            matrix.append(vector.e)
+            vector_e = vector.e
+            vector_e_l = len(vector_e)
+            # check if the vector length is below dimention limit
+            # then pad vector with 0 by dimension
+            if vector_e_l < dim:
+                vector_e.extend([0]*(dim-vector_e_l))
+            # make sure vector length doesn't exceed dimension limit
+            matrix.append(vector_e[:dim])
+            
         
         response.status = faiss_.initFaiss(nlist, nprobe, bytesPerVec, bytesPerSubVec, dim, matrix)
         return response
@@ -54,7 +62,14 @@ class FaissServicer (proto_server.FaissServiceServicer):
         matrix = []
         # convert rpc matrix_ to python matrix
         for vector in matrix_:
-            matrix.append(vector.e)
+            vector_e = vector.e
+            vector_e_l = len(vector_e)
+            # check if the vector length is below dimention limit
+            # then pad vector with 0 by dimension
+            if vector_e_l < faiss_.dim:
+                vector_e.extend([0]*(faiss_.dim-vector_e_l))
+            # make sure vector length doesn't exceed dimension limit
+            matrix.append(vector_e[:faiss_.dim])
 
         ret = faiss_.getNearest(matrix, k)
         response.status = ret[0]
