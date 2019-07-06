@@ -7,7 +7,9 @@
 # AquilaDB
 **AquilaDB** is a **Resillient**, **Replicated**, **Decentralized**, **Host neutral** storage for **Feature Vectors** along with **Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is easy to setup and scales as the universe expands.
 
-[https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
+Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
+
+Docker Hub: [https://cloud.docker.com/u/ammaorg/repository/docker/ammaorg/aquiladb](https://cloud.docker.com/u/ammaorg/repository/docker/ammaorg/aquiladb)
 
 ![constellation](http://astronomyonline.org/Observation/Images/Constellations/ConstellationBig/Aquila.gif)
 
