@@ -9,7 +9,7 @@
 
 Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
 
-Docker Hub: [https://cloud.docker.com/u/ammaorg/repository/docker/ammaorg/aquiladb](https://cloud.docker.com/u/ammaorg/repository/docker/ammaorg/aquiladb)
+Docker Hub: [https://hub.docker.com/r/ammaorg/aquiladb](https://hub.docker.com/r/ammaorg/aquiladb)
 
 ![constellation](http://astronomyonline.org/Observation/Images/Constellations/ConstellationBig/Aquila.gif)
 
