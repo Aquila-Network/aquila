@@ -36,5 +36,8 @@ RUN python -m pip install grpcio-tools
 # install pm2 to run services
 RUN npm install pm2 -g
 
+# downgrade to stable faiss
+RUN conda install faiss-cpu=1.5.1 -c pytorch -y
+
 RUN chmod +x /aquiladb/src/init_aquila_db.sh
 CMD /aquiladb/src/init_aquila_db.sh && tail -f /dev/null

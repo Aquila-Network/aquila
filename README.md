@@ -11,6 +11,8 @@ Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
 
 Docker Hub: [https://hub.docker.com/r/ammaorg/aquiladb](https://hub.docker.com/r/ammaorg/aquiladb)
 
+Documentation (dedicated Wiki page): [https://github.com/a-mma/AquilaDB/wiki](https://github.com/a-mma/AquilaDB/wiki)
+
 ![constellation](http://astronomyonline.org/Observation/Images/Constellations/ConstellationBig/Aquila.gif)
 
 #### Resillient
