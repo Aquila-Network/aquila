@@ -19,13 +19,13 @@ Documentation (dedicated Wiki page): [https://github.com/a-mma/AquilaDB/wiki](ht
 Make sure your data is always available anywhere through any network. It is not necessory to be always online. Work offline, sync later.
 
 #### Replicated
-Your data is replicated over nodes to attain eventual consistancy. 
+Your data is replicated over nodes to attain eventual consistency. 
 
 #### Decentralized
 There is no single point of failure.
 
 #### Host Neutral
-Want to use AWS, Azure, G-cloud or whatever? Or even a legion of laptops? Connect them together? No worries as long as they can talk each other.
+Want to use AWS, Azure, G-cloud or whatever? Got a legion of laptops? Connect them together? No worries as long as they can talk each other.
 
 # Who is this for
 * If you are working on a data science project and need to store a hell lot of data and retrieve similar data based on some feature vector, this will be a useful tool to you, with extra benefits a real world web application needs.
