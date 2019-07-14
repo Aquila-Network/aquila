@@ -32,10 +32,12 @@ RUN apt-get update; apt-get install -y curl; apt-get install -y --no-install-rec
 	echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
 	echo "conda activate base" >> ~/.bashrc; \
 	export PATH=/opt/conda/bin:$PATH; \
+	conda config --set auto_update_conda False ; \
 	conda create -n myenv python && conda install faiss-cpu=1.5.1 -c pytorch -y; \
 	python -m pip install grpcio-tools; \
 	apt-get purge -y --auto-remove wget; \
 	conda clean --all; \
+	rm -r "/opt/conda/pkgs/"; \
 	rm -rf /var/lib/apt/lists/* \
 #
 # make init script executable
