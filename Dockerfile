@@ -17,7 +17,7 @@ RUN apt-get update; apt-get install -y curl; apt-get install -y --no-install-rec
 	curl -sL https://deb.nodesource.com/setup_10.x | bash -; \
 	apt install -y --no-install-recommends nodejs; \
 	apt-get install -y --no-install-recommends make; \
-	cd aquiladb/src && rm package-lock.json || true && npm install; \
+	cd /aquiladb/src && rm package-lock.json || true && npm install; \
 	npm install pm2 -g; \
 	npm cache clean --force; \
 	apt-get purge -y --auto-remove curl make git; \
