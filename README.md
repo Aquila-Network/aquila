@@ -1,7 +1,17 @@
+![version](https://img.shields.io/github/release-pre/a-mma/AquilaDB.svg) ![license GPL 0.3](https://img.shields.io/github/license/a-mma/AquilaDB.svg) 
+
+![docker build](https://img.shields.io/docker/cloud/automated/ammaorg/aquiladb.svg) ![docker build ststus](https://img.shields.io/docker/cloud/build/ammaorg/aquiladb.svg) ![docker stars](https://img.shields.io/docker/stars/ammaorg/aquiladb.svg) ![docker pulls](https://img.shields.io/docker/pulls/ammaorg/aquiladb.svg) 
+
+![github open issues](https://img.shields.io/github/issues-raw/a-mma/AquilaDB.svg) ![github closed issues](https://img.shields.io/github/issues-closed-raw/a-mma/AquilaDB.svg) ![github stars](https://img.shields.io/github/stars/a-mma/AquilaDB.svg?style=social) 
+
 # AquilaDB
 **AquilaDB** is a **Resillient**, **Replicated**, **Decentralized**, **Host neutral** storage for **Feature Vectors** along with **Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is easy to setup and scales as the universe expands.
 
-[https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
+Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
+
+Docker Hub: [https://hub.docker.com/r/ammaorg/aquiladb](https://hub.docker.com/r/ammaorg/aquiladb)
+
+Documentation (dedicated Wiki page): [https://github.com/a-mma/AquilaDB/wiki](https://github.com/a-mma/AquilaDB/wiki)
 
 ![constellation](http://astronomyonline.org/Observation/Images/Constellations/ConstellationBig/Aquila.gif)
 
@@ -9,13 +19,13 @@
 Make sure your data is always available anywhere through any network. It is not necessory to be always online. Work offline, sync later.
 
 #### Replicated
-Your data is replicated over nodes to attain eventual consistancy. 
+Your data is replicated over nodes to attain eventual consistency. 
 
 #### Decentralized
 There is no single point of failure.
 
 #### Host Neutral
-Want to use AWS, Azure, G-cloud or whatever? Or even a legion of laptops? Connect them together? No worries as long as they can talk each other.
+Want to use AWS, Azure, G-cloud or whatever? Got a legion of laptops? Connect them together? No worries as long as they can talk each other.
 
 # Who is this for
 * If you are working on a data science project and need to store a hell lot of data and retrieve similar data based on some feature vector, this will be a useful tool to you, with extra benefits a real world web application needs.
