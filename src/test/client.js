@@ -4,9 +4,9 @@ const btoa = require('btoa')
 const atob = require('atob')
 const njs = require('numjs')
 
-var itercnt = 201
-var rawcnt = 50
-var veclen = 785
+var itercnt = 1
+var rawcnt = 1
+var veclen = 8
 
 
 var PROTO_PATH = __dirname + '/../proto/vecdb.proto'
