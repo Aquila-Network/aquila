@@ -19,6 +19,7 @@ RUN apt-get update; apt-get install -y curl; apt-get install -y --no-install-rec
 	apt-get install -y --no-install-recommends make; \
 	cd aquiladb/src && rm package-lock.json || true && npm install; \
 	npm install pm2 -g; \
+	npm cache clean --force; \
 	apt-get purge -y --auto-remove curl make git; \
 #
 # setup python environment
@@ -34,6 +35,7 @@ RUN apt-get update; apt-get install -y curl; apt-get install -y --no-install-rec
 	conda create -n myenv python && conda install faiss-cpu=1.5.1 -c pytorch -y; \
 	python -m pip install grpcio-tools; \
 	apt-get purge -y --auto-remove wget; \
+	conda clean --all; \
 	rm -rf /var/lib/apt/lists/* \
 #
 # make init script executable
