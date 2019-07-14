@@ -10,14 +10,14 @@ RUN curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc \
     | apt-key add -
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y couchdb
 
-# clone aquiladb src
-RUN mkdir aquiladb && cd aquiladb && git clone https://github.com/a-mma/AquilaDB.git .
+# clone AquilaDB src
+RUN mkdir AquilaDB && cd AquilaDB && git clone https://github.com/a-mma/AquilaDB.git .
 
 # setup node environment
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt install -y nodejs
 RUN apt-get install -y make
-RUN cd aquiladb/src && rm package-lock.json || true && npm install
+RUN cd AquilaDB/src && rm package-lock.json || true && npm install
 
 # setup python environment
 RUN python3 --version
@@ -30,11 +30,11 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate base" >> ~/.bashrc
 ENV PATH /opt/conda/bin:$PATH
-RUN conda create -n myenv python && conda install faiss-cpu -c pytorch
+RUN conda create -n myenv python && conda install faiss-cpu=1.5.1 -c pytorch -y
 RUN python -m pip install grpcio-tools
 
 # install pm2 to run services
 RUN npm install pm2 -g
 
-RUN chmod +x /aquiladb/src/init_aquila_db.sh
-CMD /aquiladb/src/init_aquila_db.sh && tail -f /dev/null
+RUN chmod +x /AquilaDB/src/init_aquila_db.sh
+CMD /AquilaDB/src/init_aquila_db.sh && tail -f /dev/null
