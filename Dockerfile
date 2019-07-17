@@ -36,5 +36,12 @@ RUN python -m pip install grpcio-tools
 # install pm2 to run services
 RUN npm install pm2 -g
 
+# make init script executable
 RUN chmod +x /AquilaDB/src/init_aquila_db.sh
+
+# create DB data directory
+RUN mkdir /data && mkdir /AquilaDB/src/data && \
+    ln -s /opt/couchdb/data /data/DDB && \
+    ln -s /AquilaDB/src/data /data/VDB
+
 CMD /AquilaDB/src/init_aquila_db.sh && tail -f /dev/null

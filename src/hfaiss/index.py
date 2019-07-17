@@ -1,3 +1,4 @@
+import os.path as ospath # ospath.exists
 import numpy as np
 import faiss
 
