@@ -9,6 +9,7 @@ node_js:
 before_install:
   - docker build -t ammaorg/aquiladb:travis .
   - docker run -d -i -p 50051:50051 -v "$(pwd)/src:/AquilaDB/src" -t ammaorg/aquiladb:travis
+  - sudo apt-get install -y make
   - cd src
 
 install:
