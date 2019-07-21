@@ -17,3 +17,7 @@ install:
 
 script:
   - node test.js
+
+branches:
+  only:
+  - develop
