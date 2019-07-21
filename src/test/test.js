@@ -4,9 +4,9 @@ const btoa = require('btoa')
 const atob = require('atob')
 const njs = require('numjs')
 
-var itercnt = 201
-var rawcnt = 50
-var veclen = 785
+var itercnt = 20
+var rawcnt = 500
+var veclen = 8
 
 
 var PROTO_PATH = __dirname + '/../proto/vecdb.proto'
@@ -33,7 +33,7 @@ for (let i=0; i<itercnt; i ++) {
 
 setTimeout (function(){
     finish()
-}, (itercnt+1)*1000)
+}, (itercnt+10)*1000)
 
 function finish(){
     var train_matrix = njs.random([rawcnt, veclen]).tolist()

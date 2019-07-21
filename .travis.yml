@@ -1,0 +1,19 @@
+language: node_js
+
+services:
+  - docker
+
+node_js:
+  - "7"
+
+before_install:
+  - docker build -t ammaorg/aquiladb:travis .
+  - docker run -d -i -p 50051:50051 -v "$(pwd)/src:/AquilaDB/src" -t ammaorg/aquiladb:travis
+  - cd src
+
+install:
+  - npm install
+  - cd test
+
+script:
+  - node test.js
