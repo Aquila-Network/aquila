@@ -4,6 +4,8 @@
 
 ![github open issues](https://img.shields.io/github/issues-raw/a-mma/AquilaDB.svg) ![github closed issues](https://img.shields.io/github/issues-closed-raw/a-mma/AquilaDB.svg) ![github stars](https://img.shields.io/github/stars/a-mma/AquilaDB.svg?style=social) 
 
+[Community support: ![discord chatroom for discussions](https://www.freeiconspng.com/minicovers/flat-discord-material-like-icon--2.png)](https://discord.gg/5YP7zHS)
+
 # AquilaDB
 **AquilaDB** is a **Resillient**, **Replicated**, **Decentralized**, **Host neutral** storage for **Feature Vectors** along with **Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is easy to setup and scales as the universe expands.
 
