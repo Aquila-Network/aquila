@@ -57,6 +57,9 @@ Protocolbuff [API reference](https://github.com/a-mma/AquilaDB/blob/master/src/p
 # Progress
 This project is still under active development (pre-release). It can be used as a standalone database now. Peer manager is a work in progress, so networking capabilities are not available now. With release v1.0 we will release pre-optimized version of AquilaDB.
 
+# Contribute
+We have [prepared a document](https://docs.google.com/document/d/1bT2_9FQIxQpx_rdYbkTukn_DJRi_haVK_ixTf8uTaDE/edit?usp=sharing) to get anyone interested to contribute, immediately started with AquilaDB.
+
 # License
 GNU General Public License v3.0 [license file](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
 
