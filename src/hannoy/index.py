@@ -19,7 +19,7 @@ class Annoy:
         build_ = self.a_index.build(self.n_trees)
 
         if build_:
-            self.modelLoaded = self.saveModelToDisk(self, model_location, self.a_index)
+            self.modelLoaded = self.saveModelToDisk(model_location, self.a_index)
         return self.modelLoaded
 
     def loadModelFromDisk(self, location):
@@ -82,5 +82,5 @@ class Annoy:
             _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, include_distances=True)
             ids.append(_id)
             dists.append(_dist)
-            
+
         return True, ids, dists

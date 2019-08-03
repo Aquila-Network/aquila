@@ -29,7 +29,7 @@ class Faiss:
         self.f_index.train(self.train_data)
         print('FAISS train index finished')
 
-        self.modelLoaded = self.saveModelToDisk(self, model_location, self.f_index)
+        self.modelLoaded = self.saveModelToDisk(model_location, self.f_index)
         self.is_initiated = self.modelLoaded
         return self.is_initiated
 

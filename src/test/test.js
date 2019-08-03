@@ -8,7 +8,7 @@ var itercnt = 101
 var rawcnt = 100
 var veclen = 8
 
-var timeout_ = 4000
+var timeout_ = 1000
 
 
 var PROTO_PATH = __dirname + '/../proto/vecdb.proto'

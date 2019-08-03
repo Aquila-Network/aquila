@@ -285,10 +285,10 @@ module.exports = {
                             if (vec_id > FAISS_MIN_LIMIT) {
                                 addToFaiss(new_matrix, vec_id, (err, resp) => {
                                     if (!err) {
-                                        console.log('Added vectors to Annoy')
+                                        console.log('Added vectors to FAISS')
                                     }
                                     else {
-                                        console.log('Error adding vectors to Annoy', err, resp)
+                                        console.log('Error adding vectors to FAISS', err, resp)
                                     } 
                                 })    
                             }
@@ -299,10 +299,10 @@ module.exports = {
 
                                 addToAnnoy(new_matrix, vec_id, (err, resp) => {
                                     if (!err) {
-                                        console.log('Added vectors to FAISS')
+                                        console.log('Added vectors to Annoy')
                                     }
                                     else {
-                                        console.log('Error adding vectors to FAISS', err, resp)
+                                        console.log('Error adding vectors to Annoy', err, resp)
                                     } 
                                 })    
                             }

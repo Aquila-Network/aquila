@@ -34,7 +34,7 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
     echo "conda activate base" >> ~/.bashrc
 ENV PATH /opt/conda/bin:$PATH
 RUN conda create -n myenv python && conda install faiss-cpu=1.5.1 -c pytorch -y
-RUN python -m pip install grpcio-tools
+RUN python -m pip install grpcio-tools annoy
 
 # install pm2 to run services
 RUN npm install pm2 -g
