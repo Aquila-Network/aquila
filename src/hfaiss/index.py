@@ -1,6 +1,7 @@
-import os.path as ospath # ospath.exists
 import numpy as np
 import faiss
+
+model_location = '/data/VDB/model'
 
 class Faiss:
     def __init__(self):
@@ -9,6 +10,7 @@ class Faiss:
         self.bytesPerVec = 8
         self.bytesPerSubVec = 8
         self.dim = 300
+        self.modelLoaded = self.loadModelFromDisk(model_location)
 
     def initFaiss(self, nlist, nprobe, bytesPerVec, bytesPerSubVec, dim, matrix):
         self.nlist = nlist
@@ -25,7 +27,29 @@ class Faiss:
         print('train index')
         self.f_index.train(self.train_data)
         print('train index finished')
-        return True
+
+        self.modelLoaded = self.saveModelToDisk(self, model_location, self.f_index)
+        return self.modelLoaded
+
+    def loadModelFromDisk(self, location):
+        try:
+            # read index
+            self.f_index = read_index(location)
+            print('index loading success')
+            return True
+        except: 
+            print('index loading failed')
+            return False
+
+    def saveModelToDisk(self, location, index):
+        try:
+            # write index
+            faiss.write_index(index, location)
+            print('index writing success')
+            return True
+        except:
+            print('index writing failed')
+            return False
 
     def addVectors(self, documents):
         ids = []
@@ -57,5 +81,4 @@ class Faiss:
         # convert to np matrix
         vec_data = np.matrix(matrix).astype('float32')
         D, I = self.f_index.search(vec_data, k)
-        print(D,I)
         return True, I.tolist(), D.tolist()
