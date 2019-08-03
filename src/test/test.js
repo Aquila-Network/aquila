@@ -8,6 +8,8 @@ var itercnt = 101
 var rawcnt = 100
 var veclen = 8
 
+var timeout_ = 4000
+
 
 var PROTO_PATH = __dirname + '/../proto/vecdb.proto'
 var packageDefinition = protoLoader.loadSync(
@@ -28,12 +30,12 @@ for (let i=0; i<itercnt; i ++) {
     setTimeout(function(){ 
         run()
         console.log('tick..')
-    }, i*4000)
+    }, i*timeout_)
 }
 
 setTimeout (function(){
     finish()
-}, (itercnt+10)*1000)
+}, (itercnt+10)*timeout_)
 
 function finish(){
     var train_matrix = njs.random([rawcnt, veclen]).tolist()
