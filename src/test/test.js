@@ -4,8 +4,8 @@ const btoa = require('btoa')
 const atob = require('atob')
 const njs = require('numjs')
 
-var itercnt = 20
-var rawcnt = 500
+var itercnt = 101
+var rawcnt = 100
 var veclen = 8
 
 
@@ -28,7 +28,7 @@ for (let i=0; i<itercnt; i ++) {
     setTimeout(function(){ 
         run()
         console.log('tick..')
-    }, i*1000)
+    }, i*4000)
 }
 
 setTimeout (function(){

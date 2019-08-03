@@ -1,7 +1,7 @@
 import numpy as np
 import faiss
 
-model_location = '/data/VDB/model'
+model_location = '/data/VDB/model_hf'
 
 class Faiss:
     def __init__(self):
@@ -11,6 +11,7 @@ class Faiss:
         self.bytesPerSubVec = 8
         self.dim = 300
         self.modelLoaded = self.loadModelFromDisk(model_location)
+        self.is_initiated = self.modelLoaded
 
     def initFaiss(self, nlist, nprobe, bytesPerVec, bytesPerSubVec, dim, matrix):
         self.nlist = nlist
@@ -20,35 +21,39 @@ class Faiss:
         self.dim = dim
 
         self.train_data = np.matrix(matrix).astype('float32')
-        print('init quantizer', self.train_data, self.train_data.shape)
+        print('FAISS init quantizer', self.train_data, self.train_data.shape)
         self.f_quantizer = faiss.IndexFlatL2(self.dim)
-        print('init index')
+        print('FAISS init index')
         self.f_index = faiss.IndexIVFPQ(self.f_quantizer, self.dim, self.nlist, self.bytesPerVec, self.bytesPerSubVec)
-        print('train index')
+        print('FAISS train index')
         self.f_index.train(self.train_data)
-        print('train index finished')
+        print('FAISS train index finished')
 
         self.modelLoaded = self.saveModelToDisk(self, model_location, self.f_index)
-        return self.modelLoaded
+        self.is_initiated = self.modelLoaded
+        return self.is_initiated
+
+    def isInitiated(self):
+        return self.is_initiated
 
     def loadModelFromDisk(self, location):
         try:
             # read index
             self.f_index = read_index(location)
-            print('index loading success')
+            print('FAISS index loading success')
             return True
         except: 
-            print('index loading failed')
+            print('FAISS index loading failed')
             return False
 
     def saveModelToDisk(self, location, index):
         try:
             # write index
             faiss.write_index(index, location)
-            print('index writing success')
+            print('FAISS index writing success')
             return True
         except:
-            print('index writing failed')
+            print('FAISS index writing failed')
             return False
 
     def addVectors(self, documents):
