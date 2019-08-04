@@ -15,6 +15,19 @@ fs   = require('fs')
 // global variable, accessible from anywhere
 // vecdb configuration
 global.__g__vDBConfig = yaml.safeLoad(fs.readFileSync('./DB_config.yml', 'utf8'))
+// modify configs from ENVIRONMENT variables
+global.__g__vDBConfig.faiss.init.vecount = process.env.MIN_DOCS2INDEX || global.__g__vDBConfig.faiss.init.vecount
+// FAISS config.
+global.__g__vDBConfig.faiss.init.nlist = process.env.MAX_CELLS || global.__g__vDBConfig.faiss.init.nlist
+global.__g__vDBConfig.faiss.init.nprobe = process.env.VISIT_CELLS || global.__g__vDBConfig.faiss.init.nprobe
+global.__g__vDBConfig.faiss.init.bpv = process.env.BYTES_PER_VEC || global.__g__vDBConfig.faiss.init.bpv
+global.__g__vDBConfig.faiss.init.bpsv = process.env.BYTES_PER_SUB_VEC || global.__g__vDBConfig.faiss.init.bpsv
+global.__g__vDBConfig.faiss.init.vd = process.env.FIXED_VEC_DIMENSION || global.__g__vDBConfig.faiss.init.vd
+// authentication
+global.__g__vDBConfig.couchDB.user = process.env.DB_USER || global.__g__vDBConfig.couchDB.user
+global.__g__vDBConfig.couchDB.password = process.env.DB_PASSWORD || global.__g__vDBConfig.couchDB.password
+
+
 // pouchdb instance
 global.__g__iPDB = require('pouchdb')
 __g__iPDB.plugin(require('pouchdb-find'))

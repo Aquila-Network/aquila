@@ -1,15 +1,18 @@
 faiss:
   init:
-    vecount: 10000
-    nlist: 1
-    nprobe: 1
-    bpv: 8
-    bpsv: 8
-    vd: 784
+    vecount: 100 # minimum data required to start indexing
+    nlist: 1 # number of cells 
+    nprobe: 1 # number of cells that are visited to perform a search
+    bpv: 8 # bytes per vector
+    bpsv: 8 # bytes per sub vector
+    vd: 784 # fixed vector dimension
+    indexdump:
+      root: '/AquilaDB/src/data' # file location for index dump
+      name: rawdump # file name for data dump
 couchDB:
-  DBInstance: test1
+  DBInstance: default # database namespace
   host: http://localhost:5984
-  user:
-  password:
+  user: root
+  password: 
 vectorID:
   sync_t: 5000
