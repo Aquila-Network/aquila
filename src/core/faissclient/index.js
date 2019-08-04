@@ -168,7 +168,7 @@ function addToFaiss(new_matrix, vec_id, cbk) {
 
                         addToFaiss_(tmp_arr, (err, resp) => {
                             if (!err) {
-                                console.log("added to faiss")
+                                // console.log("added to faiss")
                             }
                             else {
                                 console.log("can't add vector to faiss", err)
@@ -196,7 +196,7 @@ function addToFaiss(new_matrix, vec_id, cbk) {
 
         addToFaiss_(tmp_arr, (err, resp) => {
             if (!err) {
-                console.log("added to faiss")
+                // console.log("added to faiss")
             }
             else {
                 console.log("can't add vector to faiss", err)
@@ -229,7 +229,7 @@ function addToAnnoy(new_matrix, vec_id, cbk) {
 
                         addToFaiss_(tmp_arr, (err, resp) => {
                             if (!err) {
-                                console.log("added to annoy")
+                                // console.log("added to annoy")
                             }
                             else {
                                 console.log("can't add vector to annoy", err)
@@ -257,7 +257,7 @@ function addToAnnoy(new_matrix, vec_id, cbk) {
 
         addToFaiss_(tmp_arr, (err, resp) => {
             if (!err) {
-                console.log("added to annoy")
+                // console.log("added to annoy")
             }
             else {
                 console.log("can't add vector to annoy", err)
