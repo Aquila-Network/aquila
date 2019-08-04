@@ -86,6 +86,7 @@ function initFaiss(nlist, nprobe, bpv, bpsv, vd, cbk) {
 }
 
 function addToFaiss_(matrix_in, cbk) {
+    console.log(matrix_in.length)
     var err_ = false
     var counter = 0
     for (let i=0;i<matrix_in.length;i++) {
@@ -294,8 +295,10 @@ module.exports = {
                             }
                             // check if vector count reached trainable min. requirement
                             else if (vec_id >= init_config.vecount) {
-                                // copy initial vectors collected so far for annoy initialization
-                                annoyTempVecStore = faissTempVecStore
+                                if (vec_id === init_config.vecount) {
+                                    // copy initial vectors collected so far for annoy initialization
+                                    annoyTempVecStore = faissTempVecStore
+                                }
 
                                 addToAnnoy(new_matrix, vec_id, (err, resp) => {
                                     if (!err) {
@@ -304,7 +307,10 @@ module.exports = {
                                     else {
                                         console.log('Error adding vectors to Annoy', err, resp)
                                     } 
-                                })    
+                                })  
+
+                                // keep vector to be added in memory
+                                faissTempVecStore.push({m: new_matrix, i: vec_id})  
                             }
                             else {
                                 // keep vector to be added in memory

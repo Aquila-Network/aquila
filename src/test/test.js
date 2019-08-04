@@ -4,8 +4,8 @@ const btoa = require('btoa')
 const atob = require('atob')
 const njs = require('numjs')
 
-var itercnt = 101
-var rawcnt = 100
+var itercnt = 10
+var rawcnt = 2
 var veclen = 8
 
 var timeout_ = 1000
