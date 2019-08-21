@@ -1,6 +1,6 @@
 const grpc = require('grpc')
 var protoLoader = require('@grpc/proto-loader')
-const atob = require('atob')
+const Base64 = require('js-base64').Base64
 
 yaml = require('js-yaml')
 fs   = require('fs')

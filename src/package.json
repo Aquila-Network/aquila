@@ -10,10 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.0",
-    "atob": "^2.1.2",
-    "btoa": "^1.2.1",
     "express": "^4.17.0",
     "grpc": "^1.19.0",
+    "js-base64": "^2.5.1",
     "js-yaml": "^3.13.1",
     "node-fetch": "^2.6.0",
     "numjs": "^0.16.0",

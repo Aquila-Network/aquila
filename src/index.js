@@ -1,4 +1,4 @@
-const atob = require('atob')
+const Base64 = require('js-base64').Base64
 const crypto = require('crypto')
 const utils = require('../../utils')
 
@@ -28,7 +28,7 @@ module.exports = {
                 // get document data
                 var payload = {}
                 if (document.b64data) {
-                    payload = JSON.parse(atob(document.b64data))
+                    payload = JSON.parse(Base64.decode(document.b64data))
                 }
                 // add more data to store in DB
                 payload._id = _id
