@@ -1,4 +1,3 @@
-const btoa = require('btoa')
 const faiss_client = require('../faissclient')
 
 module.exports = {
