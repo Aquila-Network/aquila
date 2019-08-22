@@ -52,7 +52,7 @@ function run() {
         docs_gen.push({
             //_id: ''+i+Math.floor((Math.random() * 10000) + 1), 
             vector: { e: train_matrix[i] }, 
-            b64data: Buffer.from(JSON.stringify({hello: 'world`s', hey: 'there'}), "utf-8")
+            b64data: Buffer.from(JSON.stringify({hello: 'world’s', hey: 'there'}), "utf-8")
         })
     }
 
