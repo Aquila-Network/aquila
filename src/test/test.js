@@ -2,8 +2,8 @@ const grpc = require('grpc')
 var protoLoader = require('@grpc/proto-loader')
 const njs = require('numjs')
 
-var itercnt = 1
-var rawcnt = 1
+var itercnt = 11
+var rawcnt = 10
 var veclen = 8
 
 var timeout_ = 1000
