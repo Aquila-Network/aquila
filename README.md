@@ -13,6 +13,9 @@ Do you like this project? We love getting a ⭐ from you in return! 🤗
 # AquilaDB
 **AquilaDB** is a **Resilient**, **Replicated**, **Decentralized**, **Host neutral** vector database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is easy to setup and scales as the universe expands. Production ready solution for Machine Learning engineers and Data scientists.
 
+AquilaDB 1.0 release is a distant goal to achieve. Visit **contribute** section below to see detailed development plan and milestones. 
+We make sure that, each `release` and `AquilaDB Master branch` are stable and production ready with all features planned up to date. 
+
 Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
 
 Docker Hub: [https://hub.docker.com/r/ammaorg/aquiladb](https://hub.docker.com/r/ammaorg/aquiladb)
