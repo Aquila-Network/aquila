@@ -1,4 +1,3 @@
-const Base64 = require('js-base64').Base64
 const crypto = require('crypto')
 const utils = require('../../utils')
 
@@ -29,7 +28,7 @@ module.exports = {
                 var payload = {}
                 if (document.b64data) {
                     try {
-                        payload = JSON.parse(Base64.decode(document.b64data))
+                        payload = JSON.parse(document.b64data.toString("utf-8"))
                     }
                     catch (err) {
                         console.log(err)

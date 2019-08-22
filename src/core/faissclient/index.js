@@ -1,6 +1,5 @@
 const grpc = require('grpc')
 const protoLoader = require('@grpc/proto-loader')
-const Base64 = require('js-base64').Base64
 const njs = require('numjs')
 const crypto = require('crypto')
 const utils = require('../../utils')
@@ -366,7 +365,7 @@ module.exports = {
                                 resp_ = {
                                     status: true,
                                     dist_matrix: dist_matrix_str,
-                                    documents: Base64.encode(JSON.stringify(resp.rows))
+                                    documents: Buffer.from(JSON.stringify(resp.rows))
                                 }
                                 cbk(err, resp_)
                             }

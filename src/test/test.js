@@ -1,10 +1,9 @@
 const grpc = require('grpc')
 var protoLoader = require('@grpc/proto-loader')
-const Base64 = require('js-base64').Base64
 const njs = require('numjs')
 
-var itercnt = 11
-var rawcnt = 10
+var itercnt = 1
+var rawcnt = 1
 var veclen = 8
 
 var timeout_ = 1000
@@ -41,7 +40,7 @@ function finish(){
     console.log(train_matrix[0])
     console.log('FINISHING...')
     vecdb.getNearest({ k:20, matrix: [ { e: train_matrix[0]}, { e: train_matrix[1]} ] }, (err, resp) => {
-        console.log(JSON.parse(Base64.decode(resp.documents)))
+        console.log(JSON.parse(resp.documents.toString("utf-8")))
     })
 }
 
@@ -53,7 +52,7 @@ function run() {
         docs_gen.push({
             //_id: ''+i+Math.floor((Math.random() * 10000) + 1), 
             vector: { e: train_matrix[i] }, 
-            b64data: Base64.encode(JSON.stringify({hello: 'world', hey: 'there'}))
+            b64data: Buffer.from(JSON.stringify({hello: 'world`s', hey: 'there'}), "utf-8")
         })
     }
 
@@ -64,7 +63,7 @@ function run() {
         // vecdb.deleteDocuments({ documents: [{_id: '201a4f637b03efc172d75cbeffa981bd', vector: { e: [1.0, 2.2, 3.3, 4.4]}}, {_id: 'eaac1225dac47f44598361394454a545', vector: { e: [1.0, 2.2, 3.3, 4.4]}}]}, (err, resp) => {
         //     console.log(resp)
             // vecdb.getNearest({ k:3, matrix: [ { e: train_matrix[0]}, { e: train_matrix[1]} ] }, (err, resp) => {
-            //     console.log(JSON.parse(Base64.decode(resp.documents)))
+            //     console.log(JSON.parse(resp.documents.toString("utf-8")))
             // })
         // })
     })
