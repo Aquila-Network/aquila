@@ -7,7 +7,7 @@ node_js:
   - "11"
 
 before_install:
-  - docker build -f Dockerfile_travis -t ammaorg/aquiladb:travis .
+  - docker build -f Dockerfile_local_build -t ammaorg/aquiladb:travis .
   - docker run -d -i -p 50051:50051 -t ammaorg/aquiladb:travis
   - docker ps -a
   - sudo apt-get install -y make

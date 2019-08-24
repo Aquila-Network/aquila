@@ -1,9 +1,6 @@
 FROM ubuntu:18.04
 MAINTAINER a_mma
 
-# add <src> <dest>
-ADD . AquilaDB
-
 # install couchdb
 RUN apt-get update; apt-get install -y curl; apt-get install -y git
 RUN echo "deb https://apache.bintray.com/couchdb-deb bionic main" \
@@ -14,7 +11,7 @@ RUN curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc \
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y couchdb
 
 # clone AquilaDB src
-# RUN mkdir AquilaDB && cd AquilaDB && git clone https://github.com/a-mma/AquilaDB.git .
+RUN mkdir AquilaDB && cd AquilaDB && git clone https://github.com/a-mma/AquilaDB.git . && git checkout develop
 
 # setup node environment
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
