@@ -9,24 +9,28 @@ class Annoy:
         self.sim_metric = 'angular'
         self.n_trees = 10
         self.search_k = 1
-        self.modelLoaded = False # self.loadModelFromDisk(model_location)
+        self.modelLoaded = self.loadModelFromDisk(model_location)
 
     def initAnnoy(self, dim, metric, matrix):
         self.sim_metric = metric
         self.dim = dim
 
-        print('Annoy init index')
-        self.a_index = AnnoyIndex(self.dim, self.sim_metric)
+        # only do if no index loaded from disk
+        if not self.modelLoaded:
+            print('Annoy init index')
+            self.a_index = AnnoyIndex(self.dim, self.sim_metric)
+
+        # build index
         build_ = self.a_index.build(self.n_trees)
 
-        #if build_:
-        #    self.modelLoaded = self.saveModelToDisk(model_location, self.a_index)
-        return build_ #self.modelLoaded
+        if build_:
+            self.modelLoaded = self.saveModelToDisk(model_location, self.a_index)
+        return self.modelLoaded
 
     def addVectors(self, documents):
         ids = []
         # unbuild annoy index before adding new data
-        self.a_index.unbuild()
+        self.a_index.unload()
         # add vectors
         for document in documents:
             _id = document._id
@@ -46,9 +50,9 @@ class Annoy:
             
         # build vector
         build_ = self.a_index.build(self.n_trees)
-        # if build_:
-            # self.modelLoaded = self.saveModelToDisk(model_location, self.a_index)
-        return build_, ids
+        if build_:
+            self.modelLoaded = self.saveModelToDisk(model_location, self.a_index)
+        return self.modelLoaded, ids
 
     def deleteVectors(self, ids):
 
