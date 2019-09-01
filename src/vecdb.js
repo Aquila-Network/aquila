@@ -8,7 +8,7 @@ fs   = require('fs')
 // vecdb configuration
 global.__g__vDBConfig = yaml.safeLoad(fs.readFileSync('./DB_config.yml', 'utf8'))
 // modify configs from ENVIRONMENT variables
-global.__g__vDBConfig.faiss.init.vecount = process.env.MIN_DOCS2INDEX || global.__g__vDBConfig.faiss.init.vecount
+global.__g__vDBConfig.faiss.init.vecount = process.env.MIN_DOCS2INDEX || global.__g__vDBConfig.docs.vecount
 // FAISS config.
 global.__g__vDBConfig.faiss.init.nlist = process.env.MAX_CELLS || global.__g__vDBConfig.faiss.init.nlist
 global.__g__vDBConfig.faiss.init.nprobe = process.env.VISIT_CELLS || global.__g__vDBConfig.faiss.init.nprobe

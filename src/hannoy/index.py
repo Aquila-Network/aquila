@@ -1,20 +1,25 @@
 import numpy as np
 from annoy import AnnoyIndex
+import yaml
+import os
 
 model_location = '/data/VDB/model_ha'
 
 class Annoy:
     def __init__(self):
-        self.dim = 300
-        self.sim_metric = 'angular'
-        self.n_trees = 10
-        self.search_k = 1
-        self.modelLoaded = self.loadModelFromDisk(model_location)
+        self.total = 0
+        try:
+            with open('DB_config.yml', 'r') as stream:
+                DB_config = yaml.safe_load(stream)
+                self.dim = os.getenv('FIXED_VEC_DIMENSION', DB_config['annoy']['init']['vd'])
+                self.sim_metric = os.getenv('ANNOY_SIM_METRIC', DB_config['annoy']['init']['smetric'])
+                self.n_trees = os.getenv('ANNOY_NTREES', DB_config['annoy']['init']['ntrees'])
+                self.search_k = os.getenv('ANNOY_KSEARCH', DB_config['annoy']['init']['searchk'])
+                self.modelLoaded = self.loadModelFromDisk(model_location)
+        except Exception as e:
+            print('Error initializing Annoy: ', e)
 
-    def initAnnoy(self, dim, metric, matrix):
-        self.sim_metric = metric
-        self.dim = dim
-
+    def initAnnoy(self):
         # only do if no index loaded from disk
         if not self.modelLoaded:
             print('Annoy init index')
@@ -28,6 +33,8 @@ class Annoy:
         return self.modelLoaded
 
     def addVectors(self, documents):
+        self.total = self.total + len(documents)
+        print(self.total, '==========================================')
         ids = []
         # unbuild annoy index before adding new data
         self.a_index.unload()
@@ -61,12 +68,14 @@ class Annoy:
     def getNearest(self, matrix, k):
         ids = []
         dists = []
+        print(k, self.a_index.get_n_items(), self.search_k)
 
         for vec_data in matrix:
             _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, search_k=self.search_k, include_distances=True)
             ids.append(_id)
             dists.append(_dist)
 
+        print(ids)
         return True, ids, dists
 
     def loadModelFromDisk(self, location):
