@@ -38,7 +38,7 @@ class FaissServicer (proto_server.FaissServiceServicer):
         # decide which one among FAISS or Annoy need to be used.
         # if nlist, nprobe, bytesPerVec, bytesPerSubVec all are zero, then use Annoy
         if nlist == 0 and nprobe == 0 and bytesPerVec == 0 and bytesPerSubVec == 0 :
-            response.status = annoy_.initAnnoy(dim, 'angular', matrix)
+            response.status = annoy_.initAnnoy()
         else:
             response.status = faiss_.initFaiss(nlist, nprobe, bytesPerVec, bytesPerSubVec, dim, matrix)
         return response
