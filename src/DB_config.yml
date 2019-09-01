@@ -12,7 +12,6 @@ annoy:
     vd: 784 # fixed vector dimension
     smetric: 'angular' # similarity metric to be used
     ntrees: 10 # no. of trees
-    searchk: -1 # search k
 couchDB:
   DBInstance: default # database namespace
   host: http://localhost:5984

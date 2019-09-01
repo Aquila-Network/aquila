@@ -17,7 +17,6 @@ class Annoy:
                 self.dim = os.getenv('FIXED_VEC_DIMENSION', DB_config['annoy']['init']['vd'])
                 self.sim_metric = os.getenv('ANNOY_SIM_METRIC', DB_config['annoy']['init']['smetric'])
                 self.n_trees = os.getenv('ANNOY_NTREES', DB_config['annoy']['init']['ntrees'])
-                self.search_k = os.getenv('ANNOY_KSEARCH', DB_config['annoy']['init']['searchk'])
                 self.modelLoaded = self.loadModelFromDisk()
         except Exception as e:
             print('Error initializing Annoy: ', e)
