@@ -1,14 +1,17 @@
+docs:
+  vecount: 100 # minimum data required to start indexing
 faiss:
   init:
-    vecount: 100 # minimum data required to start indexing
     nlist: 1 # number of cells 
     nprobe: 1 # number of cells that are visited to perform a search
     bpv: 8 # bytes per vector
     bpsv: 8 # bytes per sub vector
     vd: 784 # fixed vector dimension
-    indexdump:
-      root: '/AquilaDB/src/data' # file location for index dump
-      name: rawdump # file name for data dump
+annoy:
+  init:
+    vd: 784 # fixed vector dimension
+    smetric: 'angular' # similarity metric to be used
+    ntrees: 10 # no. of trees
 couchDB:
   DBInstance: default # database namespace
   host: http://localhost:5984
