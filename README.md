@@ -41,6 +41,9 @@ AquilaDB is not built from scratch. Thanks to OSS community, it is based on a co
 You need `docker` installed.
 
 # Usage
+
+AquilaDB is quick to setup and run as docker a container. All you need to do is either build it from source or pull it from Docker hub.
+
 #### Option 1: build from source
 * clone this repository
 * build image: `docker build -t ammaorg/aquiladb:latest .`
@@ -50,7 +53,13 @@ You need `docker` installed.
 * deploy: `docker run -d -i -p 50051:50051 -t ammaorg/aquiladb:latest`
 
 # Test
-To test this, you need some knowledge of `GRPC`. 
+We currently have multiple client libraries in progress to abstract the communication between deployed AquilaDB and your applications.
+
+[Python](https://github.com/a-mma/AquilaDB-Python)
+
+[Node JS](https://github.com/a-mma/AquilaDB-NodeJS)
+
+AquilaDB exposes [gRPC](https://grpc.io/) APIs for the clients. Which means, you can communicate directly to AquilaDB from your favourite language ([API reference](https://github.com/a-mma/AquilaDB/tree/develop/src/proto)). Above clients makes use of that to abstract the communication details from end user. If you are familier with gRPC and would like to contribute a new client library in any other language, please let us know.
 Protocolbuff [API reference](https://github.com/a-mma/AquilaDB/blob/master/src/proto/vecdb.proto).
 [Example usage](https://github.com/a-mma/AquilaDB/blob/master/src/test/client.js) of APIs in node js. 
 
