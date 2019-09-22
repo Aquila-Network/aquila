@@ -11,10 +11,10 @@ Do you like this project? We love getting a ⭐ from you in return! 🤗
 [Community support: ![discord chatroom for discussions](https://www.freeiconspng.com/minicovers/flat-discord-material-like-icon--2.png)](https://discord.gg/5YP7zHS)
 
 # AquilaDB
-**AquilaDB** is a vector database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is dead simple to setup, language agnostic and drop in addition for your Machine Learning Applications. AquilaDB, as of current features is ready solution for Machine Learning engineers and Data scientists to build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box with minimal dependencies (visit [wiki page](https://github.com/a-mma/AquilaDB/wiki) for use case examples).
+**AquilaDB** is a vector database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is dead simple to set up, language agnostic and drop in addition for your Machine Learning Applications. AquilaDB, as of current features is ready solution for Machine Learning engineers and Data scientists to build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box with minimal dependencies (visit [wiki page](https://github.com/a-mma/AquilaDB/wiki) for use case examples).
 
 AquilaDB 1.0 release is a distant goal to achieve. Visit **contribute** section below to see detailed development plan and milestones. 
-We make sure that, each `release` and `AquilaDB Master branch` are stable with all features planned up to date. All new pull requests are made to `develop` branch. So, `develop` is the default and bleeding edge branch with all the latest updates.
+We make sure that each `release` and `AquilaDB Master branch` are stable with all features planned up to date. All new pull requests are made to `develop` branch. So, `develop` is the default and bleeding edge branch with all the latest updates.
 
 Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
 
@@ -59,8 +59,8 @@ We currently have multiple client libraries in progress to abstract the communic
 
 [Node JS](https://github.com/a-mma/AquilaDB-NodeJS)
 
-AquilaDB exposes [gRPC](https://grpc.io/) APIs for the clients. Which means, you can communicate directly to AquilaDB from your favourite language ([API reference](https://github.com/a-mma/AquilaDB/tree/develop/src/proto)). Above clients makes use of that to abstract the communication details from end user. If you are familier with gRPC and would like to contribute a new client library in any other language, please let us know.
-Protocolbuff [API reference](https://github.com/a-mma/AquilaDB/blob/master/src/proto/vecdb.proto).
+AquilaDB exposes [gRPC](https://grpc.io/) APIs for the clients. Which means, you can communicate directly to AquilaDB from your favourite language ([API reference](https://github.com/a-mma/AquilaDB/tree/develop/src/proto)). Above clients makes use of that to abstract the communication details from end user. If you are familiar with gRPC and would like to contribute a new client library in any other language, please let us know.
+Protocol buffers [API reference](https://github.com/a-mma/AquilaDB/blob/master/src/proto/vecdb.proto).
 [Example usage](https://github.com/a-mma/AquilaDB/blob/master/src/test/client.js) of APIs in node js. 
 
 # Progress
@@ -69,9 +69,26 @@ This project is still under active development (pre-release). It can be used as 
 # Contribute
 We have [prepared a document](https://docs.google.com/document/d/1bT2_9FQIxQpx_rdYbkTukn_DJRi_haVK_ixTf8uTaDE/edit?usp=sharing) to get anyone interested to contribute, immediately started with AquilaDB.
 
-Here is our highlevel [release roadmap](https://user-images.githubusercontent.com/19545678/62313851-5af82880-b4af-11e9-84f6-21e24bf46e8a.png).
+Here is our high level [release roadmap](https://user-images.githubusercontent.com/19545678/62313851-5af82880-b4af-11e9-84f6-21e24bf46e8a.png).
+
+# Learn
+
+We have started meeting developers and do small talks on AquilaDB. Here are the slides that we use on those occasions: http://bit.ly/AquilaDB-slides 
+
+As of current AquilaDB release features, you can build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box without any external dependencies. Here are some useful links to learn more about it and start building:
+
+* These use case examples will give you an understanding of what is possible and what not: https://github.com/a-mma/AquilaDB/wiki
+* Microsoft published a paper and youtube video on this to onboard anyone interested: 
+  * paper: https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf
+  * video: https://www.youtube.com/watch?v=g1Pgo5yTIKg
+* Autoencoders are one such deep learning algorithms that will help you to build semantic vectors - foundation for Neural Information retrieval. Here are some links to Autoencoders based IR:
+  * go to chapter 15 in this link: https://www.cs.toronto.edu/~hinton/coursera_lectures.html
+  * https://www.coursera.org/lecture/ml-foundations/examples-of-document-retrieval-in-action-CW25H
+  * https://www.coursera.org/lecture/intro-to-deep-learning/autoencoders-101-QqBOa
+* Note that, the idea of information retrieval applies not only to text data but for any data. All you need to do is, encode any source datatype to a dense vector with deep neural networks.
 
 # License
+
 GNU General Public License v3.0 [license file](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
 
 created with ❤️ a-mma.indic (a_മ്മ)
