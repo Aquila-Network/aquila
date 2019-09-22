@@ -11,10 +11,10 @@ Do you like this project? We love getting a ⭐ from you in return! 🤗
 [Community support: ![discord chatroom for discussions](https://www.freeiconspng.com/minicovers/flat-discord-material-like-icon--2.png)](https://discord.gg/5YP7zHS)
 
 # AquilaDB
-**AquilaDB** is a **Resilient**, **Replicated**, **Decentralized**, **Host neutral** vector database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is easy to setup and scales as the universe expands. Production ready solution for Machine Learning engineers and Data scientists.
+**AquilaDB** is a vector database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is dead simple to setup, language agnostic and drop in addition for your Machine Learning Applications. AquilaDB, as of current features is ready solution for Machine Learning engineers and Data scientists to build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box with minimal dependencies (visit [wiki page](https://github.com/a-mma/AquilaDB/wiki) for use case examples).
 
 AquilaDB 1.0 release is a distant goal to achieve. Visit **contribute** section below to see detailed development plan and milestones. 
-We make sure that, each `release` and `AquilaDB Master branch` are stable and production ready with all features planned up to date. All new pull requests are made to `develop` branch. So, `develop` is the default and bleeding edge branch with all the latest updates.
+We make sure that, each `release` and `AquilaDB Master branch` are stable with all features planned up to date. All new pull requests are made to `develop` branch. So, `develop` is the default and bleeding edge branch with all the latest updates.
 
 Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
 
@@ -22,27 +22,20 @@ Docker Hub: [https://hub.docker.com/r/ammaorg/aquiladb](https://hub.docker.com/r
 
 Documentation (dedicated Wiki page): [https://github.com/a-mma/AquilaDB/wiki](https://github.com/a-mma/AquilaDB/wiki)
 
+
+
 ![constellation](http://astronomyonline.org/Observation/Images/Constellations/ConstellationBig/Aquila.gif)
 
-#### Resillient
-Make sure your data is always available anywhere through any network. It is not necessory to be always online. Work offline, sync later.
 
-#### Replicated
-Your data is replicated over nodes to attain eventual consistency. 
-
-#### Decentralized
-There is no single point of failure.
-
-#### Host Neutral
-Want to use AWS, Azure, G-cloud or whatever? Got a legion of laptops? Connect them together? No worries as long as they can talk each other.
 
 # Who is this for
+
 * If you are working on a data science project and need to store a hell lot of data and retrieve similar data based on some feature vector, this will be a useful tool to you, with extra benefits a real world web application needs.
 * Are you dealing with a lot of images and related metadata? Want to find the similar ones? You are at the right place.
 * If you are looking for a document database, this is not the right place for you.
 
 # Technology
-AquilaDB is not built from scratch. Thanks to OSS community, it is based on a couple of cool open source projects out there. We took a couch and added some wheels and jetpacks to make it a super cool butt rest for Data Science Engineers. While **CouchDB** provides us network and scalability benefits, **FAISS** provides superfast similarity search. Along with our peer management service, AquilaDB provides a unique solution.
+AquilaDB is not built from scratch. Thanks to OSS community, it is based on a couple of cool open source projects out there. We took a couch and added some wheels and jetpacks to make it a super cool butt rest for Data Science Engineers. While **CouchDB** provides us network and scalability benefits, **FAISS** and **Annoy** provides superfast similarity search. Along with our peer management service, AquilaDB provides a unique solution.
 
 # Prerequisites
 You need `docker` installed.
