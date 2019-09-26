@@ -81,6 +81,7 @@ As of current AquilaDB release features, you can build **[Neural Information Ret
 * Microsoft published a paper and youtube video on this to onboard anyone interested: 
   * paper: https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf
   * video: https://www.youtube.com/watch?v=g1Pgo5yTIKg
+* Embeddings for Everything: Search in the Neural Network Era: https://www.youtube.com/watch?v=JGHVJXP9NHw
 * Autoencoders are one such deep learning algorithms that will help you to build semantic vectors - foundation for Neural Information retrieval. Here are some links to Autoencoders based IR:
   * go to chapter 15 in this link: https://www.cs.toronto.edu/~hinton/coursera_lectures.html
   * https://www.coursera.org/lecture/ml-foundations/examples-of-document-retrieval-in-action-CW25H
