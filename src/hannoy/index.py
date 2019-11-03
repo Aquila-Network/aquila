@@ -3,7 +3,7 @@ from annoy import AnnoyIndex
 import yaml
 import os
 
-model_location = '/data/VDB/model_ha'
+model_location = '/data/model_ha'
 
 class Annoy:
     def __init__(self):

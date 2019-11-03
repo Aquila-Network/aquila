@@ -1,7 +1,7 @@
 import numpy as np
 import faiss
 
-model_location = '/data/VDB/model_hf'
+model_location = '/data/model_hf'
 
 class Faiss:
     def __init__(self):

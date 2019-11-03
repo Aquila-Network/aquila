@@ -14,7 +14,7 @@ annoy:
     ntrees: 10 # no. of trees
 couchDB:
   DBInstance: default # database namespace
-  host: http://localhost:5984
+  host: /data
   user: root
   password: 
 vectorID:

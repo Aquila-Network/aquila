@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# start couchdb service
-service couchdb start
-
-# wait for couchdb to start
-sleep 5
-
 # start micro services
 # with PM2 process manager
 cd /AquilaDB/src/
