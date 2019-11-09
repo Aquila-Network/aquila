@@ -10,6 +10,8 @@ Do you like this project? We love getting a ⭐ from you in return! 🤗
 
 [Community support: ![discord chatroom for discussions](https://www.freeiconspng.com/minicovers/flat-discord-material-like-icon--2.png)](https://discord.gg/5YP7zHS)
 
+**[Documentation](https://github.com/a-mma/AquilaDB/wiki)**
+
 # AquilaDB
 **AquilaDB** is a vector database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is dead simple to set up, language agnostic and drop in addition for your Machine Learning Applications. AquilaDB, as of current features is ready solution for Machine Learning engineers and Data scientists to build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box with minimal dependencies (visit [wiki page](https://github.com/a-mma/AquilaDB/wiki) for use case examples).
 
