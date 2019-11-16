@@ -18,16 +18,7 @@ Do you like this project? We love getting a ⭐ from you in return! 🤗
 AquilaDB 1.0 release is a distant goal to achieve. Visit **contribute** section below to see detailed development plan and milestones. 
 We make sure that each `release` and `AquilaDB Master branch` are stable with all features planned up to date. All new pull requests are made to `develop` branch. So, `develop` is the default and bleeding edge branch with all the latest updates.
 
-Github: [https://github.com/a-mma/AquilaDB](https://github.com/a-mma/AquilaDB)
-
-Docker Hub: [https://hub.docker.com/r/ammaorg/aquiladb](https://hub.docker.com/r/ammaorg/aquiladb)
-
-Documentation (dedicated Wiki page): [https://github.com/a-mma/AquilaDB/wiki](https://github.com/a-mma/AquilaDB/wiki)
-
-
-
-![constellation](http://astronomyonline.org/Observation/Images/Constellations/ConstellationBig/Aquila.gif)
-
+[Github](https://github.com/a-mma/AquilaDB), [Docker Hub](https://hub.docker.com/r/ammaorg/aquiladb), [Documentation (dedicated Wiki page)](https://github.com/a-mma/AquilaDB/wiki)
 
 
 # Who is this for
@@ -76,6 +67,10 @@ Here is our high level [release roadmap](https://user-images.githubusercontent.c
 # Learn
 
 We have started meeting developers and do small talks on AquilaDB. Here are the slides that we use on those occasions: http://bit.ly/AquilaDB-slides 
+
+**Video:**
+
+[<img alt="introduction to Neural Information retrieval with AquilaDB" src="http://img.youtube.com/vi/-VYpjpLXU5Q/0.jpg" width="300" />](http://www.youtube.com/watch?v=-VYpjpLXU5Q)
 
 As of current AquilaDB release features, you can build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box without any external dependencies. Here are some useful links to learn more about it and start building:
 
