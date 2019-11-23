@@ -354,6 +354,7 @@ module.exports = {
             keys: vec_ids_
           },
           function(err, resp) {
+            console.log(err, resp)
             if (!err) {
               var doc_ids_ = [];
               for (let i = 0; i < resp.rows.length; i++) {
