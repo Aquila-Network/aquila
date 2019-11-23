@@ -6,12 +6,6 @@ ADD . AquilaDB
 
 # install couchdb
 RUN apt-get update; apt-get install -y curl; apt-get install -y git
-RUN echo "deb https://apache.bintray.com/couchdb-deb bionic main" \
-    | tee -a /etc/apt/sources.list
-RUN apt-get install -y gnupg
-RUN curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc \
-    | apt-key add -
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y couchdb
 
 # setup node environment
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
@@ -40,8 +34,6 @@ RUN npm install pm2 -g
 RUN chmod +x /AquilaDB/src/init_aquila_db.sh
 
 # create DB data directory
-RUN mkdir /data && mkdir /AquilaDB/src/data && \
-    ln -s /opt/couchdb/data /data/DDB && \
-    ln -s /AquilaDB/src/data /data/VDB
+RUN mkdir /data
 
 CMD /AquilaDB/src/init_aquila_db.sh && tail -f /dev/null

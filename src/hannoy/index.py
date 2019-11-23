@@ -3,11 +3,20 @@ from annoy import AnnoyIndex
 import yaml
 import os
 
-model_location = '/data/VDB/model_ha'
+import threading
+import queue
+import time
+
+model_location = '/data/model_ha'
 
 class Annoy:
     def __init__(self):
-        self.total = 0
+        # to keep the thread & queue running
+        self.process_flag = True
+        self.q_maxsize = 10100
+        self.process_thread = None
+        self._lock = threading.Lock()
+        self.process_timeout_sec = 5 # seconds
         # this is to keep track of all vectors inserted
         # for saving into disk and retrieve later
         self.index_disk = None
@@ -21,53 +30,97 @@ class Annoy:
         except Exception as e:
             print('Error initializing Annoy: ', e)
 
+        # spawn process thread
+        self.spawn()
+
+    def __del__(self):
+        self.process_flag = False
+        if self.process_thread:
+            self.process_thread.join()
+
+    def spawn (self):
+        # create pipeline to add documents
+        self.pipeline = queue.Queue(maxsize=self.q_maxsize)
+        # create process thread
+        self.process_thread = threading.Thread(target=self.process, args=(), daemon=True)
+        # start process thread
+        self.process_thread.start()
+        # return self.pipeline
+
     def initAnnoy(self):
         # only do if no index loaded from disk
         if not self.modelLoaded:
             print('Annoy init index')
             self.a_index = AnnoyIndex(self.dim, self.sim_metric)
 
-        # build index
-        build_ = self.a_index.build(self.n_trees)
+        # Lock index read / wtite until it is built
+        with self._lock:
+            # build index
+            build_ = self.a_index.build(self.n_trees)
 
-        if build_:
-            self.modelLoaded = self.saveModelToDisk()
+            if build_:
+                self.modelLoaded = self.saveModelToDisk()
+
         return self.modelLoaded
 
     def addVectors(self, documents):
-        # unbuild index first 
-        self.a_index.unbuild()
-        self.total = self.total + len(documents)
         ids = []
         # add vectors
         for document in documents:
-            _id = document._id
-            vec = document.vector
-            ids.append(_id)
-            vector_e = vec.e
-            vector_e_l = len(vector_e)
-            # check if the vector length is below dimention limit
-            # then pad vector with 0 by dimension
-            if vector_e_l < self.dim:
-                vector_e.extend([0]*(self.dim-vector_e_l))
-            # make sure vector length doesn't exceed dimension limit
-            vector_e = vector_e[:self.dim]
-        
-            # add vector
-            self.a_index.add_item(int(_id), vector_e)
-            # keep a copy for disk storage
-            list_ = vector_e
-            list_.append(int(_id))
-            if self.index_disk is None:
-                self.index_disk = np.array([list_], dtype=float)
-            else:
-                self.index_disk = np.append(self.index_disk, [list_], axis=0)
-            
-        # build vector
-        build_ = self.a_index.build(self.n_trees)
-        if build_:
-            self.modelLoaded = self.saveModelToDisk()
-        return self.modelLoaded, ids
+            # add document to queue
+            self.pipeline.put_nowait(document)
+            ids.append(document._id)
+        return True, ids
+
+    def process(self):
+        while (self.process_flag):
+            # print(list(self.pipeline.queue))
+
+            # set a timeout till next vector indexing
+            time.sleep(self.process_timeout_sec)
+
+            # check if queue is not empty
+            if self.pipeline.qsize() > 0:
+                # Lock index read / wtite until it is built
+                with self._lock:
+
+                    # unbuild index first 
+                    self.a_index.unbuild()
+
+                    # fetch all currently available documents from queue
+                    while not self.pipeline.empty():
+                        # extract document & contents
+                        document = self.pipeline.get_nowait()
+                        _id = document._id
+                        vec = document.vector
+                        vector_e = vec.e
+
+                        # resize vectors
+                        vector_e_l = len(vector_e)
+                        # check if the vector length is below dimention limit
+                        # then pad vector with 0 by dimension
+                        if vector_e_l < self.dim:
+                            vector_e.extend([0]*(self.dim-vector_e_l))
+                        # make sure vector length doesn't exceed dimension limit
+                        vector_e = vector_e[:self.dim]
+                    
+                        # add vector to index
+                        self.a_index.add_item(int(_id), vector_e)
+                        # keep a copy for disk storage
+                        list_ = vector_e
+                        list_.append(int(_id))
+                        # append to disk proxy
+                        if self.index_disk is None:
+                            self.index_disk = np.array([list_], dtype=float)
+                        else:
+                            self.index_disk = np.append(self.index_disk, [list_], axis=0)
+                    
+                    # build vector
+                    build_ = self.a_index.build(self.n_trees)
+
+                # write to disk
+                if build_:
+                    self.modelLoaded = self.saveModelToDisk()
 
     def deleteVectors(self, ids):
 
@@ -77,10 +130,12 @@ class Annoy:
         ids = []
         dists = []
 
-        for vec_data in matrix:
-            _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, include_distances=True)
-            ids.append(_id)
-            dists.append(_dist)
+        # Lock index read / wtite until nearest neighbor search
+        with self._lock:
+            for vec_data in matrix:
+                _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, include_distances=True)
+                ids.append(_id)
+                dists.append(_dist)
 
         return True, ids, dists
 
