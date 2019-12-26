@@ -73,7 +73,7 @@ const documentUtil = require("./core/document"); // handle document operations
 const searchUtil = require("./core/search"); // handle vec/doc search operations
 const swarmUtil = require("./core/swarm"); // manage peers and swarm of vecDB
 const eventUtil = require("./core/events"); // handle events during document addition / replication
-eventUtil.registerEvents(); // register all events in the irst place
+eventUtil.registerEvents(); // register all events in the first place
 
 // setup grpc server for vecDB APIs
 var PROTO_PATH = __dirname + "/proto/vecdb.proto";
