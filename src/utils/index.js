@@ -11,7 +11,7 @@ runVecIDWorker();
 function runVecIDWorker() {
   console.log("running VecID Worker");
   var sdb = __g__PDBs.sessionDB;
-  // check if doc already availavle
+  // check if doc already available
   sdb.get("local_vecID", function(err, doc) {
     var counter_ = null;
     var data = {
@@ -47,7 +47,7 @@ function runVecIDWorker() {
 
 module.exports = {
   documentUpdate: function(db, payload, cbk) {
-    // check if doc already availavle
+    // check if doc already available
     db.get(payload._id, (err, doc) => {
       if (!err) {
         // already exists
