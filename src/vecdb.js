@@ -91,7 +91,7 @@ const server = new grpc.Server();
 
 // service definitions of vecdb rpc API
 server.addService(proto.vecdb.VecdbService.service, {
-  // add new / modify existing docs into local DB and wait for eventual consistancy
+  // add new / modify existing docs into local DB and wait for eventual consistency
   addDocuments(call, callback) {
     var documents = call.request.documents;
 
@@ -104,7 +104,7 @@ server.addService(proto.vecdb.VecdbService.service, {
       }
     });
   },
-  // delete existing docs from local DB and wait for eventual consistancy
+  // delete existing docs from local DB and wait for eventual consistency
   deleteDocuments(call, callback) {
     var documents = call.request.documents;
 
