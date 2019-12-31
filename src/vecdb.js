@@ -73,7 +73,7 @@ const documentUtil = require("./core/document"); // handle document operations
 const searchUtil = require("./core/search"); // handle vec/doc search operations
 const swarmUtil = require("./core/swarm"); // manage peers and swarm of vecDB
 const eventUtil = require("./core/events"); // handle events during document addition / replication
-eventUtil.registerEvents(); // register all events in the irst place
+eventUtil.registerEvents(); // register all events in the first place
 
 // setup grpc server for vecDB APIs
 var PROTO_PATH = __dirname + "/proto/vecdb.proto";
@@ -91,7 +91,7 @@ const server = new grpc.Server();
 
 // service definitions of vecdb rpc API
 server.addService(proto.vecdb.VecdbService.service, {
-  // add new / modify existing docs into local DB and wait for eventual consistancy
+  // add new / modify existing docs into local DB and wait for eventual consistency
   addDocuments(call, callback) {
     var documents = call.request.documents;
 
@@ -104,7 +104,7 @@ server.addService(proto.vecdb.VecdbService.service, {
       }
     });
   },
-  // delete existing docs from local DB and wait for eventual consistancy
+  // delete existing docs from local DB and wait for eventual consistency
   deleteDocuments(call, callback) {
     var documents = call.request.documents;
 
