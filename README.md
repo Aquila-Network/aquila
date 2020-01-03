@@ -1,4 +1,5 @@
-[![version](https://img.shields.io/github/release-pre/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/releases) [![license GPL 0.3](https://img.shields.io/github/license/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
+[![version](https://img.shields.io/github/release-pre/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/releases) 
+[![GitHub license Apache 2.0](https://img.shields.io/github/license/a-mma/AquilaDB)](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
 
 [![docker build](https://img.shields.io/docker/cloud/automated/ammaorg/aquiladb.svg) ![docker build ststus](https://img.shields.io/docker/cloud/build/ammaorg/aquiladb.svg) ![docker stars](https://img.shields.io/docker/stars/ammaorg/aquiladb.svg) ![docker pulls](https://img.shields.io/docker/pulls/ammaorg/aquiladb.svg)](https://hub.docker.com/r/ammaorg/aquiladb)
 
