@@ -17,7 +17,12 @@ class Faiss:
         self.bytesPerSubVec = 8
         with open('DB_config.yml', 'r') as stream:
             DB_config = yaml.safe_load(stream)
-            self.dim = os.getenv('FIXED_VEC_DIMENSION', DB_config['faiss']['init']['vd'])
+            # make sure to parse env variables to their expected type
+            if os.getenv('FIXED_VEC_DIMENSION', None) is not None:
+                self.dim = int(os.getenv('FIXED_VEC_DIMENSION'))
+            else:
+                self.dim = DB_config['faiss']['init']['vd']
+
         self.modelLoaded = self.loadModelFromDisk(model_location)
         self.is_initiated = self.modelLoaded
 
