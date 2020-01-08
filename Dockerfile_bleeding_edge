@@ -1,8 +1,14 @@
 FROM ubuntu:18.04
 MAINTAINER a_mma
 
+# get update
+RUN apt-get update; 
+
+# install compat windows/linux line endings
+RUN apt-get install -y dos2unix
+
 # install couchdb
-RUN apt-get update; apt-get install -y curl; apt-get install -y git
+RUN apt-get install -y curl; apt-get install -y git
 RUN echo "deb https://apache.bintray.com/couchdb-deb bionic main" \
     | tee -a /etc/apt/sources.list
 RUN apt-get install -y gnupg
@@ -41,5 +47,8 @@ RUN chmod +x /AquilaDB/src/init_aquila_db.sh
 
 # create DB data directory
 RUN mkdir /data
+
+# fix control characters between linux and windows
+RUN find /AquilaDB/src/ -type f -name "*.sh" -print0 | xargs -0 dos2unix
 
 CMD /AquilaDB/src/init_aquila_db.sh && tail -f /dev/null

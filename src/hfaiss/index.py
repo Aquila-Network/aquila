@@ -1,6 +1,8 @@
 import numpy as np
 import faiss
+import yaml
 
+import os
 import threading
 import queue
 import time
@@ -13,7 +15,14 @@ class Faiss:
         self.nprobe = 1
         self.bytesPerVec = 8
         self.bytesPerSubVec = 8
-        self.dim = 300
+        with open('DB_config.yml', 'r') as stream:
+            DB_config = yaml.safe_load(stream)
+            # make sure to parse env variables to their expected type
+            if os.getenv('FIXED_VEC_DIMENSION', None) is not None:
+                self.dim = int(os.getenv('FIXED_VEC_DIMENSION'))
+            else:
+                self.dim = DB_config['faiss']['init']['vd']
+
         self.modelLoaded = self.loadModelFromDisk(model_location)
         self.is_initiated = self.modelLoaded
 
