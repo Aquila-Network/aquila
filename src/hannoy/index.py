@@ -136,7 +136,7 @@ class Annoy:
             for vec_data in matrix:
                 if self.search_k != -1:
                     _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, self.search_k, include_distances=True)
-                else 
+                else: 
                     _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, include_distances=True)
             ids.append(_id)
             dists.append(_dist)
