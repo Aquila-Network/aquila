@@ -36,6 +36,8 @@ class Annoy:
                     self.dim = DB_config['annoy']['init']['ntrees']
                 
                 self.sim_metric = os.getenv('ANNOY_SIM_METRIC', DB_config['annoy']['init']['smetric'])
+                self.n_trees = os.getenv('ANNOY_NTREES', DB_config['annoy']['init']['ntrees'])
+                self.search_k = os.getenv('ANNOY_SEARCHK', DB_config['annoy']['init']['search_k'])
                 self.modelLoaded = self.loadModelFromDisk()
         except Exception as e:
             print('Error initializing Annoy: ', e)
@@ -143,9 +145,12 @@ class Annoy:
         # Lock index read / wtite until nearest neighbor search
         with self._lock:
             for vec_data in matrix:
-                _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, include_distances=True)
-                ids.append(_id)
-                dists.append(_dist)
+                if self.search_k != -1:
+                    _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, self.search_k, include_distances=True)
+                else: 
+                    _id, _dist = self.a_index.get_nns_by_vector(vec_data, k, include_distances=True)
+            ids.append(_id)
+            dists.append(_dist)
 
         return True, ids, dists
 
