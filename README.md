@@ -1,4 +1,5 @@
-[![version](https://img.shields.io/github/release-pre/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/releases) [![license GPL 0.3](https://img.shields.io/github/license/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
+[![version](https://img.shields.io/github/release-pre/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/releases) 
+[![GitHub license Apache 2.0](https://img.shields.io/github/license/a-mma/AquilaDB)](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
 
 [![docker build](https://img.shields.io/docker/cloud/automated/ammaorg/aquiladb.svg) ![docker build ststus](https://img.shields.io/docker/cloud/build/ammaorg/aquiladb.svg) ![docker stars](https://img.shields.io/docker/stars/ammaorg/aquiladb.svg) ![docker pulls](https://img.shields.io/docker/pulls/ammaorg/aquiladb.svg)](https://hub.docker.com/r/ammaorg/aquiladb)
 
@@ -6,7 +7,7 @@
 
 [![Build Status](https://img.shields.io/travis/a-mma/AquilaDB/develop?label=CI%20Tests&logo=travis)](https://travis-ci.org/a-mma/AquilaDB)
 
-Do you like this project? We love getting a ⭐ from you in return! 🤗
+Do you like this project? We love getting a **star** ⭐ and **shout-out** 🗣️from you in return! 🤗
 
 [Community support: ![discord chatroom for discussions](https://www.freeiconspng.com/minicovers/flat-discord-material-like-icon--2.png)](https://discord.gg/5YP7zHS)
 
@@ -45,7 +46,7 @@ AquilaDB is quick to setup and run as docker a container. All you need to do is 
 #### Finally, deploy
 * deploy: `docker run -d -i -p 50051:50051 -v "<local data persist directory>:/data" -t ammaorg/aquiladb:latest`
 
-# Test
+# Client SDKs
 We currently have multiple client libraries in progress to abstract the communication between deployed AquilaDB and your applications.
 
 [Python](https://github.com/a-mma/AquilaDB-Python)
@@ -55,6 +56,9 @@ We currently have multiple client libraries in progress to abstract the communic
 AquilaDB exposes [gRPC](https://grpc.io/) APIs for the clients. Which means, you can communicate directly to AquilaDB from your favourite language ([API reference](https://github.com/a-mma/AquilaDB/tree/develop/src/proto)). Above clients makes use of that to abstract the communication details from end user. If you are familiar with gRPC and would like to contribute a new client library in any other language, please let us know.
 Protocol buffers [API reference](https://github.com/a-mma/AquilaDB/blob/master/src/proto/vecdb.proto).
 [Example usage](https://github.com/a-mma/AquilaDB/blob/master/src/test/client.js) of APIs in node js. 
+
+# Benchmark
+For benchmark results, visit https://aquiladb.xyz/docs/adb-benchmarks
 
 # Progress
 This project is still under active development (pre-release). It can be used as a standalone database now. Peer manager is a work in progress, so networking capabilities are not available now. With release v1.0 we will release pre-optimized version of AquilaDB.
@@ -87,6 +91,6 @@ As of current AquilaDB release features, you can build **[Neural Information Ret
 
 # License
 
-GNU General Public License v3.0 [license file](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
+Apache License 2.0 [license file](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
 
 created with ❤️ a-mma.indic (a_മ്മ)
