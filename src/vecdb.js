@@ -23,17 +23,32 @@ global.__g__vDBConfig.faiss.init.bpsv =
   process.env.BYTES_PER_SUB_VEC || global.__g__vDBConfig.faiss.init.bpsv;
 global.__g__vDBConfig.faiss.init.vd =
   process.env.FIXED_VEC_DIMENSION || global.__g__vDBConfig.faiss.init.vd;
-// authentication
+// local authentication
 global.__g__vDBConfig.couchDB.host =
 process.env.DB_HOST || global.__g__vDBConfig.couchDB.host;
 global.__g__vDBConfig.couchDB.user =
   process.env.DB_USER || global.__g__vDBConfig.couchDB.user;
 global.__g__vDBConfig.couchDB.password =
   process.env.DB_PASSWORD || global.__g__vDBConfig.couchDB.password;
+// remote authentication
+global.__g__vDBConfig.couchDBRemote.host =
+process.env.DB_RHOST || global.__g__vDBConfig.couchDBRemote.host;
+global.__g__vDBConfig.couchDBRemote.user =
+  process.env.DB_RUSER || global.__g__vDBConfig.couchDBRemote.user;
+global.__g__vDBConfig.couchDBRemote.password =
+  process.env.DB_RPASSWORD || global.__g__vDBConfig.couchDBRemote.password;
 
 // pouchdb instance
 global.__g__iPDB = require("pouchdb");
 __g__iPDB.plugin(require("pouchdb-find"));
+
+// init options
+let sourceDBOptions = {
+  auth: {
+      username: __g__vDBConfig.couchDB.user,
+      password: __g__vDBConfig.couchDB.password
+  }
+}
 // Initialize pouchDB by connecting to local instance of couchDB with default databases
 global.__g__PDBs = {
   documentsDB: new __g__iPDB(
@@ -41,32 +56,63 @@ global.__g__PDBs = {
       "/" +
       __g__vDBConfig.couchDB.DBInstance +
       "_docsdb"
-  ), // to keep all documents stored (synced on user request)
+    , sourceDBOptions), // to keep all documents stored (synced on user request)
   mapperDB: new __g__iPDB(
     __g__vDBConfig.couchDB.host +
       "/" +
       __g__vDBConfig.couchDB.DBInstance +
       "_mapperdb"
-  ), // to keep vecID - docID mappings (not synced)
+    , sourceDBOptions), // to keep vecID - docID mappings (not synced)
   swarmDB: new __g__iPDB(
     __g__vDBConfig.couchDB.host +
       "/" +
       __g__vDBConfig.couchDB.DBInstance +
       "_swarmdb"
-  ), // to keep swarm & peers data (not synced)
+      , sourceDBOptions), // to keep swarm & peers data (not synced)
   replicationDB: new __g__iPDB(
     __g__vDBConfig.couchDB.host +
       "/" +
       __g__vDBConfig.couchDB.DBInstance +
       "_replicationdb"
-  ), // to keep replication data (not synced)
+      , sourceDBOptions), // to keep replication data (not synced)
   sessionDB: new __g__iPDB(
     __g__vDBConfig.couchDB.host +
       "/" +
       __g__vDBConfig.couchDB.DBInstance +
       "_sessiondb"
-  ) // to keep local session data to work properly (not synced)
+      , sourceDBOptions) // to keep local session data to work properly (not synced)
 };
+
+// enable database sync
+let DBSyncOptions = {
+  live: true,
+  retry: true,
+  continuous: true,
+  auth: {
+    username: __g__vDBConfig.couchDBRemote.user,
+    password: __g__vDBConfig.couchDBRemote.password
+  }
+}
+
+__g__iPDB.sync(
+  __g__vDBConfig.couchDB.host +
+    "/" +
+    __g__vDBConfig.couchDB.DBInstance +
+    "_docsdb"
+  , 
+  __g__vDBConfig.couchDBRemote.host +
+    "/" +
+    __g__vDBConfig.couchDBRemote.DBInstance +
+    "_docsdb"
+  , DBSyncOptions)
+  .on('error', function (err) {
+    // handle error
+    console.log('sync error', err)
+  })
+  .on('denied', function (err) {
+      // a document failed to replicate (e.g. due to permissions)
+      console.log('sync denied', err)
+  })
 
 // core utilities
 const documentUtil = require("./core/document"); // handle document operations
