@@ -18,5 +18,10 @@ couchDB:
   host: /data
   user: root
   password: 
+couchDBRemote:
+  DBInstance: default # database namespace
+  host:
+  user:
+  password: 
 vectorID:
   sync_t: 5000
