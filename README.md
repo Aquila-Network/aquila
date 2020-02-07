@@ -90,7 +90,7 @@ As of current AquilaDB release features, you can build **[Neural Information Ret
 * Note that, the idea of information retrieval applies not only to text data but for any data. All you need to do is, encode any source datatype to a dense vector with deep neural networks.
 
 # Citing AquilaDB
-If you use AquilaDB in an academic paper, we would ❤️ to be cited. Here are the two ways of citing AquilaDB:
+If you use AquilaDB in an academic paper, we would 😍 to be cited. Here are the two ways of citing AquilaDB:
 ```
 \footnote{https://github.com/a-mma/AquilaDB}
 ```
