@@ -89,6 +89,15 @@ As of current AquilaDB release features, you can build **[Neural Information Ret
   * https://www.coursera.org/lecture/intro-to-deep-learning/autoencoders-101-QqBOa
 * Note that, the idea of information retrieval applies not only to text data but for any data. All you need to do is, encode any source datatype to a dense vector with deep neural networks.
 
+<br/><br/>
+<h1 align="center">Our Sponsors</h1>
+<p align="center"><b>LOVE</b></p>
+<br/>
+
+> to sponsor this project contact@aquiladb.xyz
+
+<br/><br/>
+
 # Citing AquilaDB
 If you use AquilaDB in an academic paper, we would 😍 to be cited. Here are the two ways of citing AquilaDB:
 ```
