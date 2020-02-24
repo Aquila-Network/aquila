@@ -40,7 +40,7 @@ AquilaDB is quick to setup and run as docker a container. All you need to do is 
 
 #### Option 1: build from source
 * clone this repository
-* build image: `docker build -t ammaorg/aquiladb:latest .`
+* build image: `docker build -f <Dockerfile name> -t ammaorg/aquiladb:latest .`
 #### Option 2: pull from dockerhub
 * pull image: `docker pull ammaorg/aquiladb:latest`
 #### Finally, deploy
