@@ -46,6 +46,12 @@ AquilaDB is quick to setup and run as docker a container. All you need to do is 
 #### Finally, deploy
 * deploy: `docker run -d -i -p 50051:50051 -v "<local data persist directory>:/data" -t ammaorg/aquiladb:latest`
 
+AquilaDB as a kubernetes service
+
+Run the following kubectl command to get Aquiladb as a service exposed to a k8s-cluster
+
+kubectl apply -f raw_kube_url
+
 # Client SDKs
 We currently have multiple client libraries in progress to abstract the communication between deployed AquilaDB and your applications.
 
