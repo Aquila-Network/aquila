@@ -1,4 +1,4 @@
-#Consider the node which deploying is having a directory /var/lib/aquiladb
+#Consider the node which scheduling the deployment is having a directory /var/lib/aquiladb and also please use replicas as 1 as of now.
 ---
 apiVersion: apps/v1
 kind: Deployment
