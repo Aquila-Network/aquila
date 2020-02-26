@@ -1,15 +1,22 @@
+docs:
+  vecount: 100 # minimum data required to start indexing
 faiss:
   init:
-    vecount: 10000
-    nlist: 1
-    nprobe: 1
-    bpv: 8
-    bpsv: 8
-    vd: 784
+    nlist: 1 # number of cells 
+    nprobe: 1 # number of cells that are visited to perform a search
+    bpv: 8 # bytes per vector
+    bpsv: 8 # bytes per sub vector
+    vd: 784 # fixed vector dimension
+annoy:
+  init:
+    vd: 784 # fixed vector dimension
+    smetric: 'angular' # similarity metric to be used
+    ntrees: 10 # no. of trees
+    search_k: -1 # search_k is provided in runtime and affects the search performance. A larger value will give more accurate results, but will take longer time to return.
 couchDB:
-  DBInstance: test1
-  host: http://localhost:5984
-  user:
-  password:
+  DBInstance: default # database namespace
+  host: /data
+  user: root
+  password: 
 vectorID:
   sync_t: 5000

@@ -2,9 +2,11 @@ const grpc = require("grpc");
 var protoLoader = require("@grpc/proto-loader");
 const njs = require("numjs");
 
-var itercnt = 201;
-var rawcnt = 50;
-var veclen = 785;
+var itercnt = 11;
+var rawcnt = 10;
+var veclen = 8;
+
+var timeout_ = 1000;
 
 var PROTO_PATH = __dirname + "/../proto/vecdb.proto";
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
@@ -26,12 +28,12 @@ for (let i = 0; i < itercnt; i++) {
   setTimeout(function() {
     run();
     console.log("tick..");
-  }, i * 1000);
+  }, i * timeout_);
 }
 
 setTimeout(function() {
   finish();
-}, (itercnt + 1) * 1000);
+}, (itercnt + 10) * timeout_);
 
 function finish() {
   var train_matrix = njs.random([rawcnt, veclen]).tolist();
@@ -54,7 +56,7 @@ function run() {
       //_id: ''+i+Math.floor((Math.random() * 10000) + 1),
       vector: { e: train_matrix[i] },
       b64data: Buffer.from(
-        JSON.stringify({ hello: "world`s", hey: "there" }),
+        JSON.stringify({ hello: "world’s", hey: "there" }),
         "utf-8"
       )
     });

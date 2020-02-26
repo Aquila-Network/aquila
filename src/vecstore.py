@@ -9,6 +9,9 @@ import proto.faiss_pb2 as proto
 from hfaiss.index import Faiss
 faiss_ = Faiss()
 
+from hannoy.index import Annoy
+annoy_ = Annoy()
+
 class FaissServicer (proto_server.FaissServiceServicer):
     def initFaiss (self, request, context):
         response = proto.initFaissResponse()
@@ -32,14 +35,22 @@ class FaissServicer (proto_server.FaissServiceServicer):
             matrix.append(vector_e[:dim])
             
         
-        response.status = faiss_.initFaiss(nlist, nprobe, bytesPerVec, bytesPerSubVec, dim, matrix)
+        # decide which one among FAISS or Annoy need to be used.
+        # if nlist, nprobe, bytesPerVec, bytesPerSubVec all are zero, then use Annoy
+        if nlist == 0 and nprobe == 0 and bytesPerVec == 0 and bytesPerSubVec == 0 :
+            response.status = annoy_.initAnnoy()
+        else:
+            response.status = faiss_.initFaiss(nlist, nprobe, bytesPerVec, bytesPerSubVec, dim, matrix)
         return response
 
     def addVectors (self, request, context):
         response = proto.addVecResponse()
         
         documents = request.documents
-        ret = faiss_.addVectors(documents)
+        if faiss_.isInitiated():
+            ret = faiss_.addVectors(documents)
+        else:
+            ret = annoy_.addVectors(documents)
         response.status = ret[0]
         response._id.extend(ret[1])
         return response
@@ -49,7 +60,10 @@ class FaissServicer (proto_server.FaissServiceServicer):
 
         ids = request._id
 
-        ret = faiss_.deleteVectors(ids)
+        if faiss_.isInitiated():
+            ret = faiss_.deleteVectors(ids)
+        else:
+            ret = annoy_.deleteVectors(ids)
         response.status = ret[0]
         response._id.extend(ret[1])
         return response
@@ -66,21 +80,20 @@ class FaissServicer (proto_server.FaissServiceServicer):
             vector_e_l = len(vector_e)
             # check if the vector length is below dimention limit
             # then pad vector with 0 by dimension
-            if vector_e_l < faiss_.dim:
-                vector_e.extend([0]*(faiss_.dim-vector_e_l))
+            if faiss_.isInitiated():
+                dim_ = faiss_.dim
+            else:
+                dim_ = annoy_.dim
+            if vector_e_l < dim_:
+                vector_e.extend([0]*(dim_-vector_e_l))
             # make sure vector length doesn't exceed dimension limit
-            matrix.append(vector_e[:faiss_.dim])
+            matrix.append(vector_e[:dim_])
 
-        ret = faiss_.getNearest(matrix, k)
+        if faiss_.isInitiated():
+            ret = faiss_.getNearest(matrix, k)
+        else:
+            ret = annoy_.getNearest(matrix, k)
         response.status = ret[0]
-        # ids_ = []
-        # for id_ in ret[1]:
-        #     ids_.append({"e": id_})
-        # response.ids = json.dumps(ids_)
-        # matrix_ = []
-        # for vector in ret[2]:
-        #     matrix_.append({"e": vector})
-        # response.matrix = json.dumps(matrix_)
         response.ids = json.dumps(ret[1])
         response.dist_matrix = json.dumps(ret[2])
         return response
