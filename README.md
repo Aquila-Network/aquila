@@ -1,7 +1,7 @@
 # NOTICE
 **Hey there 👋,**
 
-**AquilaDB core team have temporarily stopped development for upcoming 4 months period. We've decided to take a step back and face the whiteboard again. Which is required to ensure AquilaDB's sustainability to continue as an Open Source project and to reduce stress over limited resources we have in the development process. We will see you in four months for sure.**
+**AquilaDB core team have temporarily stopped development for upcoming 4 months period. We've decided to take a step back and face the whiteboard again. Which is required to ensure AquilaDB's sustainability to continue as an Open Source project and to reduce stress over limited resources that we have in the development process. We will see you in four months for sure.**
 
 We know that some of you have reached here as part of your time ctirical projects. We're sorry for the inconvinience. And Don't worry, we can direct you to some alternatives that we know:
 * [ElasticSearch](https://www.elastic.co/elasticsearch/)
@@ -9,14 +9,14 @@ We know that some of you have reached here as part of your time ctirical project
 
 The examples available in our documentation will work in all these platforms with small API changes.
 
-If you're learning Machine Learning techniques and interested in Similarity Search, play around and bare with us.
+If you're learning Machine Learning techniques and interested in Similarity Search, play around and bear with us.
 
 If you wanted to lend a hand to help the community, please check the [issues section](https://github.com/a-mma/AquilaDB/issues). We're happy to merge your pull requests. Any new crazy addition is also encouraged. Also please extend your help towards our Discord [community support](https://discord.gg/5YP7zHS) as well.
 
 And finally, **Stay Home 🏠, Stay Healthy 🧘**
 
 regards,
-**a_mma**
+**a_mma team**
 <br />
 <br />
 
