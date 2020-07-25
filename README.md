@@ -1,6 +1,8 @@
 # NOTICE
 **Hey there 👋,**
 
+**[Update - Jul 25 2020]** [Whitepaper public draft](https://github.com/a-mma/AquilaDB-specs) is now available for review.
+
 **AquilaDB core team have temporarily stopped development for upcoming 4 months period. We've decided to take a step back and face the whiteboard again. Which is required to ensure AquilaDB's sustainability to continue as an Open Source project and to reduce stress over limited resources that we have in the development process. We will see you in four months for sure.**
 
 We know that some of you have reached here as part of your time critical projects. We're sorry for the inconvinience. And Don't worry, we can direct you to some alternatives that we know:
