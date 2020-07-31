@@ -6,7 +6,7 @@ Here's the roadmap for AquilaDB refactoring:
 - [ ] AquilaDB v1.0
 - [ ] Technical Specifications - finalization after review
 - [ ] Technical Specifications - public draft for review
-- [ ] White paper - finalization after review
+- [x] **[Update - Jul 31 2020]** [White paper published](https://github.com/a-mma/AquilaDB-specs/blob/master/AquilaDB_white_paper.pdf) after review
 - [x] **[Update - Jul 25 2020]** [White paper public draft](https://github.com/a-mma/AquilaDB-specs) is now available for review.
 
 **AquilaDB core team have temporarily stopped development for upcoming ~~4 months~~ 2 months period. We've decided to take a step back and face the whiteboard again. Which is required to ensure AquilaDB's sustainability to continue as an Open Source project and to reduce stress over limited resources that we have in the development process. We will see you soon for sure.**
