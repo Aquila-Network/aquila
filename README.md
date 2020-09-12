@@ -28,15 +28,6 @@ regards,
 <br />
 <br />
 
-[![version](https://img.shields.io/github/release-pre/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/releases) 
-[![GitHub license Apache 2.0](https://img.shields.io/github/license/a-mma/AquilaDB)](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
-
-[![docker build](https://img.shields.io/docker/cloud/automated/ammaorg/aquiladb.svg) ![docker build ststus](https://img.shields.io/docker/cloud/build/ammaorg/aquiladb.svg) ![docker stars](https://img.shields.io/docker/stars/ammaorg/aquiladb.svg) ![docker pulls](https://img.shields.io/docker/pulls/ammaorg/aquiladb.svg)](https://hub.docker.com/r/ammaorg/aquiladb)
-
-[![github open issues](https://img.shields.io/github/issues-raw/a-mma/AquilaDB.svg) ![github closed issues](https://img.shields.io/github/issues-closed-raw/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/issues) [![github stars](https://img.shields.io/github/stars/a-mma/AquilaDB.svg?style=social)](https://github.com/a-mma/AquilaDB)
-
-[![Build Status](https://img.shields.io/travis/a-mma/AquilaDB/develop?label=CI%20Tests&logo=travis)](https://travis-ci.org/a-mma/AquilaDB)
-
 Do you like this project? We love getting a **star** ⭐ and **shout-out** 🗣️from you in return! 🤗
 
 [Community support: ![discord chatroom for discussions](https://www.freeiconspng.com/minicovers/flat-discord-material-like-icon--2.png)](https://discord.gg/5YP7zHS)
