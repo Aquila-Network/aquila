@@ -5,7 +5,7 @@
 
 [Github](https://github.com/a-mma/AquilaDB)
 
-Do you like this project? We love getting a **star** ⭐ and **shout-out** 🗣️from you in return! 🤗
+Do you like this project? We love getting a **star** ⭐ and **shout-out** 🗣️ from you in return! 🤗
 
 [Community support: ![discord chatroom for discussions](https://www.freeiconspng.com/minicovers/flat-discord-material-like-icon--2.png)](https://discord.gg/5YP7zHS)
 
@@ -20,12 +20,14 @@ Do you like this project? We love getting a **star** ⭐ and **shout-out** 🗣�
 AquilaDB is not built from scratch. Thanks to OSS community, it is based on a couple of cool open source projects out there. We took a couch and added some wheels and jetpacks to make it a super cool butt rest for Data Scientists and ML Engineers. While **CouchDB** provides us network and scalability benefits, **FAISS** and **Annoy** provides superfast similarity search. Along with our peer management service, AquilaDB provides a unique solution.
 
 # Install
+### Debian
+
 Run `./install.sh`.
 
 # Client SDKs
 We currently have multiple client libraries in progress to abstract the communication between deployed AquilaDB and your applications.
 
-[Python](https://github.com/a-mma/AquilaDB-Python)
+[Python](https://github.com/Aquila-Network/AquilaPy)
 
 # Progress
 This project is still under active development (pre-release). It can be used as a standalone database now. Peer manager is a work in progress, so networking capabilities are not available now. With release v1.0 we will release pre-optimized version of AquilaDB.
