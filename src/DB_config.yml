@@ -1,22 +1,19 @@
 docs:
-  vecount: 100 # minimum data required to start indexing
+  cswap: 10101 # minimum data required to start indexing
+  vd: 784 # fixed vector dimension
 faiss:
   init:
     nlist: 1 # number of cells 
     nprobe: 1 # number of cells that are visited to perform a search
     bpv: 8 # bytes per vector
     bpsv: 8 # bytes per sub vector
-    vd: 784 # fixed vector dimension
 annoy:
   init:
-    vd: 784 # fixed vector dimension
-    smetric: 'angular' # similarity metric to be used
+    smetric: "angular" # similarity metric to be used
     ntrees: 10 # no. of trees
     search_k: -1 # search_k is provided in runtime and affects the search performance. A larger value will give more accurate results, but will take longer time to return.
-couchDB:
-  DBInstance: default # database namespace
-  host: /data
-  user: root
-  password: 
-vectorID:
-  sync_t: 5000
+queue:
+  qlen: 100000 # length limit for quesues used
+  sleep: 1 # thread waiting in seconds
+auth:
+  pubkey: "/ossl/public.pem"

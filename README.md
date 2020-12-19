@@ -1,11 +1,32 @@
-[![version](https://img.shields.io/github/release-pre/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/releases) 
-[![GitHub license Apache 2.0](https://img.shields.io/github/license/a-mma/AquilaDB)](https://github.com/a-mma/AquilaDB/blob/master/LICENSE)
+# NOTICE
+**Hey there 👋,**
 
-[![docker build](https://img.shields.io/docker/cloud/automated/ammaorg/aquiladb.svg) ![docker build ststus](https://img.shields.io/docker/cloud/build/ammaorg/aquiladb.svg) ![docker stars](https://img.shields.io/docker/stars/ammaorg/aquiladb.svg) ![docker pulls](https://img.shields.io/docker/pulls/ammaorg/aquiladb.svg)](https://hub.docker.com/r/ammaorg/aquiladb)
+Here's the roadmap for AquilaDB refactoring:
 
-[![github open issues](https://img.shields.io/github/issues-raw/a-mma/AquilaDB.svg) ![github closed issues](https://img.shields.io/github/issues-closed-raw/a-mma/AquilaDB.svg)](https://github.com/a-mma/AquilaDB/issues) [![github stars](https://img.shields.io/github/stars/a-mma/AquilaDB.svg?style=social)](https://github.com/a-mma/AquilaDB)
+- [ ] AquilaDB v1.0
+- [ ] Technical Specifications - finalization after review
+- [ ] Technical Specifications - public draft for review
+- [x] **[Update - Jul 31 2020]** [White paper published](https://github.com/Aquila-Network/AquilaDB-specs) after review
+- [x] **[Update - Jul 25 2020]** [White paper public draft](https://github.com/Aquila-Network/AquilaDB-specs) is now available for review.
 
-[![Build Status](https://img.shields.io/travis/a-mma/AquilaDB/develop?label=CI%20Tests&logo=travis)](https://travis-ci.org/a-mma/AquilaDB)
+**AquilaDB core team have temporarily stopped development for upcoming ~~4 months~~ 2 months period. We've decided to take a step back and face the whiteboard again. Which is required to ensure AquilaDB's sustainability to continue as an Open Source project and to reduce stress over limited resources that we have in the development process. We will see you soon for sure.**
+
+We know that some of you have reached here as part of your time critical projects. We're sorry for the inconvinience. And Don't worry, we can direct you to some alternatives that we know:
+* [ElasticSearch](https://www.elastic.co/elasticsearch/)
+* [Apache Solr](https://lucene.apache.org/solr/features.html)
+
+The examples available in our documentation will work in all these platforms with small API changes.
+
+If you're learning Machine Learning techniques and interested in Similarity Search, play around and bear with us.
+
+If you wanted to lend a hand to help the community, please check the [issues section](https://github.com/a-mma/AquilaDB/issues). We're happy to merge your pull requests. Any new crazy addition is also encouraged. Also please extend your help towards our Discord [community support](https://discord.gg/5YP7zHS) as well.
+
+And finally, **Stay Home 🏠, Stay Healthy 🧘**
+
+regards,
+**a_mma team**
+<br />
+<br />
 
 Do you like this project? We love getting a **star** ⭐ and **shout-out** 🗣️from you in return! 🤗
 
@@ -14,7 +35,7 @@ Do you like this project? We love getting a **star** ⭐ and **shout-out** 🗣�
 **[Documentation](https://aquiladb.xyz/docs/introduction)**
 
 # AquilaDB
-**AquilaDB** is a vector database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is dead simple to set up, language agnostic and drop in addition for your Machine Learning Applications. AquilaDB, as of current features is ready solution for Machine Learning engineers and Data scientists to build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box with minimal dependencies (visit [wiki page](https://github.com/a-mma/AquilaDB/wiki) for use case examples).
+**AquilaDB** (*incubated by [a_മ്മ](https://github.com/a-mma)*) is a Decentralized Vector Database to store **Feature Vectors** along with **JSON Document Metadata**. Do **k-NN** retrieval from anywhere, even from the darkest rifts of Aquila (in progress). It is dead simple to set up, language agnostic and drop in addition for your Machine Learning Applications. AquilaDB, as of current features is ready solution for Machine Learning engineers and Data scientists to build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box with minimal dependencies (visit [wiki page](https://github.com/a-mma/AquilaDB/wiki) for use case examples).
 
 AquilaDB 1.0 release is a distant goal to achieve. Visit **contribute** section below to see detailed development plan and milestones. 
 We make sure that each `release` and `AquilaDB Master branch` are stable with all features planned up to date. All new pull requests are made to `develop` branch. So, `develop` is the default and bleeding edge branch with all the latest updates.
@@ -29,7 +50,7 @@ We make sure that each `release` and `AquilaDB Master branch` are stable with al
 * If you are looking for a document database, this is not the right place for you.
 
 # Technology
-AquilaDB is not built from scratch. Thanks to OSS community, it is based on a couple of cool open source projects out there. We took a couch and added some wheels and jetpacks to make it a super cool butt rest for Data Science Engineers. While **CouchDB** provides us network and scalability benefits, **FAISS** and **Annoy** provides superfast similarity search. Along with our peer management service, AquilaDB provides a unique solution.
+AquilaDB is not built from scratch. Thanks to OSS community, it is based on a couple of cool open source projects out there. We took a couch and added some wheels and jetpacks to make it a super cool butt rest for Data Scientists and ML Engineers. While **CouchDB** provides us network and scalability benefits, **FAISS** and **Annoy** provides superfast similarity search. Along with our peer management service, AquilaDB provides a unique solution.
 
 # Prerequisites
 You need `docker` installed.
@@ -40,11 +61,17 @@ AquilaDB is quick to setup and run as docker a container. All you need to do is 
 
 #### Option 1: build from source
 * clone this repository
-* build image: `docker build -t ammaorg/aquiladb:latest .`
+* build image: `docker build -f <Dockerfile name> -t ammaorg/aquiladb:latest .`
 #### Option 2: pull from dockerhub
 * pull image: `docker pull ammaorg/aquiladb:latest`
 #### Finally, deploy
 * deploy: `docker run -d -i -p 50051:50051 -v "<local data persist directory>:/data" -t ammaorg/aquiladb:latest`
+
+#### AquilaDB as a kubernetes service
+
+Run the following `kubectl` command to get Aquiladb as a service exposed to a k8s-cluster
+
+* deploy: `kubectl apply -f https://github.com/a-mma/AquilaDB/blob/<Github branch>/kubernetes/aquiladb.yml`
 
 # Client SDKs
 We currently have multiple client libraries in progress to abstract the communication between deployed AquilaDB and your applications.
@@ -88,6 +115,29 @@ As of current AquilaDB release features, you can build **[Neural Information Ret
   * https://www.coursera.org/lecture/ml-foundations/examples-of-document-retrieval-in-action-CW25H
   * https://www.coursera.org/lecture/intro-to-deep-learning/autoencoders-101-QqBOa
 * Note that, the idea of information retrieval applies not only to text data but for any data. All you need to do is, encode any source datatype to a dense vector with deep neural networks.
+
+<br/><br/>
+<h1 align="center">Our Sponsors</h1>
+<p align="center"><b>LOVE</b></p>
+<br/>
+
+> to sponsor this project contact@aquiladb.xyz
+
+<br/><br/>
+
+# Citing AquilaDB
+If you use AquilaDB in an academic paper, we would 😍 to be cited. Here are the two ways of citing AquilaDB:
+```
+\footnote{https://github.com/a-mma/AquilaDB}
+```
+```
+@misc{a_മ്മ2019AquilaDB,
+  title={AquilaDB: Neural Information Retrieval Solution},
+  author={Jubin Jose},
+  howpublished={\url{https://github.com/a-mma/AquilaDB}},
+  year={2019}
+}
+```
 
 # License
 
