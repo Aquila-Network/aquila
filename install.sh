@@ -56,11 +56,13 @@ mkdir -p faiss
 cd faiss
 git clone https://github.com/facebookresearch/faiss.git .
 
-if [[ $gpu -eq 1 ]]; # if gpu enabled
+if [[ $gpu -eq 0 ]]; # if gpu not enabled
 then
-	cmake -DFAISS_ENABLE_GPU=OFF -B build .
+        echo "build FAISS without GPU"
+        cmake -DFAISS_ENABLE_GPU=OFF -B build .
 else
-	cmake -B build .
+        echo "build FAISS with GPU"
+        cmake -B build .
 fi
 make -C build
 
