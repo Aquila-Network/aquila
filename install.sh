@@ -83,9 +83,9 @@ openssl genrsa -passout pass:1234 -des3 -out /ossl/private.pem 2048
 openssl rsa -passin pass:1234 -in /ossl/private.pem -outform PEM -pubout -out /ossl/public.pem
 openssl rsa -passin pass:1234 -in /ossl/private.pem -out /ossl/private_unencrypted.pem -outform PEM
 
+cd ~/adb/src
 if [[ $test -eq 1 ]]; # if tests enabled
 then
-	cd ~/adb/src
 	chmod +x run_tests.sh
 	./run_tests.sh
 else
