@@ -123,9 +123,12 @@ class VecManager:
         # commit db write
         wb_.write()
         # delete vectors by ID from index
-        self.index.delete_vectors(ids_)
+        status, ids = self.index.delete_vectors(ids_)
 
-        return cids
+        if status and len(ids) == len(cids):
+            return cids
+        else:
+            return []
 
     def get_nearest (self, qmatrix, k, rad):
         ids = []
@@ -146,8 +149,11 @@ class VecManager:
         for idx_, idb in enumerate(ids):
             for idx__, id_ in enumerate(idb):
                 value = self.KV_store.get(byt(id_))
-                cid_len_ = int(value[:2]) + 2
-                ids[idx_][idx__] = CID.bson2doc(value[cid_len_:])
+                if value:
+                    cid_len_ = int(value[:2]) + 2
+                    ids[idx_][idx__] = CID.bson2doc(value[cid_len_:])
+                else:
+                    ids[idx_][idx__] = None
 
         return ids, dists
         
@@ -185,8 +191,15 @@ class VecManager:
     def resize_matrix (self, matrix_, dim):
         # numpize
         matrix = np.array(matrix_)
+        # check for valid dimensions
+        if matrix.ndim < 2:
+            matrix = np.array([matrix_])
+        elif matrix.ndim > 2:
+            logging.error("Invalid query dimensions")
+            return [[]]
+
         # resize vectors
-        vector_l = len(matrix[0])
+        vector_l = len(matrix_[0])
         # check if the vector length is below dimention limit
         # then pad vector with 0 by dimension
         if vector_l < dim:

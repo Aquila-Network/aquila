@@ -90,6 +90,7 @@ class Annoy:
 
                     # unbuild index first 
                     self.a_index.unbuild()
+                    len_documents = 0
 
                     # fetch all currently available documents from queue
                     while not self.pipeline.empty():
@@ -97,6 +98,7 @@ class Annoy:
                         qitem = self.pipeline.get_nowait()
                         if qitem["action"] == "add":
                             documents = qitem["docs"]
+                            len_documents += len(documents)
                             for document in documents:
                                 _id = document["_id"]
                                 vector_e = document["code"]
@@ -110,6 +112,7 @@ class Annoy:
                                     self.index_disk = np.append(self.index_disk, [vector_e + [int(_id)]], axis=0)
                         elif qitem["action"] == "delete":
                             ids = qitem["ids"]
+                            len_documents += len(ids)
                             # reset
                             zero_ = np.zeros(self.dim + 1)
                             for id_ in ids:
@@ -120,7 +123,7 @@ class Annoy:
                                 self.index_disk[ids] = zero_
 
                         # take a rest if doc length is > batch_size
-                        if len(documents) > self.build_batch_size:
+                        if len_documents > self.build_batch_size:
                             break
                     
                     # build vector
@@ -132,9 +135,9 @@ class Annoy:
 
     def delete_vectors(self, ids):
         # add documents to queue
-        self.pipeline.put({"action":"delete", "docs": ids})
+        self.pipeline.put({"action":"delete", "ids": ids})
 
-        return True
+        return True, ids
 
     def get_nearest_k(self, matrix, k):
         ids = []
