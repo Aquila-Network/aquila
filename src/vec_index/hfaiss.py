@@ -124,10 +124,9 @@ class Faiss:
                     elif qitem["action"] == "delete":
                         # f_delete = True
                         ids = qitem["ids"]
-                        zero_ = np.zeros(self.dim)
-                        for _id in ids:
-                            ids.append(_id)
-                            vecs.append(zero_)
+                        # remove vectors and add zero reset
+                        self.f_index.remove_ids(np.array(ids).astype('int'))
+                        vecs = np.zeros((len(ids), self.dim))
 
                 # if f_add:
                 # convert to np matrix
@@ -136,7 +135,7 @@ class Faiss:
 
                 # Lock index read / wtite until it is built
                 with self._lock:
-                    # add vector
+                    # add vectors
                     self.f_index.add_with_ids(vec_data, id_data)
 
                 # if f_delete:
@@ -146,7 +145,9 @@ class Faiss:
                 self.save_model_to_disk(self.model_location, self.f_index)
 
     def delete_vectors(self, ids):
-
+        # remove vectors
+        self.pipeline.put({"action":"delete", "ids": ids})
+        
         return True, ids
 
     def get_nearest_rad(self, matrix, rad):
