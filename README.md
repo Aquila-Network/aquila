@@ -22,7 +22,15 @@ AquilaDB is not built from scratch. Thanks to OSS community, it is based on a co
 # Install
 ### Debian
 
-Run `./install.sh`.
+Run `curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/install.sh | /bin/bash`.
+
+### Docker
+
+**You need docker installed in your system**
+
+Build image (one time process): `docker build https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/Dockerfile -t aquiladb:local`
+
+Run image (to deploy aquilaDB): `docker run -p 5000:5000 -d aquiladb:local`
 
 # Client SDKs
 We currently have multiple client libraries in progress to abstract the communication between deployed AquilaDB and your applications.

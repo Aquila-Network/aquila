@@ -10,12 +10,14 @@ cd ~
 
 gpu=0
 test=0
+logs=0
 
-while getopts g:t: flag
+while getopts g:t:l: flag
 do
     case "${flag}" in
         g) gpu=${OPTARG};;
         t) test=${OPTARG};;
+        l) logs=${OPTARG};;
     esac
 done
 
@@ -92,11 +94,15 @@ else
 	echo "Not running tests"
 fi
 
+# start server
 pm2 start index.py
 
 echo "=========================================="
 echo "      AquilaDB installation complete.     "
 echo "=========================================="
 
-# Keep logs alive
-pm2 logs -f
+if [[ $logs -eq 1 ]]; # if demon run enabled
+then
+    # Keep logs alive
+    pm2 logs -f
+fi
