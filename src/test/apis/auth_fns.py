@@ -47,7 +47,7 @@ class TestAuth (unittest.TestCase):
         signature = signer.sign(hash)
         signature = base58.b58encode(signature).decode("utf-8")
 
-        url = "http://127.0.0.1:5000/db/create"
+        url = "http://127.0.0.1:5001/db/create"
 
         headers = CaseInsensitiveDict()
         headers["Content-Type"] = "application/json"
