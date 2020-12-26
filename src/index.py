@@ -14,7 +14,6 @@ import time
 from multiprocessing import Process
 
 app = Flask(__name__, instance_relative_config=True)
-server = Process(target=app.run)
 
 # Enable CORS
 CORS(app)
@@ -175,7 +174,14 @@ def db_search ():
         }, 200
 
 
+def flaskserver ():
+    """
+    start server
+    """
+    app.run(host='0.0.0.0', port=80, debug=False)
+
 if __name__ == "__main__":
+    server = Process(target=flaskserver)
     server.start()
     # time.sleep(5)
     # server.terminate()
