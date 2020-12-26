@@ -28,7 +28,7 @@ If you are serious and wanna dive down the rabbit hole, read our **[whitepapers]
 # Install
 ### Debian
 
-Run `curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/install.sh | /bin/bash`.
+Run `curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/install.sh | /bin/bash -s -- -d 1 `.
 
 ### Docker
 
@@ -36,7 +36,7 @@ Run `curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master
 
 Build image (one time process): `docker build https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/Dockerfile -t aquiladb:local`
 
-Run image (to deploy Aquila DB): `docker run -p 5000:5000 -d aquiladb:local`
+Run image (to deploy Aquila DB): `docker run -p 5001:5001 -d aquiladb:local`
 
 # Client SDKs
 We currently have multiple client libraries in progress to abstract the communication between deployed Aquila DB and your applications.
