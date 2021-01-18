@@ -76,7 +76,7 @@ def prepare_model ():
     if database_name:
         return {
                 "success": True,
-                "database_name": database_name
+                "databaseName": database_name
             }, 200
     else:
         return {
@@ -107,7 +107,7 @@ def compress_data ():
     # Build response
     return {
             "success": True,
-            "ids": vectors
+            "vectors": vectors
         }, 200
 
 
