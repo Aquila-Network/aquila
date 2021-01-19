@@ -34,10 +34,11 @@ def extract_request_params (request):
         logging.error("Cannot parse request parameters")
 
         # request is invalid
-        return None
+        return {}
 
     # Extract JSON data
     data_ = request.get_json()
+
     return data_
 
 @app.route("/", methods=['GET'])
@@ -60,7 +61,9 @@ def prepare_model ():
     """
 
     # get parameters
-    params = extract_request_params(request)["data"]
+    params = None
+    if extract_request_params(request).get("data"):
+        params = extract_request_params(request)["data"]
 
     if not params:
         # Build error response
@@ -72,16 +75,21 @@ def prepare_model ():
     if "schema" in params and "databaseName" in params:
         database_name = router.preload_model(params.get("databaseName"), params.get("schema"))
 
-    # Build response
-    if database_name:
-        return {
-                "success": True,
-                "databaseName": database_name
-            }, 200
+        # Build response
+        if database_name:
+            return {
+                    "success": True,
+                    "databaseName": database_name
+                }, 200
+        else:
+            return {
+                    "success": False,
+                    "message": "Invalid schema definition"
+                }, 400
     else:
         return {
                 "success": False,
-                "message": "Invalid schema definition"
+                "message": "Invalid parameters"
             }, 400
 
 @app.route("/compress", methods=['POST'])
@@ -92,7 +100,9 @@ def compress_data ():
     """
 
     # get parameters
-    params = extract_request_params(request)["data"]
+    params = None
+    if extract_request_params(request).get("data"):
+        params = extract_request_params(request)["data"]
 
     if not params:
         # Build error response
@@ -104,11 +114,16 @@ def compress_data ():
     if "text" in params and "databaseName" in params:
         vectors = router.compress_data(params.get("databaseName"), params.get("text"))
 
-    # Build response
-    return {
-            "success": True,
-            "vectors": vectors
-        }, 200
+        # Build response
+        return {
+                "success": True,
+                "vectors": vectors
+            }, 200
+    else:
+        return {
+                "success": False,
+                "message": "Invalid parameters"
+            }, 400
 
 
 def flaskserver ():
