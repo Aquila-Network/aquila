@@ -23,11 +23,15 @@ RUN echo "$ROOT_DIR"
 COPY --from=builder $ROOT_DIR/env $ROOT_DIR/env
 COPY --from=builder $ROOT_DIR/ahub $ROOT_DIR/ahub
 COPY --from=builder /ossl /ossl
+COPY --from=builder $ROOT_DIR/go-ipfs $ROOT_DIR/go-ipfs
 
 # preperations
 ENV PATH="$ROOT_DIR/env/bin:$PATH"
 WORKDIR $ROOT_DIR
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# install IPFS
+./go-ipfs/install.sh
 
 # install and start demon
 RUN export DEBIAN_FRONTEND=noninteractive && mkdir -p /data && apt update && \
