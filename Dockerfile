@@ -31,7 +31,7 @@ WORKDIR $ROOT_DIR
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # install IPFS
-./go-ipfs/install.sh
+RUN /bin/bash $ROOT_DIR/go-ipfs/install.sh
 
 # install and start demon
 RUN export DEBIAN_FRONTEND=noninteractive && mkdir -p /data && apt update && \
