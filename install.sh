@@ -36,7 +36,7 @@ cd ahub
 git clone https://github.com/Aquila-Network/AquilaHub.git .
 
 # install python packages
-pip3 install -r requirements.txt
+pip3 install -r src/requirements.txt
 
 mkdir -p /ossl/
 openssl genrsa -passout pass:1234 -des3 -out /ossl/private.pem 2048
