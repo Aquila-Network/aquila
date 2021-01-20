@@ -5,12 +5,23 @@ from flask_cors import CORS
 from flask import jsonify
 from functools import wraps
 
+from utils import config
+import authentication
 import router
 
 import time
 from multiprocessing import Process
 
 app = Flask(__name__, instance_relative_config=True)
+
+# Server starter
+def flaskserver ():
+    """
+    start server
+    """
+    app.run(host='0.0.0.0', port=5002, debug=False)
+
+server = Process(target=flaskserver)
 
 # Enable CORS
 CORS(app)
@@ -22,7 +33,11 @@ def authenticate ():
         def wrapper (*args, **kwargs):
             params = extract_request_params(request)
 
-            # TODO: Basic authentication; not immediately needed.
+            if not params or not "data" in params or not "signature" in params:
+                return "Unauthorised access", 401
+
+            if not authentication.check(params["data"], params["signature"]):
+                return "Unauthorised access", 401
 
             return f(*args, **kwargs)
 
@@ -93,7 +108,6 @@ def prepare_model ():
             }, 400
 
 @app.route("/compress", methods=['POST'])
-@authenticate()
 def compress_data ():
     """
     generate embeddings for an input data
@@ -125,13 +139,5 @@ def compress_data ():
                 "message": "Invalid parameters"
             }, 400
 
-
-def flaskserver ():
-    """
-    start server
-    """
-    app.run(host='0.0.0.0', port=5002, debug=False)
-
 if __name__ == "__main__":
-    server = Process(target=flaskserver)
     server.start()

@@ -59,7 +59,7 @@ def ipfs_download (url, directory, file_name):
                 logging.debug("Connecting to local IPFS demon..")
                 
                 data = parse.urlencode({}).encode()
-                req =  request.Request("http://127.0.0.1:5001/api/v0/block/get?arg="+IPFS_CID)
+                req =  request.Request("http://127.0.0.1:5001/api/v0/cat?arg="+IPFS_CID)
                 resp = request.urlopen(req, data=data)
                 # write bin file
                 with open(directory+original_bin_file_name, 'wb') as file_:

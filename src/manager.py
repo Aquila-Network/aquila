@@ -3,8 +3,10 @@ import logging
 import fasttext
 from utils import downloader
 
+import os
+
 # Maintain a model directory
-data_dir = "/media/iamjbn/ML/tmp/"
+data_dir = os.environ["DATA_STORE_LOCATION"]
 model_dir = data_dir + "models/"
 model_dict = {}
 

@@ -1,0 +1,2 @@
+auth:
+  pubkey: "/ossl/public.pem"
