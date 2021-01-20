@@ -22,12 +22,20 @@ do
 done
 
 # system packs install
-apt install -y git python3.8 python3-pip libssl-dev
+apt install -y git python3.8 python3-pip libssl-dev wget
 
 # setup venv
 pip3 install virtualenv
 virtualenv $ROOT_DIR/env
 source $ROOT_DIR/env/bin/activate
+
+# setup IPFS
+cd $ROOT_DIR
+wget https://dist.ipfs.io/go-ipfs/v0.7.0/go-ipfs_v0.7.0_linux-amd64.tar.gz
+tar -xvzf go-ipfs_v0.7.0_linux-amd64.tar.gz
+cd go-ipfs
+./install.sh
+
 
 # clone & test AquilaDB
 cd $ROOT_DIR
