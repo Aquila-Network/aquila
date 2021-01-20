@@ -8,3 +8,5 @@ with open("config.yml", "r") as stream:
     
     if "AUTH_KEY_FILE" not in os.environ:
         os.environ["AUTH_KEY_FILE"] = str(DB_config["auth"]["pubkey"])
+    if "IPFS_API" not in os.environ:
+        os.environ["IPFS_API"] = str(DB_config["ipfs"]["api"])
