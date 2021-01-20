@@ -23,23 +23,22 @@ RUN echo "$ROOT_DIR"
 COPY --from=builder $ROOT_DIR/env $ROOT_DIR/env
 COPY --from=builder $ROOT_DIR/ahub $ROOT_DIR/ahub
 COPY --from=builder /ossl /ossl
-COPY --from=builder $ROOT_DIR/go-ipfs $ROOT_DIR/go-ipfs
+COPY --from=builder /usr/local/bin/ipfs /usr/local/bin/ipfs
 
 # preperations
 ENV PATH="$ROOT_DIR/env/bin:$PATH"
 WORKDIR $ROOT_DIR
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# install IPFS
-RUN /bin/bash $ROOT_DIR/go-ipfs/install.sh
-
 # install and start demon
 RUN export DEBIAN_FRONTEND=noninteractive && mkdir -p /data && apt update && \
-    apt install -y python3 && \
-    printf "#!/bin/bash\nsource env/bin/activate && cd ahub/src && \
-    python3 index.py" > /bin/init.sh && chmod +x /bin/init.sh
+    apt install -y python3 systemctl && \
+    printf "#!/bin/bash\nsource env/bin/activate && \
+    cd ahub && cp ipfs.service /etc/systemd/system/ipfs.service && \
+    systemctl start ipfs && systemctl enable ipfs && \
+    cd src && python3 index.py" > /bin/init.sh && chmod +x /bin/init.sh
 
 # expose port
-EXPOSE 5001
+EXPOSE 5002
 
 ENTRYPOINT ["init.sh"]
