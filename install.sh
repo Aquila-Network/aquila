@@ -29,14 +29,14 @@ pip3 install virtualenv
 virtualenv $ROOT_DIR/env
 source $ROOT_DIR/env/bin/activate
 
-# install python packages
-pip3 install pycryptodome base58 Flask requests flask_cors PyYAML bson fastjsonschema
-
 # clone & test AquilaDB
 cd $ROOT_DIR
 mkdir -p ahub
 cd ahub
 git clone https://github.com/Aquila-Network/AquilaHub.git .
+
+# install python packages
+pip3 install -r requirements.txt
 
 mkdir -p /ossl/
 openssl genrsa -passout pass:1234 -des3 -out /ossl/private.pem 2048

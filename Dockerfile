@@ -21,7 +21,7 @@ RUN echo "$ROOT_DIR"
 
 # copy required files from builder stage
 COPY --from=builder $ROOT_DIR/env $ROOT_DIR/env
-COPY --from=builder $ROOT_DIR/adb $ROOT_DIR/ahub
+COPY --from=builder $ROOT_DIR/ahub $ROOT_DIR/ahub
 COPY --from=builder /ossl /ossl
 
 # preperations
@@ -32,7 +32,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # install and start demon
 RUN export DEBIAN_FRONTEND=noninteractive && mkdir -p /data && apt update && \
     apt install -y python3 && \
-    printf "#!/bin/bash\nsource env/bin/activate && cd adb/src && \
+    printf "#!/bin/bash\nsource env/bin/activate && cd ahub/src && \
     python3 index.py" > /bin/init.sh && chmod +x /bin/init.sh
 
 # expose port
