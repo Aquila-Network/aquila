@@ -3,7 +3,6 @@ import logging
 import os
 
 from urllib import request, parse
-import ipfshttpclient
 from zipfile import ZipFile 
 
 
