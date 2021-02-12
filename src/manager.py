@@ -4,6 +4,7 @@ from utils import CID, schema
 
 from vec_index import hannoy 
 
+import os
 is_mini_instance = os.environ["MINI_AQDB"]
 if is_mini_instance == "inactive":
     from vec_index import hfaiss
@@ -14,7 +15,6 @@ import numpy as np
 
 import json
 import random
-import os
 import threading
 import queue
 import time
