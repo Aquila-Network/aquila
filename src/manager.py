@@ -167,17 +167,22 @@ class VecManager:
         annoy_location = location + "/h_annoy"
         faiss_location = location + "/h_faiss"
 
-        # try loading faiss
-        index = hfaiss.Faiss(faiss_location)
-        # check if faiss is not loaded,
-        if not index.is_initiated():
-            # destruct faiss
-            del index
+        if is_mini_instance == "inactive":
+            # try loading faiss
+            index = hfaiss.Faiss(faiss_location)
+            # check if faiss is not loaded,
+            if not index.is_initiated():
+                # destruct faiss
+                del index
+                # load annoy
+                index = hannoy.Annoy(annoy_location)
+                self.active_index = INDEX_LABEL[0]
+            else:
+                self.active_index = INDEX_LABEL[1]
+        else:
             # load annoy
             index = hannoy.Annoy(annoy_location)
             self.active_index = INDEX_LABEL[0]
-        else:
-            self.active_index = INDEX_LABEL[1]
 
         return index
 
