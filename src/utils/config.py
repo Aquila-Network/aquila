@@ -4,6 +4,11 @@ import os
 os.environ["DATA_STORE_LOCATION"] = "/data/"
 os.environ["LOG_CHUNK_LEN"] = "1000"
 
+if "MINI_AQDB" not in os.environ:
+    os.environ["MINI_AQDB"] = False
+else:
+    os.environ["MINI_AQDB"] = True
+
 with open("DB_config.yml", "r") as stream:
     DB_config = yaml.safe_load(stream)
     
