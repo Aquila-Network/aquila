@@ -21,6 +21,7 @@ INDEX_LABEL = ["annoy", "faiss"]
 STORE_LOCATION = os.environ["DATA_STORE_LOCATION"]
 
 TRAIN_DAT_LEN = int(os.environ["MIN_SAWP_COUNT"])
+is_mini_instance = os.environ["MINI_AQDB"]
 PROCESS_TIMEOUT = int(os.environ["THREAD_SLEEP"])
 MAX_Q_LEN = int(os.environ["FIXED_Q_LEN"])
 
@@ -81,7 +82,8 @@ class VecManager:
         next_index = int(self.KV_store.get(byt(-1)))
 
         # check if it is ready to swap index
-        if next_index > TRAIN_DAT_LEN and self.active_index == INDEX_LABEL[0] \
+        if not is_mini_instance and next_index > TRAIN_DAT_LEN \
+            and self.active_index == INDEX_LABEL[0] \
             and len(self.training_data) >= TRAIN_DAT_LEN:
             # swap index
             self.swap_index(self.DB_disk_location)
