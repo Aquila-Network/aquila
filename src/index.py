@@ -181,8 +181,4 @@ def flaskserver ():
     app.run(host='0.0.0.0', port=5001, debug=False)
 
 if __name__ == "__main__":
-    server = Process(target=flaskserver)
-    server.start()
-    # time.sleep(5)
-    # server.terminate()
-    # server.join()
+    flaskserver()
