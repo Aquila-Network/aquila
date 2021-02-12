@@ -3,7 +3,10 @@ import logging
 from utils import CID, schema
 
 from vec_index import hannoy 
-from vec_index import hfaiss
+
+is_mini_instance = os.environ["MINI_AQDB"]
+if is_mini_instance == "inactive":
+    from vec_index import hfaiss
 
 import plyvel
 
@@ -21,7 +24,6 @@ INDEX_LABEL = ["annoy", "faiss"]
 STORE_LOCATION = os.environ["DATA_STORE_LOCATION"]
 
 TRAIN_DAT_LEN = int(os.environ["MIN_SAWP_COUNT"])
-is_mini_instance = os.environ["MINI_AQDB"]
 PROCESS_TIMEOUT = int(os.environ["THREAD_SLEEP"])
 MAX_Q_LEN = int(os.environ["FIXED_Q_LEN"])
 
