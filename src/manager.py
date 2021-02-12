@@ -82,7 +82,7 @@ class VecManager:
         next_index = int(self.KV_store.get(byt(-1)))
 
         # check if it is ready to swap index
-        if not is_mini_instance and next_index > TRAIN_DAT_LEN \
+        if is_mini_instance == "inactive" and next_index > TRAIN_DAT_LEN \
             and self.active_index == INDEX_LABEL[0] \
             and len(self.training_data) >= TRAIN_DAT_LEN:
             # swap index
