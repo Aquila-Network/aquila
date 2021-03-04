@@ -3,7 +3,11 @@ import logging
 from utils import CID, schema
 
 from vec_index import hannoy 
-from vec_index import hfaiss
+
+import os
+is_mini_instance = os.environ["MINI_AQDB"]
+if is_mini_instance == "inactive":
+    from vec_index import hfaiss
 
 import plyvel
 
@@ -11,7 +15,6 @@ import numpy as np
 
 import json
 import random
-import os
 import threading
 import queue
 import time
@@ -81,7 +84,8 @@ class VecManager:
         next_index = int(self.KV_store.get(byt(-1)))
 
         # check if it is ready to swap index
-        if next_index > TRAIN_DAT_LEN and self.active_index == INDEX_LABEL[0] \
+        if is_mini_instance == "inactive" and next_index > TRAIN_DAT_LEN \
+            and self.active_index == INDEX_LABEL[0] \
             and len(self.training_data) >= TRAIN_DAT_LEN:
             # swap index
             self.swap_index(self.DB_disk_location)
@@ -163,17 +167,22 @@ class VecManager:
         annoy_location = location + "/h_annoy"
         faiss_location = location + "/h_faiss"
 
-        # try loading faiss
-        index = hfaiss.Faiss(faiss_location)
-        # check if faiss is not loaded,
-        if not index.is_initiated():
-            # destruct faiss
-            del index
+        if is_mini_instance == "inactive":
+            # try loading faiss
+            index = hfaiss.Faiss(faiss_location)
+            # check if faiss is not loaded,
+            if not index.is_initiated():
+                # destruct faiss
+                del index
+                # load annoy
+                index = hannoy.Annoy(annoy_location)
+                self.active_index = INDEX_LABEL[0]
+            else:
+                self.active_index = INDEX_LABEL[1]
+        else:
             # load annoy
             index = hannoy.Annoy(annoy_location)
             self.active_index = INDEX_LABEL[0]
-        else:
-            self.active_index = INDEX_LABEL[1]
 
         return index
 

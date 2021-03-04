@@ -13,6 +13,8 @@ from requests.structures import CaseInsensitiveDict
 import json
 import bson
 
+from multiprocessing import Process
+
 
 # load private key
 with open("/ossl/private_unencrypted.pem", "r") as pkf:
@@ -24,7 +26,8 @@ class TestAuth (unittest.TestCase):
     # A fresh DB is created
     def test_1_auth_create_db (self):
         # deploy app
-        index.server.start()
+        server = Process(target=index.flaskserver)
+        server.start()
 
         schema_def = {
             "description": "this is my database",
@@ -67,8 +70,8 @@ class TestAuth (unittest.TestCase):
         schema_def = schema.generate_schema(schema_def)
         database_name = CID.doc2CID(schema_def)
 
-        index.server.terminate()
-        index.server.join()
+        server.terminate()
+        server.join()
 
         self.assertEqual(database_name, database_name_, "DB name doesn't match")
 
