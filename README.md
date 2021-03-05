@@ -34,9 +34,13 @@ Run `curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master
 
 **You need docker installed in your system**
 
-Build image (one time process): `docker build https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/Dockerfile -t aquiladb:local`
+Build image (lite): `docker build https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/Dockerfile -t aquiladb:local`
 
-Run image (to deploy Aquila DB): `docker run -p 5001:5001 -d aquiladb:local`
+Build image (big data): `docker build https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/DockerfileBig -t aquiladb:localbg`
+
+Run image (to deploy Aquila DB lite): `docker run -p 5001:5001 -d aquiladb:local`
+
+Run image (to deploy Aquila DB big): `docker run -p 5001:5001 -d aquiladb:localbg`
 
 # Client SDKs
 We currently have multiple client libraries in progress to abstract the communication between deployed Aquila DB and your applications.

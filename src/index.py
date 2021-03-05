@@ -10,9 +10,6 @@ import authentication
 
 import router
 
-import time
-from multiprocessing import Process
-
 app = Flask(__name__, instance_relative_config=True)
 
 # Enable CORS
