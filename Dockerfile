@@ -5,7 +5,7 @@ FROM ubuntu:latest as builder
 ENV ROOT_DIR /home/root
 WORKDIR $ROOT_DIR
 
-RUN apt install -y git nano python3.8 python3-pip libssl-dev && \
+RUN apt update && apt install -y git nano python3.8 python3-pip libssl-dev && \
     pip3 install virtualenv && \
     virtualenv $ROOT_DIR/env && \
     source $ROOT_DIR/env/bin/activate && \
@@ -32,6 +32,6 @@ RUN mkdir -p /data && \
     python3 index.py" > /bin/init.sh && chmod +x /bin/init.sh
 
 # expose port
-EXPOSE 5001
+EXPOSE 5002
 
 ENTRYPOINT ["init.sh"]
