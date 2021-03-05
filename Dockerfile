@@ -19,7 +19,7 @@ RUN cd $ROOT_DIR && \
     git clone https://github.com/Aquila-Network/AquilaHub.git . && \
     virtualenv $ROOT_DIR/env && \
     source $ROOT_DIR/env/bin/activate && \
-    pip3 install -r requirements.txt
+    cd src && pip3 install -r requirements.txt
 
 RUN mkdir -p /ossl/ && \
     openssl genrsa -passout pass:1234 -des3 -out /ossl/private.pem 2048 && \
