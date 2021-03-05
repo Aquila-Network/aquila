@@ -5,37 +5,33 @@ FROM ubuntu:latest as builder
 ENV ROOT_DIR /home/root
 WORKDIR $ROOT_DIR
 
-# install aquiladb
-RUN apt update && apt install -y curl && \
-    curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaHub/master/install.sh | /bin/bash
+RUN apt install -y git nano python3.8 python3-pip libssl-dev && \
+    pip3 install virtualenv && \
+    virtualenv $ROOT_DIR/env && \
+    source $ROOT_DIR/env/bin/activate && \
+    pip3 install requirements.txt
 
+RUN cd $ROOT_DIR && \
+    mkdir -p ahub && \
+    cd ahub && \
+    git clone https://github.com/Aquila-Network/AquilaHub.git .
 
-# start a new runner stage
-FROM ubuntu:latest as runner
-
-# set work directory
-ENV ROOT_DIR /home/root
-WORKDIR $ROOT_DIR
-
-RUN echo "$ROOT_DIR"
-
-# copy required files from builder stage
-COPY --from=builder $ROOT_DIR/env $ROOT_DIR/env
-COPY --from=builder $ROOT_DIR/ahub $ROOT_DIR/ahub
-COPY --from=builder /ossl /ossl
+RUN mkdir -p /ossl/ && \
+    openssl genrsa -passout pass:1234 -des3 -out /ossl/private.pem 2048 && \
+    openssl rsa -passin pass:1234 -in /ossl/private.pem -outform PEM -pubout -out /ossl/public.pem && \
+    openssl rsa -passin pass:1234 -in /ossl/private.pem -out /ossl/private_unencrypted.pem -outform PEM
 
 # preperations
 ENV PATH="$ROOT_DIR/env/bin:$PATH"
-WORKDIR $ROOT_DIR
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # install and start demon
-RUN export DEBIAN_FRONTEND=noninteractive && mkdir -p /data && apt update && \
-    apt install -y python3 && \
-    printf "#!/bin/bash\nsource env/bin/activate && \
-    cd ahub/src && python3 index.py" > /bin/init.sh && chmod +x /bin/init.sh
+RUN mkdir -p /data && \
+    printf "#!/bin/bash\nsource env/bin/activate && cd ahub/src && \
+    python3 index.py" > /bin/init.sh && chmod +x /bin/init.sh
 
 # expose port
-EXPOSE 5002
+EXPOSE 5001
 
 ENTRYPOINT ["init.sh"]

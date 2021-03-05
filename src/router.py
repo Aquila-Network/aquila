@@ -5,28 +5,30 @@ logging.getLogger().setLevel(logging.DEBUG)
 import os
 import json
 
-from utils import CID
+from utils import CID, schema
 import manager
 
-def validate_schema (database_name, schema):
+def get_database_name (schema):
     """
-    Validate a schema
+    Get databse name from schema
     """
 
-    logging.debug("validating schema for database: "+CID.doc2CID(schema))
-    if database_name == CID.doc2CID(schema):
-        logging.debug("schema validation success")
-        return True
-    else:
-        logging.debug("schema validation failed")
-        return False
+    database_name = None
+    try:
+        schema_def = schema.generate_schema(schema)
+        database_name = CID.doc2CID(schema_def)
+    except Exception e:
+        logging.error(e)
 
-def preload_model (database_name, json_schema):
+    return database_name
+
+def preload_model (json_schema):
     """
     Download a model and load it into memory
     """
 
-    if validate_schema(database_name, json_schema):
+    database_name = get_database_name(json_schema)
+    if database_name:
         if manager.preload_model(database_name, json_schema):
             return database_name
         else:
