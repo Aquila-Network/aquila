@@ -39,7 +39,7 @@ class TestAuth (unittest.TestCase):
         database_name = CID.doc2CID(schema_def)
 
         # 1. test preperation
-        data_ = { "databaseName": "C7wC5HxudawNxvwmPK4SriBfCkHtiRRPG1t9b1xyDwjY", "schema": schema_def }
+        data_ = { "schema": schema_def_ }
         data_bson = bson.dumps(data_)
         # generate hash
         hash = SHA384.new()
@@ -111,7 +111,7 @@ class TestAuth (unittest.TestCase):
         database_name = CID.doc2CID(schema_def)
 
         # 1. test preperation
-        data_ = { "databaseName": "A1HpJCgrj763HjrR719ukrQWymAUXNaQE6u1QfnCEDLH", "schema": schema_def }
+        data_ = { "schema": schema_def_ }
         data_bson = bson.dumps(data_)
         # generate hash
         hash = SHA384.new()

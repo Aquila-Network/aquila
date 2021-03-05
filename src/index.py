@@ -87,7 +87,7 @@ def prepare_model ():
                 "message": "Invalid parameters"
             }, 400
 
-    if "databaseName" in params:
+    if "schema" in params:
         database_name = router.preload_model(params.get("schema"))
 
         # Build response

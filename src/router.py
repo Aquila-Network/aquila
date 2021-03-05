@@ -8,14 +8,14 @@ import json
 from utils import CID, schema
 import manager
 
-def get_database_name (schema):
+def get_database_name (schema_in):
     """
     Get databse name from schema
     """
 
     database_name = None
     try:
-        schema_def = schema.generate_schema(schema)
+        schema_def = schema.generate_schema(schema_in)
         database_name = CID.doc2CID(schema_def)
     except Exception as e:
         logging.error(e)
