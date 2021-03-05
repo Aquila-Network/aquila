@@ -17,7 +17,7 @@ def get_database_name (schema):
     try:
         schema_def = schema.generate_schema(schema)
         database_name = CID.doc2CID(schema_def)
-    except Exception e:
+    except Exception as e:
         logging.error(e)
 
     return database_name
