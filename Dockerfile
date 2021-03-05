@@ -14,7 +14,7 @@ RUN apt update && apt install -y git nano python3.8 python3-pip libssl-dev && \
     pip3 install virtualenv && \
     virtualenv $ROOT_DIR/env && \
     source $ROOT_DIR/env/bin/activate && \
-    pip3 install requirements.txt
+    pip3 install -r requirements.txt
 
 RUN cd $ROOT_DIR && \
     mkdir -p ahub && \
