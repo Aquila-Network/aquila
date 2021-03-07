@@ -1,9 +1,22 @@
 import logging
 
 import os
+import sys
+import time
 
 from urllib import request, parse
-from zipfile import ZipFile 
+
+def reporthook(count, block_size, total_size):
+    global start_time
+    if count == 0:
+        start_time = time.time()
+        return
+    duration = time.time() - start_time
+    progress_size = int(count * block_size)
+    speed = int(progress_size / (1024 * duration))
+    percent = min(int(count*block_size*100/total_size),100)
+    logging.debug("\r...%d%%, %d MB, %d KB/s" %
+                    (percent, progress_size / (1024 * 1024), speed))
 
 
 def http_download (url, directory, file_name):
@@ -15,20 +28,14 @@ def http_download (url, directory, file_name):
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        original_bin_file_name = url.split("/")[-1].split(".")[0]+".bin"
+        original_bin_file_name = url.split("/")[-1]
         # check if model already exists
         if not os.path.exists(directory+file_name+".bin"):
             # if a reusable model available
             if not os.path.exists(directory+original_bin_file_name):
                 # download file
                 logging.debug("Downloading model..")
-                request.urlretrieve(url, directory+file_name+".zip")
-                # extract file
-                with ZipFile(directory+file_name+".zip", 'r') as zip:
-                    logging.debug("Extracting model..")
-                    zip.extract(original_bin_file_name, directory)
-                # downloaded delete zip file
-                os.remove(directory+file_name+".zip")
+                request.urlretrieve(url, original_bin_file_name, reporthook)
             # copy and rename model
             logging.debug("Copy model..")
             os.symlink(directory+original_bin_file_name, directory+file_name+".bin")

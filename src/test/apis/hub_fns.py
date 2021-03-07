@@ -15,7 +15,7 @@ import bson
 
 
 # load private key
-with open("/ossl/private_unencrypted.pem", "r") as pkf:
+with open("/root/aquilax/ossl/private_unencrypted.pem", "r") as pkf:
     k = pkf.read()
     priv_key = RSA.import_key(k)
 
@@ -23,14 +23,12 @@ class TestAuth (unittest.TestCase):
 
     # Preload a model
     def test_1_auth_preload_http (self):
-        # deploy app
-        index.server.start()
 
         schema_def_ = {
             "description": "this is my database",
             "unique": "r8and0mseEd905",
-            "encoder": "ftxt:http://127.0.0.1:8000/model.zip",
-            "codelen": 100,
+            "encoder": "ftxt:https://ftxt-models.s3.us-east-2.amazonaws.com/ftxt_base_min.bin",
+            "codelen": 25,
             "metadata": {}
         }
 
@@ -70,7 +68,7 @@ class TestAuth (unittest.TestCase):
         self.assertEqual(database_name, database_name_, "DB name doesn't match")
 
         # 2. test compression
-        data_ = {"databaseName": data_["databaseName"], "text": ["data one", "data two"]}
+        data_ = {"databaseName": database_name_, "text": ["data one", "data two"]}
         url = "http://0.0.0.0:5002/compress"
 
         headers = CaseInsensitiveDict()
@@ -89,20 +87,14 @@ class TestAuth (unittest.TestCase):
         self.assertEqual(len(resp.json()["vectors"]), len(data_["text"]), "Compressed items doesn't match query")
         self.assertEqual(len(resp.json()["vectors"][0]), schema_def_["codelen"], "Compressed code length doesn't match")
 
-        # stop server
-        # index.server.terminate()
-        # index.server.join()
-
     # Preload a model
     def test_2_auth_preload_ipfs (self):
-        # deploy app
-        # index.server.start()
 
         schema_def_ = {
             "description": "this is my database",
             "unique": "r8and0mseEd905",
             "encoder": "ftxt:ipfs://QmT9CECrTwUhAPw6VHgxcLciH4EBepkXJmSB9y2rchsVQz",
-            "codelen": 100,
+            "codelen": 25,
             "metadata": {}
         }
 
@@ -161,9 +153,6 @@ class TestAuth (unittest.TestCase):
         self.assertEqual(len(resp.json()["vectors"]), len(data_["text"]), "Compressed items doesn't match query")
         self.assertEqual(len(resp.json()["vectors"][0]), schema_def_["codelen"], "Compressed code length doesn't match")
 
-        # stop server
-        index.server.terminate()
-        index.server.join()
 
 if __name__ == '__main__':
     unittest.main()
