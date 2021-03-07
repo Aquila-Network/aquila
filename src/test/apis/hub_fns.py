@@ -1,6 +1,5 @@
 import unittest
 
-import index
 from utils import CID, schema
 
 from Crypto.Hash import SHA384
@@ -13,9 +12,11 @@ from requests.structures import CaseInsensitiveDict
 import json
 import bson
 
+host = "127.0.0.1:5002"
+
 
 # load private key
-with open("/root/aquilax/ossl/private_unencrypted.pem", "r") as pkf:
+with open("private_unencrypted.pem", "r") as pkf:
     k = pkf.read()
     priv_key = RSA.import_key(k)
 
@@ -48,7 +49,7 @@ class TestAuth (unittest.TestCase):
         signature = signer.sign(hash)
         signature = base58.b58encode(signature).decode("utf-8")
 
-        url = "http://0.0.0.0:5002/prepare"
+        url = "http://"+host+"/prepare"
 
         headers = CaseInsensitiveDict()
         headers["Content-Type"] = "application/json"
@@ -69,7 +70,7 @@ class TestAuth (unittest.TestCase):
 
         # 2. test compression
         data_ = {"databaseName": database_name_, "text": ["data one", "data two"]}
-        url = "http://0.0.0.0:5002/compress"
+        url = "http://"+host+"/compress"
 
         headers = CaseInsensitiveDict()
         headers["Content-Type"] = "application/json"
@@ -114,7 +115,7 @@ class TestAuth (unittest.TestCase):
         signature = signer.sign(hash)
         signature = base58.b58encode(signature).decode("utf-8")
 
-        url = "http://0.0.0.0:5002/prepare"
+        url = "http://"+host+"/prepare"
 
         headers = CaseInsensitiveDict()
         headers["Content-Type"] = "application/json"
@@ -135,7 +136,7 @@ class TestAuth (unittest.TestCase):
 
         # 2. test compression
         data_ = {"databaseName": data_["databaseName"], "text": ["data one", "data two"]}
-        url = "http://0.0.0.0:5002/compress"
+        url = "http://"+host+"/compress"
 
         headers = CaseInsensitiveDict()
         headers["Content-Type"] = "application/json"
