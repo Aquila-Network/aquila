@@ -109,11 +109,12 @@ def insert_docs (docs, database_name):
     # and add CID
     
     for doc_ in docs:
-        if schema.validate_json_docs(database_h["schema"]["validator"], doc_):
-            CID_ = CID.doc2CID(doc_)
+        payload = doc_["payload"]
+        if schema.validate_json_docs(database_h["schema"]["validator"], payload):
+            CID_ = CID.doc2CID(payload)
             cids_.append(CID_)
-            doc_["CID"] = CID_
-            docs_.append(doc_)
+            payload["CID"] = CID_
+            docs_.append(payload)
         else:
             cids_.append(None)
             
