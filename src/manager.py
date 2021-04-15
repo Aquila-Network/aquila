@@ -2,6 +2,8 @@ import logging
 
 import fasttext
 from utils import downloader
+import hashlib
+import base58
 
 import os
 
@@ -9,6 +11,7 @@ import os
 data_dir = os.environ["DATA_STORE_LOCATION"]
 model_dir = data_dir + "models/"
 model_dict = {}
+hash_dict = {}
 
 def get_url (schema):
     """
@@ -19,6 +22,11 @@ def get_url (schema):
         return schema["encoder"]
     else:
         return None
+
+def get_url_hash (url):
+    hash_ = hashlib.sha256(url)
+    b58c_ = base58.b58encode(hash_.digest())
+    return b58c_.decode('utf-8')
 
 def download_model (url, directory, file_name):
     """
@@ -55,15 +63,21 @@ def preload_model (database_name, json_schema):
     """
     
     try:
-        if model_dict.get(database_name):
-            del model_dict[database_name]
-        model_dict[database_name] = memload_model(download_model(get_url(json_schema), model_dir, database_name))
-        if model_dict[database_name]:
-            logging.debug("Model loaded for database: "+database_name)
-            return True
-        else:
-            logging.error("Model loading failed for database: "+database_name)
-            return False
+        # keep reference to model hash from database (DB - hash map)
+        if not hash_dict.get(database_name):
+            hash_dict[database_name] = get_url_hash(get_url(json_schema))
+
+        # keep reference to model memory from hash (hash - mem model map)
+        if not model_dict.get(hash_dict[database_name]):
+            model_dict[hash_dict[database_name]] = memload_model(download_model(get_url(json_schema), model_dir, database_name))
+            if model_dict[hash_dict[database_name]]:
+                logging.debug("Model loaded for database: "+database_name)
+                return True
+            else:
+                logging.error("Model loading failed for database: "+database_name)
+                # reser DB - hash map
+                hash_dict[database_name] = None
+                return False
     except Exception as e:
         logging.error(e)
         return False
@@ -73,18 +87,20 @@ def compress_data (database_name, texts):
     Load an already existing database 
     """
 
-    if not model_dict.get(database_name):
-        try:
-            model_dict[database_name] = memload_model(model_dir+database_name+".bin")
-            logging.debug("Model loaded for database: "+database_name)
-        except Exception as e:
-            logging.error(e)
-            return []
-    if model_dict.get(database_name):
-        result = []
+    if not hash_dict.get(database_name):
+        logging.error("Model not pre-loaded for database: "+database_name)
+        return []
+    if not model_dict.get(hash_dict[database_name]):
+        logging.error("Model not mem-loaded for database: "+database_name)
+        return []
+    
+    result = []
+    try:
         for text in texts:
-            result.append(model_dict[database_name].get_sentence_vector(text).tolist())
+            result.append(model_dict[hash_dict[database_name]].get_sentence_vector(text).tolist())
 
         return result
-    else:
+    except Exception as e:
+        logging.error(e)
+        logging.error("Model prediction error for database: "+database_name)
         return []
