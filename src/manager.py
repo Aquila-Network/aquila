@@ -24,7 +24,7 @@ def get_url (schema):
         return None
 
 def get_url_hash (url):
-    hash_ = hashlib.sha256(url)
+    hash_ = hashlib.sha256(url.encode('utf-8'))
     b58c_ = base58.b58encode(hash_.digest())
     return b58c_.decode('utf-8')
 
