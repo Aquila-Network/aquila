@@ -56,6 +56,7 @@ git clone https://github.com/Aquila-Network/search-ux.git .
 cp ${HOME}/axee/nginx.conf ${HOME}/aquilax/nginx/nginx.conf
 
 # install ssl certificates
+sudo apt install certbot python3-certbot-nginx
 sudo certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory --agree-tos -d *.aquila.network
 ls /etc/letsencrypt/live/aquila.network/
 certbot certificates
