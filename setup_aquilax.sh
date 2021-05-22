@@ -55,6 +55,11 @@ cd ${HOME}/aquilax/webpage/
 git clone https://github.com/Aquila-Network/search-ux.git .
 cp ${HOME}/axee/nginx.conf ${HOME}/aquilax/nginx/nginx.conf
 
+# install ssl certificates
+sudo certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory --agree-tos -d *.aquila.network
+ls /etc/letsencrypt/live/aquila.network/
+certbot certificates
+
 echo ${HOME}/aquilax/ossl
 
 # run docker compose

@@ -48,6 +48,8 @@ services:
     volumes:
       - ${HOME}/aquilax/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ${HOME}/aquilax/webpage/src:/usr/share/nginx/html
+      - /etc/letsencrypt/live/aquila.network/fullchain.pem:/etc/nginx/conf.d/fullchain.pem
+      - /etc/letsencrypt/live/aquila.network/privkey.pem:/etc/nginx/conf.d/privkey.pem
     ports:
       - 80:80
       - 443:443
