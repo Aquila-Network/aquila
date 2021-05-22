@@ -310,4 +310,8 @@ def flaskserver ():
 CORS(app)
 
 if __name__ == "__main__":
-    flaskserver()
+    # create default database
+    db_name, status = create_database("default")
+    logging.debug("Default DB name: " + db_name)
+    if status:
+        flaskserver()
