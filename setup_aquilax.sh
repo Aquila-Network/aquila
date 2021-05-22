@@ -55,7 +55,7 @@ cd ${HOME}/aquilax/webpage/
 git clone https://github.com/Aquila-Network/search-ux.git .
 cp ${HOME}/axee/nginx.conf ${HOME}/aquilax/nginx/nginx.conf
 
-# install ssl certificates
+# # install ssl certificates
 # sudo apt install -y certbot python3-certbot-nginx
 # sudo certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory --agree-tos -d *.aquila.network
 # ls /etc/letsencrypt/live/aquila.network/
@@ -67,3 +67,6 @@ cp ${HOME}/axee/nginx.conf ${HOME}/aquilax/nginx/nginx.conf
 cd ${HOME}/aquilax/src
 cp ${HOME}/axee/docker-compose.yml ${HOME}/aquilax/src/docker-compose.yml
 docker-compose -p "aquilanet"  up -d
+
+# # setup users database after this script is executed
+# curl "http://localhost:5534/create?col=users"
