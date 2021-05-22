@@ -48,7 +48,7 @@ docker build -f Dockerfile_pxy -t aqpxy:local .
 
 # build proxy db image
 cd ${HOME}/proxy
-docker build -f Dockerfile_db -t pdb:local .
+docker build -f Dockerfile_db -t tiedot:local .
 
 # setup X UI and nginx config
 cd ${HOME}/aquilax/webpage/
