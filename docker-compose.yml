@@ -1,0 +1,53 @@
+version: '3'
+services:
+  db:
+    image: aquiladb:local
+    container_name: aquiladb
+    restart: always
+    # ports:
+      # - 5001:5001
+    volumes:
+      - ${HOME}/aquilax/data:/data
+      - ${HOME}/aquilax/ossl:/ossl
+  hub:
+    image: aquilahub:local
+    container_name: aquilahub
+    restart: always
+    # ports:
+      # - 5002:5002
+    volumes:
+      - ${HOME}/aquilax/data:/data
+      - ${HOME}/aquilax/ossl:/ossl
+  ax:
+    image: aquilax:local
+    container_name: aquilax
+    restart: always
+    # ports:
+      # - 5003:5003
+    volumes:
+      - ${HOME}/aquilax/ossl:/ossl
+  aqpxy:
+    image: aqpxy:local
+    container_name: aqpxy
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ${HOME}/aquilax/data:/home/data
+  pdb:
+    image: tiedot:local
+    container_name: pdb
+    restart: always
+    ports:
+      - 5534:5534
+    volumes:
+      - ${HOME}/aquilax/data:/home/data
+  nginx: 
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ${HOME}/aquilax/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ${HOME}/aquilax/webpage/src:/usr/share/nginx/html
+    ports:
+      - 80:80
+      - 443:443
