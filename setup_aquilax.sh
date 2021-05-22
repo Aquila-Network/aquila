@@ -34,8 +34,21 @@ docker build https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/Do
 # build aqilahub image
 docker build https://raw.githubusercontent.com/Aquila-Network/AquilaHub/main/Dockerfile -t aquilahub:local
 
-# build aquilax image
-docker build https://raw.githubusercontent.com/Aquila-Network/AquilaX-CE/main/Dockerfile -t aquilax:local
+# build aquilax EE image
+mkdir -p ${HOME}/axee
+cd ${HOME}/axee
+git clone https://github.com/Aquila-HQ/AquilaX-EE.git .
+docker build -t aquilax:local
+
+# build proxy image
+mkdir -p ${HOME}/proxy
+cd ${HOME}/proxy
+git clone https://github.com/Aquila-HQ/proxy.git .
+docker build -f Dockerfile_pxy -t aqpxy:local .
+
+# build proxy db image
+cd ${HOME}/proxy
+docker build -f Dockerfile_db -t pdb:local .
 
 # setup X UI and nginx config
 cd ${HOME}/aquilax/webpage/
