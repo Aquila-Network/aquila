@@ -31,7 +31,7 @@ RUN mkdir -p /ossl/ && \
 
 # install and start demon
 RUN mkdir -p /data && \
-    printf "#!/bin/bash\nsource env/bin/activate && cd ax/src && \
+    printf "#!/bin/bash\nsource /home/root/env/bin/activate && cd /home/root/ax/src && \
     python3 index.py" > /bin/init.sh && chmod +x /bin/init.sh
 
 # expose port
