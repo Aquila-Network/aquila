@@ -17,7 +17,7 @@ Alternatively, follow this [video tutorial](https://chrome-ext-aquila.s3-ap-sout
 
 Now, run below command and wait a few minutes:
 ```
-wget -O - https://raw.githubusercontent.com/Aquila-Network/AquilaX-CE/main/setup_aquilax.sh | /bin/bash
+wget -O - https://raw.githubusercontent.com/Aquila-HQ/AquilaX-EE/master/setup_aquilax.sh | /bin/bash
 ```
 Once the installation is completed, visit `http://<localhost / server IP>`
 
