@@ -53,11 +53,11 @@ docker build -f Dockerfile_db -t pdb:local .
 # setup X UI and nginx config
 cd ${HOME}/aquilax/webpage/
 git clone https://github.com/Aquila-Network/search-ux.git .
-wget "https://raw.githubusercontent.com/Aquila-Network/AquilaX-CE/main/nginx.conf" -P ${HOME}/aquilax/nginx/
+cp ${HOME}/axee/nginx.conf ${HOME}/aquilax/nginx/nginx.conf
 
 echo ${HOME}/aquilax/ossl
 
 # run docker compose
 cd ${HOME}/aquilax/src
-wget "https://raw.githubusercontent.com/Aquila-Network/AquilaX-CE/main/docker-compose.yml"
+cp ${HOME}/axee/docker-compose.yml ${HOME}/aquilax/src/docker-compose.yml
 docker-compose -p "aquilanet"  up -d
