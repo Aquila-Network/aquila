@@ -38,7 +38,7 @@ docker build https://raw.githubusercontent.com/Aquila-Network/AquilaHub/main/Doc
 mkdir -p ${HOME}/axee
 cd ${HOME}/axee
 git clone https://github.com/Aquila-HQ/AquilaX-EE.git .
-docker build -t aquilax:local
+docker build -t aquilax:local .
 
 # build proxy image
 mkdir -p ${HOME}/proxy
