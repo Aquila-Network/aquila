@@ -14,10 +14,13 @@ RUN apt update && apt install -y git nano python3.8 python3-pip libssl-dev && \
     pip3 install virtualenv
 
 RUN cd $ROOT_DIR && \
-    mkdir -p ax && \
-    cd ax && \
-    git clone https://github.com/Aquila-Network/AquilaX-CE.git . && \
-    virtualenv $ROOT_DIR/env && \
+    mkdir -p ax
+    
+ADD ./  $ROOT_DIR/ax/
+
+WORKDIR $ROOT_DIR/ax/
+
+RUN virtualenv $ROOT_DIR/env && \
     source $ROOT_DIR/env/bin/activate && \
     cd src && pip3 install -r requirements.txt
 
