@@ -15,7 +15,8 @@ mkdir -p ${HOME}/aquilax/webpage
 echo "================================"
 echo "==== Downloading Base Model ===="
 echo "================================"
-wget -c "https://ftxt-models.s3.us-east-2.amazonaws.com/wiki_100d_en.bin" -P ${HOME}/aquilax/data/models/
+wget -c "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.bin.gz" -P ${HOME}/aquilax/data/models/
+gzip -d ${HOME}/aquilax/data/models/cc.en.300.bin.gz
 
 # setup ossl keys
 if ! test -f ${HOME}/aquilax/ossl/private.pem; then
