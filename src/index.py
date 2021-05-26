@@ -6,7 +6,7 @@ from flask import jsonify
 from functools import wraps
 
 from services import logging as slog
-slogging_session = slog.create_session(["192.168.1.105"])
+slogging_session = slog.create_session(["127.0.0.1"])
 
 import time
 from multiprocessing import Process
