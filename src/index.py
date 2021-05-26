@@ -5,6 +5,9 @@ from flask_cors import CORS
 from flask import jsonify
 from functools import wraps
 
+from services import logging as slog
+slogging_session = slog.create_session(["192.168.1.105"])
+
 import time
 from multiprocessing import Process
 
@@ -228,6 +231,9 @@ def index_page ():
     status = index_website(db_name, html_data, url)
     # Build response
     if status:
+        # logging
+        if slogging_session != None:
+            slog.put_log_index(slogging_session, db_name, url, html_data, 0)
         return {
                 "success": True,
                 "databaseName": db_name
@@ -259,6 +265,13 @@ def search ():
             }, 400
 
     urls = search_docs(db_name, query)
+
+    # logging
+    if slogging_session != None:
+        if len(urls) > 0:
+            slog.put_log_search(slogging_session, db_name, query, urls[0])
+        else:
+            slog.put_log_search(slogging_session, db_name, query, "")
 
     # Build response
     return {
@@ -296,6 +309,37 @@ def augment ():
                 "summary": summary_r,
                 "ans": ans_r
             }
+        }, 200
+
+@app.route("/correct", methods=['POST'])
+def correct ():
+    """
+    Correct matches
+    """
+
+    # get parameters
+    query = None
+    db_name = None
+    url = None
+    if extract_request_params(request).get("query") and extract_request_params(request).get("database") and extract_request_params(request).get("url"):
+        query = extract_request_params(request)["query"]
+        db_name = extract_request_params(request)["database"]
+        url = extract_request_params(request)["url"]
+
+    if not query and not db_name and not url:
+        # Build error response
+        return {
+                "success": False,
+                "message": "Invalid parameters"
+            }, 400
+
+    # logging
+    if slogging_session != None:
+        slog.put_log_correct(slogging_session, db_name, query, url)
+
+    # Build response
+    return {
+            "success": True
         }, 200
 
 
