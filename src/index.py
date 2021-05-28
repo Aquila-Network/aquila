@@ -5,6 +5,8 @@ from flask_cors import CORS
 from flask import jsonify
 from functools import wraps
 
+import html_cleanup as chtml
+
 from services import logging as slog
 slogging_session = slog.create_session(["127.0.0.1"])
 
@@ -64,8 +66,11 @@ def compress_strings (db_name, strings_in):
     return hub.compress_documents(db_name, strings_in)
 
 # Insert docs
-def index_website (db_name, html_doc, url):
-    paragraphs = get_paragraphs(html_doc)
+def index_website (db_name, paragraphs, title, url):
+    # add title as well
+    if title != "":
+        paragraphs = paragraphs.append(title)
+
     compressed = compress_strings(db_name, paragraphs)
     docs = []
     for idx_, para in enumerate(paragraphs):
@@ -127,15 +132,15 @@ def search_docs(db_name, query):
     #         print(key)
 
 # Get paragraphs given html document
-def get_paragraphs(html_doc):
-    soup = BeautifulSoup(html_doc, 'html.parser')
-    paras = []
-    for para in soup.find_all("p"):
-        text_data = para.text
-        for txt in text_data.split("\n"):
-            if txt.strip() != "":
-                paras.append(" ".join(txt.strip().split()))
-    return paras
+# def get_paragraphs(html_doc):
+#     soup = BeautifulSoup(html_doc, 'html.parser')
+#     paras = []
+#     for para in soup.find_all("p"):
+#         text_data = para.text
+#         for txt in text_data.split("\n"):
+#             if txt.strip() != "":
+#                 paras.append(" ".join(txt.strip().split()))
+#     return paras
 
 # Add authentication
 def authenticate ():
@@ -228,7 +233,13 @@ def index_page ():
                 "message": "Invalid parameters"
             }, 400
 
-    status = index_website(db_name, html_data, url)
+    # cleanup html
+    chtml_data = chtml.process_html(html_data, url)
+    thtml_data = chtml.trim_content(chtml_data["data"]["content"])["result"]
+
+    # index html
+    status = index_website(db_name, thtml_data, chtml_data["data"]["title"], url)
+
     # Build response
     if status:
         # logging
@@ -336,6 +347,9 @@ def correct ():
     # logging
     if slogging_session != None:
         slog.put_log_correct(slogging_session, db_name, query, url)
+
+    # index correction
+    status = index_website(db_name, [], query, url)
 
     # Build response
     return {
