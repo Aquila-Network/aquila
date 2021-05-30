@@ -10,8 +10,7 @@ import html_cleanup as chtml
 from services import logging as slog
 slogging_session = slog.create_session(["127.0.0.1"])
 
-import time
-from multiprocessing import Process
+import math
 
 from aquilapy import Wallet, DB, Hub
 from bs4 import BeautifulSoup
@@ -106,18 +105,27 @@ def search_docs(db_name, query):
     docs, dists = db.search_k_documents(db_name, compressed, 100)
     index = {}
     score = {}
+    max_score = dists[0][-1]
+    min_score = dists[0][0]
+
     for idx_, doc in enumerate(docs[0]):
         metadata = doc["metadata"]
+        # -------------------------- exponential dampening ------------------------------
+        # ------------------- normalize --------------------------
+        #      ------ reposition --------
+        #                                                            - 1->0 : lesser steep curve -
+        # (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
         if index.get(metadata["url"]):
             index[metadata["url"]] += 1
-            score[metadata["url"]] += dists[0][idx_]
+            score[metadata["url"]] += (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
         else:
             index[metadata["url"]] = 1
-            score[metadata["url"]] = dists[0][idx_]
+            score[metadata["url"]] = (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
 
     results_d = {}
     for key in index:
-        results_d[key] = round(index[key] * score[key])
+        # results_d[key] = round(index[key] * score[key])
+        results_d[key] = score[key]
 
     results_d = {k: v for k, v in sorted(results_d.items(), key=lambda item: item[1], reverse=True)}
 
