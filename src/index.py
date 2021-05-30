@@ -123,8 +123,13 @@ def search_docs(db_name, query):
             score[metadata["url"]] = (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
 
     results_d = {}
+    n_unique_results = len(index.keys())
+    percent_share_target = 100 / n_unique_results
     for key in index:
-        # results_d[key] = round(index[key] * score[key])
+        result_imbalance = int(index[key] / percent_share_target)
+        if result_imbalance > 1:
+            # big imbalances, fix later 
+            pass
         results_d[key] = score[key]
 
     results_d = {k: v for k, v in sorted(results_d.items(), key=lambda item: item[1], reverse=True)}
