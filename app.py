@@ -69,13 +69,13 @@ def process ():
 
     # process logic
     text_in, nlines = get_paragraphs(html)
-    parser = PlaintextParser.from_string(text_in, Tokenizer(LANGUAGE))
+    sentances_ret = []
+
+    parser = PlaintextParser.from_string("\n".join(text_in), Tokenizer(LANGUAGE))
     stemmer = Stemmer(LANGUAGE)
 
     summarizer = Summarizer(stemmer)
     summarizer.stop_words = get_stop_words(LANGUAGE)
-
-    sentances_ret = []
 
     SENTENCES_COUNT = int(nlines * 0.2)
     if SENTENCES_COUNT > 100:
@@ -84,8 +84,7 @@ def process ():
         SENTENCES_COUNT = nlines
         
     for sentence in summarizer(parser.document, SENTENCES_COUNT):
-        for text in ast.literal_eval(sentence._text):
-            sentances_ret.append(text)
+        sentances_ret.append(sentence._text)
 
     # Build response
     return {
