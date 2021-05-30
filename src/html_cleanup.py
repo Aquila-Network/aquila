@@ -1,8 +1,8 @@
 import requests
 import json
 
-readability_server = "http://localhost:5009"
-trim_server = "http://localhost:5008"
+readability_server = "http://mercury:5009"
+trim_server = "http://txtpick:5008"
 
 def process_html (html, url):
     payload = {
