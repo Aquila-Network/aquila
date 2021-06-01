@@ -51,6 +51,13 @@ docker build -f Dockerfile_pxy -t aqpxy:local .
 cd ${HOME}/proxy
 docker build -f Dockerfile_db -t tiedot:local .
 
+# build txt processing service
+mkdir -p ${HOME}/txtp
+cd ${HOME}/txtp
+git clone https://github.com/Aquila-HQ/txtprocess.git .
+docker build -f Dockerfile_mercury -t mercury:local .
+docker build -f Dockerfile_txtpick -t txtpick:local .
+
 # setup X UI and nginx config
 cd ${HOME}/aquilax/webpage/
 git clone https://github.com/Aquila-Network/search-ux.git .

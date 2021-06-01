@@ -38,10 +38,22 @@ services:
     image: tiedot:local
     container_name: pdb
     restart: always
-    ports:
-      - 5534:5534
+    # ports:
+    #   - 5534:5534
     volumes:
       - ${HOME}/aquilax/data:/home/data
+  mercury:
+    image: mercury:local
+    container_name: mercury
+    restart: always
+    # ports:
+    #   - 5009:5009
+  txtpick:
+    image: txtpick:local
+    container_name: txtpick
+    restart: always
+    # ports:
+    #   - 5008:5008
   nginx: 
     image: nginx:latest
     container_name: nginx

@@ -5,8 +5,12 @@ from flask_cors import CORS
 from flask import jsonify
 from functools import wraps
 
-import time
-from multiprocessing import Process
+import html_cleanup as chtml
+
+from services import logging as slog
+slogging_session = slog.create_session(["127.0.0.1"])
+
+import math
 
 from aquilapy import Wallet, DB, Hub
 from bs4 import BeautifulSoup
@@ -61,8 +65,11 @@ def compress_strings (db_name, strings_in):
     return hub.compress_documents(db_name, strings_in)
 
 # Insert docs
-def index_website (db_name, html_doc, url):
-    paragraphs = get_paragraphs(html_doc)
+def index_website (db_name, paragraphs, title, url):
+    # add title as well
+    if title != "":
+        paragraphs = paragraphs.append(title)
+
     compressed = compress_strings(db_name, paragraphs)
     docs = []
     for idx_, para in enumerate(paragraphs):
@@ -98,18 +105,29 @@ def search_docs(db_name, query):
     docs, dists = db.search_k_documents(db_name, compressed, 100)
     index = {}
     score = {}
+    max_score = dists[0][-1]
+    min_score = dists[0][0]
+
     for idx_, doc in enumerate(docs[0]):
         metadata = doc["metadata"]
+        # -------------------------- exponential dampening ------------------------------
+        # ------------------- normalize --------------------------
+        #      ------ reposition --------
+        #                                                            - 1->0 : lesser steep curve -
+        # (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
         if index.get(metadata["url"]):
             index[metadata["url"]] += 1
-            score[metadata["url"]] += dists[0][idx_]
+            score[metadata["url"]] += (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
         else:
             index[metadata["url"]] = 1
-            score[metadata["url"]] = dists[0][idx_]
+            score[metadata["url"]] = (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
 
     results_d = {}
+    n_unique_urls = len(index.keys())
+    
     for key in index:
-        results_d[key] = round(index[key] * score[key])
+        #                           ---- Representative rebalance ----
+        results_d[key] = score[key] / index[key] / n_unique_urls
 
     results_d = {k: v for k, v in sorted(results_d.items(), key=lambda item: item[1], reverse=True)}
 
@@ -124,15 +142,15 @@ def search_docs(db_name, query):
     #         print(key)
 
 # Get paragraphs given html document
-def get_paragraphs(html_doc):
-    soup = BeautifulSoup(html_doc, 'html.parser')
-    paras = []
-    for para in soup.find_all("p"):
-        text_data = para.text
-        for txt in text_data.split("\n"):
-            if txt.strip() != "":
-                paras.append(" ".join(txt.strip().split()))
-    return paras
+# def get_paragraphs(html_doc):
+#     soup = BeautifulSoup(html_doc, 'html.parser')
+#     paras = []
+#     for para in soup.find_all("p"):
+#         text_data = para.text
+#         for txt in text_data.split("\n"):
+#             if txt.strip() != "":
+#                 paras.append(" ".join(txt.strip().split()))
+#     return paras
 
 # Add authentication
 def authenticate ():
@@ -225,9 +243,18 @@ def index_page ():
                 "message": "Invalid parameters"
             }, 400
 
-    status = index_website(db_name, html_data, url)
+    # cleanup html
+    chtml_data = chtml.process_html(html_data, url)
+    thtml_data = chtml.trim_content(chtml_data["data"]["content"])["result"]
+
+    # index html
+    status = index_website(db_name, thtml_data, chtml_data["data"]["title"], url)
+
     # Build response
     if status:
+        # logging
+        if slogging_session != None:
+            slog.put_log_index(slogging_session, db_name, url, html_data, 0)
         return {
                 "success": True,
                 "databaseName": db_name
@@ -259,6 +286,13 @@ def search ():
             }, 400
 
     urls = search_docs(db_name, query)
+
+    # logging
+    if slogging_session != None:
+        if len(urls) > 0:
+            slog.put_log_search(slogging_session, db_name, query, urls[0])
+        else:
+            slog.put_log_search(slogging_session, db_name, query, "")
 
     # Build response
     return {
@@ -296,6 +330,40 @@ def augment ():
                 "summary": summary_r,
                 "ans": ans_r
             }
+        }, 200
+
+@app.route("/correct", methods=['POST'])
+def correct ():
+    """
+    Correct matches
+    """
+
+    # get parameters
+    query = None
+    db_name = None
+    url = None
+    if extract_request_params(request).get("query") and extract_request_params(request).get("database") and extract_request_params(request).get("url"):
+        query = extract_request_params(request)["query"]
+        db_name = extract_request_params(request)["database"]
+        url = extract_request_params(request)["url"]
+
+    if not query and not db_name and not url:
+        # Build error response
+        return {
+                "success": False,
+                "message": "Invalid parameters"
+            }, 400
+
+    # logging
+    if slogging_session != None:
+        slog.put_log_correct(slogging_session, db_name, query, url)
+
+    # index correction
+    status = index_website(db_name, [], query, url)
+
+    # Build response
+    return {
+            "success": True
         }, 200
 
 
