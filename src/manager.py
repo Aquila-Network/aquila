@@ -4,6 +4,7 @@ import fasttext
 from utils import downloader
 import hashlib
 import base58
+import json
 
 import os
 
@@ -12,6 +13,21 @@ data_dir = os.environ["DATA_STORE_LOCATION"]
 model_dir = data_dir + "models/"
 model_dict = {}
 hash_dict = {}
+
+def write_json_file (file, data):
+    with open(file, 'w') as outfile:
+        json.dump(data, outfile)
+
+def read_json_file (file):
+    with open(file) as json_file:
+        return json.load(json_file)
+
+# prefill model & hash dictionary
+try:
+    model_dict = read_json_file(data_dir + 'hub_model_dict.json')
+    hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
+except Exception as e:
+    logging.error("model & hash dict json read error")
 
 def get_url (schema):
     """
@@ -72,6 +88,13 @@ def preload_model (database_name, json_schema):
             model_dict[hash_dict[database_name]] = memload_model(download_model(get_url(json_schema), model_dir, database_name))
             if model_dict[hash_dict[database_name]]:
                 logging.debug("Model loaded for database: "+database_name)
+
+                # persist to disk
+                try:
+                    write_json_file(data_dir + 'hub_model_dict.json', model_dict)
+                    write_json_file(data_dir + 'hub_hash_dict.json', hash_dict)
+                except Exception as e:
+                    logging.error("model & hash dict json write error")
                 return True
             else:
                 logging.error("Model loading failed for database: "+database_name)
