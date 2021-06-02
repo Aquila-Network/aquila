@@ -11,7 +11,7 @@ import os
 # Maintain a model directory
 data_dir = os.environ["DATA_STORE_LOCATION"]
 model_dir = data_dir + "models/"
-model_dict = None
+model_dict = {}
 hash_dict = None
 
 def write_json_file (file, data):
@@ -72,16 +72,13 @@ def preload_model (database_name, json_schema):
     """
 
     # prefill model & hash dictionary
-    global model_dict
     global hash_dict
-    if model_dict == None or hash_dict == None:
+    if hash_dict == None:
         try:
-            model_dict = read_json_file(data_dir + 'hub_model_dict.json')
             hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
         except Exception as e:
             logging.error("model & hash dict json read error")
             logging.error(e)
-            model_dict = {}
             hash_dict = {}
     
     try:
@@ -97,7 +94,6 @@ def preload_model (database_name, json_schema):
 
                 # persist to disk
                 try:
-                    write_json_file(data_dir + 'hub_model_dict.json', model_dict)
                     write_json_file(data_dir + 'hub_hash_dict.json', hash_dict)
                 except Exception as e:
                     logging.error("model & hash dict json write error")
@@ -118,24 +114,26 @@ def compress_data (database_name, texts):
     """
 
     # prefill model & hash dictionary
-    global model_dict
     global hash_dict
-    if model_dict == None or hash_dict == None:
+    if hash_dict == None:
         try:
-            model_dict = read_json_file(data_dir + 'hub_model_dict.json')
             hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
         except Exception as e:
             logging.error("model & hash dict json read error")
             logging.error(e)
-            model_dict = {}
             hash_dict = {}
 
     if not hash_dict.get(database_name):
         logging.error("Model not pre-loaded for database: "+database_name)
         return []
     if not model_dict.get(hash_dict[database_name]):
-        logging.error("Model not mem-loaded for database: "+database_name)
-        return []
+        # try dynamic loading of model
+        try:
+            model_dict[hash_dict[database_name]] = memload_model(model_dir + database_name + ".bin")
+        except Exception as e:
+            logging.error("Model not mem-loaded for database: "+database_name)
+            logging.error(e)
+            return []
     
     result = []
     try:
