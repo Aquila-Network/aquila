@@ -11,8 +11,8 @@ import os
 # Maintain a model directory
 data_dir = os.environ["DATA_STORE_LOCATION"]
 model_dir = data_dir + "models/"
-model_dict = {}
-hash_dict = {}
+model_dict = None
+hash_dict = None
 
 def write_json_file (file, data):
     with open(file, 'w') as outfile:
@@ -21,13 +21,6 @@ def write_json_file (file, data):
 def read_json_file (file):
     with open(file) as json_file:
         return json.load(json_file)
-
-# prefill model & hash dictionary
-try:
-    model_dict = read_json_file(data_dir + 'hub_model_dict.json')
-    hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
-except Exception as e:
-    logging.error("model & hash dict json read error")
 
 def get_url (schema):
     """
@@ -77,6 +70,19 @@ def preload_model (database_name, json_schema):
     """
     Download a model and load it into memory
     """
+
+    # prefill model & hash dictionary
+    global model_dict
+    global hash_dict
+    if model_dict == None or hash_dict == None:
+        try:
+            model_dict = read_json_file(data_dir + 'hub_model_dict.json')
+            hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
+        except Exception as e:
+            logging.error("model & hash dict json read error")
+            logging.error(e)
+            model_dict = {}
+            hash_dict = {}
     
     try:
         # keep reference to model hash from database (DB - hash map)
@@ -95,6 +101,7 @@ def preload_model (database_name, json_schema):
                     write_json_file(data_dir + 'hub_hash_dict.json', hash_dict)
                 except Exception as e:
                     logging.error("model & hash dict json write error")
+                    logging.error(e)
                 return True
             else:
                 logging.error("Model loading failed for database: "+database_name)
@@ -109,6 +116,19 @@ def compress_data (database_name, texts):
     """
     Load an already existing database 
     """
+
+    # prefill model & hash dictionary
+    global model_dict
+    global hash_dict
+    if model_dict == None or hash_dict == None:
+        try:
+            model_dict = read_json_file(data_dir + 'hub_model_dict.json')
+            hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
+        except Exception as e:
+            logging.error("model & hash dict json read error")
+            logging.error(e)
+            model_dict = {}
+            hash_dict = {}
 
     if not hash_dict.get(database_name):
         logging.error("Model not pre-loaded for database: "+database_name)
