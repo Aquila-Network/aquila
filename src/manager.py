@@ -91,19 +91,22 @@ def preload_model (database_name, json_schema):
             model_dict[hash_dict[database_name]] = memload_model(download_model(get_url(json_schema), model_dir, database_name))
             if model_dict[hash_dict[database_name]]:
                 logging.debug("Model loaded for database: "+database_name)
-
-                # persist to disk
-                try:
-                    write_json_file(data_dir + 'hub_hash_dict.json', hash_dict)
-                except Exception as e:
-                    logging.error("model & hash dict json write error")
-                    logging.error(e)
                 return True
             else:
                 logging.error("Model loading failed for database: "+database_name)
                 # reser DB - hash map
                 hash_dict[database_name] = None
                 return False
+        
+        # persist to disk
+        try:
+            write_json_file(data_dir + 'hub_hash_dict.json', hash_dict)
+            return True
+        except Exception as e:
+            logging.error("model & hash dict json write error")
+            logging.error(e)
+            return False
+
     except Exception as e:
         logging.error(e)
         return False
