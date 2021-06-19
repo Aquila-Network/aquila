@@ -8,7 +8,7 @@ from functools import wraps
 import html_cleanup as chtml
 
 from services import logging as slog
-slogging_session = slog.create_session(["127.0.0.1"])
+slogging_session = slog.create_session(["172.16.126.158"])
 
 import math
 
@@ -68,8 +68,7 @@ def compress_strings (db_name, strings_in):
 def index_website (db_name, paragraphs, title, url):
     # add title as well
     if title != "":
-        paragraphs = paragraphs.append(title)
-
+        paragraphs.append(title)
     compressed = compress_strings(db_name, paragraphs)
     docs = []
     for idx_, para in enumerate(paragraphs):
@@ -290,7 +289,7 @@ def search ():
     # logging
     if slogging_session != None:
         if len(urls) > 0:
-            slog.put_log_search(slogging_session, db_name, query, urls[0])
+            slog.put_log_search(slogging_session, db_name, query, list(urls.keys())[0])
         else:
             slog.put_log_search(slogging_session, db_name, query, "")
 
