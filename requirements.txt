@@ -3,3 +3,4 @@ requests==2.22.0
 Flask_Cors==3.0.9
 Flask==1.1.2
 beautifulsoup4==4.9.3
+numpy==1.20.3
