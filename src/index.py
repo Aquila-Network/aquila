@@ -69,7 +69,6 @@ def index_website (db_name, paragraphs, title, url):
     # add title as well
     if title != "":
         paragraphs.append(title)
-
     compressed = compress_strings(db_name, paragraphs)
     docs = []
     for idx_, para in enumerate(paragraphs):
