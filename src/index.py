@@ -8,7 +8,7 @@ from functools import wraps
 import html_cleanup as chtml
 
 from services import logging as slog
-slogging_session = slog.create_session(["127.0.0.1"])
+slogging_session = slog.create_session(["172.16.126.158"])
 
 import math
 
