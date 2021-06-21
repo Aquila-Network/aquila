@@ -68,7 +68,7 @@ def compress_strings (db_name, strings_in):
 def index_website (db_name, paragraphs, title, url):
     # add title as well
     if title != "":
-        paragraphs = paragraphs.append(title)
+        paragraphs.append(title)
 
     compressed = compress_strings(db_name, paragraphs)
     docs = []
@@ -290,7 +290,7 @@ def search ():
     # logging
     if slogging_session != None:
         if len(urls) > 0:
-            slog.put_log_search(slogging_session, db_name, query, urls[0])
+            slog.put_log_search(slogging_session, db_name, query, list(urls.keys())[0])
         else:
             slog.put_log_search(slogging_session, db_name, query, "")
 
@@ -364,6 +364,40 @@ def correct ():
     # Build response
     return {
             "success": True
+        }, 200
+
+@app.route("/list", methods=['POST'])
+def list ():
+    """
+    List indexed urls
+    """
+
+    # get parameters
+    page = None
+    db_name = None
+    limit = None
+    if extract_request_params(request).get("page") and extract_request_params(request).get("database") and extract_request_params(request).get("limit"):
+        page = extract_request_params(request)["page"]
+        db_name = extract_request_params(request)["database"]
+        limit = extract_request_params(request)["limit"]
+
+    if not page and not db_name and not limit:
+        # Build error response
+        return {
+                "success": False,
+                "message": "Invalid parameters"
+            }, 400
+
+    # get links
+    if slogging_session != None:
+        links = slog.get_all_url(slogging_session, db_name, page, limit)
+
+    # Build response
+    return {
+            "success": True,
+            "result": {
+                "links": links
+            }
         }, 200
 
 
