@@ -365,6 +365,40 @@ def correct ():
             "success": True
         }, 200
 
+@app.route("/list", methods=['POST'])
+def list ():
+    """
+    List indexed urls
+    """
+
+    # get parameters
+    page = None
+    db_name = None
+    limit = None
+    if extract_request_params(request).get("page") and extract_request_params(request).get("database") and extract_request_params(request).get("limit"):
+        page = extract_request_params(request)["page"]
+        db_name = extract_request_params(request)["database"]
+        limit = extract_request_params(request)["limit"]
+
+    if not page and not db_name and not limit:
+        # Build error response
+        return {
+                "success": False,
+                "message": "Invalid parameters"
+            }, 400
+
+    # get links
+    if slogging_session != None:
+        links = slog.get_all_url(slogging_session, db_name, page, limit)
+
+    # Build response
+    return {
+            "success": True,
+            "result": {
+                "links": links
+            }
+        }, 200
+
 
 # Server starter
 def flaskserver ():

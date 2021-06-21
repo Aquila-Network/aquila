@@ -39,6 +39,10 @@ def get_log_index (session, database_name=None, url=None, html=None, is_deleted=
         print(e)
         return []
 
+def get_all_url (session, database_name, page=0, limit=100, is_deleted=0):
+    # fetch all non deleted urls by page
+    return get_log_index(session, database_name=database_name)
+
 def put_log_index (session, database_name, url, html, is_deleted=0):
     # create index table if not available
     # Query
