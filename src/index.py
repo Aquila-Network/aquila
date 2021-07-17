@@ -253,7 +253,10 @@ def index_page ():
     if status:
         # logging
         if slogging_session != None:
+            # index activity logging
             slog.put_log_index(slogging_session, db_name, url, html_data, 0)
+            # metadata logging
+            slog.put_url_summary(slogging_session, db_name, url, chtml_data["data"]["title"], chtml_data["data"]["author"], chtml_data["data"]["lead_image_url"], chtml_data["data"]["next_page_url"], "...".join(thtml_data))
         return {
                 "success": True,
                 "databaseName": db_name
@@ -366,7 +369,7 @@ def correct ():
         }, 200
 
 @app.route("/list", methods=['POST'])
-def list ():
+def listall ():
     """
     List indexed urls
     """
@@ -396,6 +399,37 @@ def list ():
             "success": True,
             "result": {
                 "links": links
+            }
+        }, 200
+
+
+
+@app.route("/urlsummary", methods=['POST'])
+def summary ():
+    """
+    URL summary
+    """
+
+    # get parameters
+    urls = None
+    if extract_request_params(request).get("urls"):
+        urls = extract_request_params(request)["urls"]
+        db_name = extract_request_params(request)["database"]
+
+    if not urls:
+        # Build error response
+        return {
+                "success": False,
+                "message": "Invalid parameters"
+            }, 400
+
+    summary_r = slog.get_url_summary(slogging_session, db_name, urls)
+
+    # Build response
+    return {
+            "success": True,
+            "result": {
+                "summary": summary_r
             }
         }, 200
 
