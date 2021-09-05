@@ -104,7 +104,7 @@ def QAgen(query, context):
 
 # Search docs
 def search_docs(db_name, query):
-    compressed = compress_strings(db_name, [query])[0]
+    compressed = compress_strings(db_name, [query])
     docs, dists = db.search_k_documents(db_name, compressed, 100)
     index = {}
     score = {}
