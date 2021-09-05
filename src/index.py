@@ -6,13 +6,15 @@ from flask import jsonify
 from functools import wraps
 
 import html_cleanup as chtml
+import hub_proxy as hub
 
 from services import logging as slog
 slogging_session = slog.create_session(["172.16.126.158"])
 
 import math
+import numpy as np
 
-from aquilapy import Wallet, DB, Hub
+from aquilapy import Wallet, DB
 from bs4 import BeautifulSoup
 
 from transformers import pipeline
@@ -35,7 +37,7 @@ wallet = Wallet("/ossl/private_unencrypted.pem")
 db = DB("http://aquiladb", "5001", wallet)
 
 # Connect to Aquila Hub instance
-hub = Hub("http://aquilahub", "5002", wallet)
+# hub = Hub("http://aquilahub", "5002", wallet)
 
 def create_database (user_id):
 
@@ -56,7 +58,7 @@ def create_database (user_id):
     db_name = db.create_database(schema_def)
 
     # Craete a database with the schema definition provided
-    db_name_ = hub.create_database(schema_def)
+    # db_name_ = hub.create_database(schema_def)
 
     return db_name, True
 
@@ -72,12 +74,14 @@ def index_website (db_name, paragraphs, title, url):
     compressed = compress_strings(db_name, paragraphs)
     docs = []
     for idx_, para in enumerate(paragraphs):
+        v = compressed[idx_]
+
         docs.append({
             "metadata": {
                 "url": url, 
                 "text": para
             },
-            "code": compressed[idx_]
+            "code": np.true_divide(v, np.linalg.norm(v)).tolist()
         })
     try:
         dids = db.insert_documents(db_name, docs)
@@ -100,12 +104,12 @@ def QAgen(query, context):
 
 # Search docs
 def search_docs(db_name, query):
-    compressed = compress_strings(db_name, [query])
+    compressed = compress_strings(db_name, [query])[0]
     docs, dists = db.search_k_documents(db_name, compressed, 100)
     index = {}
     score = {}
-    max_score = dists[0][-1]
-    min_score = dists[0][0]
+    # max_score = dists[0][-1]
+    # min_score = dists[0][0]
 
     for idx_, doc in enumerate(docs[0]):
         metadata = doc["metadata"]
@@ -116,10 +120,10 @@ def search_docs(db_name, query):
         # (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
         if index.get(metadata["url"]):
             index[metadata["url"]] += 1
-            score[metadata["url"]] += (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
+            score[metadata["url"]] += dists[0][idx_] * math.exp(-0.06*idx_)
         else:
             index[metadata["url"]] = 1
-            score[metadata["url"]] = (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
+            score[metadata["url"]] = dists[0][idx_] * math.exp(-0.06*idx_)
 
     results_d = {}
     n_unique_urls = len(index.keys())
