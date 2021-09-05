@@ -46,7 +46,7 @@ def create_database (user_id):
         "description": "Wikipedia",
         "unique": user_id,
         "encoder": "ftxt:https://ftxt-models.s3.us-east-2.amazonaws.com/cc.en.300.bin",
-        "codelen": 300,
+        "codelen": 768,
         "metadata": {
             "url": "string",
             "text": "string"
