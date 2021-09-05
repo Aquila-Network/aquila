@@ -53,7 +53,7 @@ class Faiss:
     def init_faiss(self, matrix):
         self.train_data = np.matrix(matrix).astype('float32')
         logging.debug('FAISS init quantizer')
-        self.f_quantizer = faiss.IndexFlatL2(self.dim)
+        self.f_quantizer = faiss.IndexFlatIP(self.dim)
         # Lock index read / wtite until it is built
         with self._lock:
             logging.debug('FAISS init index')

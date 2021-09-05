@@ -9,8 +9,8 @@ faiss:
     bpsv: 8 # bytes per sub vector
 annoy:
   init:
-    smetric: "angular" # similarity metric to be used
-    ntrees: 10 # no. of trees
+    smetric: "dot" # similarity metric to be used
+    ntrees: 500 # no. of trees
     search_k: -1 # search_k is provided in runtime and affects the search performance. A larger value will give more accurate results, but will take longer time to return.
 queue:
   qlen: 100000 # length limit for quesues used
