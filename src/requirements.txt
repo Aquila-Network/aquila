@@ -17,7 +17,7 @@ regex==2021.3.17
 requests==2.25.1
 sacremoses==0.0.43
 sentence-transformers==2.0.0
-sentencepiece==0.1.92
+sentencepiece==0.1.96
 six==1.15.0
 tokenizers==0.10.1
 torch==1.8.0
