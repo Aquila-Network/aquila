@@ -45,11 +45,12 @@ docker build -t aquilax:local .
 mkdir -p ${HOME}/proxy
 cd ${HOME}/proxy
 git clone https://github.com/Aquila-HQ/proxy.git .
-docker build -f Dockerfile_pxy -t aqpxy:local .
+git checkout python
+docker build -f Dockerfile -t aqpxy:local .
 
 # build proxy db image
-cd ${HOME}/proxy
-docker build -f Dockerfile_db -t tiedot:local .
+# cd ${HOME}/proxy
+# docker build -f Dockerfile_db -t tiedot:local .
 
 # build txt processing service
 mkdir -p ${HOME}/txtp

@@ -6,6 +6,7 @@ certifi==2020.12.5
 chardet==4.0.0
 click==7.1.2
 filelock==3.0.12
+huggingface-hub==0.0.15
 idna==2.10
 importlib-metadata==3.7.3
 joblib==1.0.1
@@ -15,6 +16,8 @@ pyparsing==2.4.7
 regex==2021.3.17
 requests==2.25.1
 sacremoses==0.0.43
+sentence-transformers==2.0.0
+sentencepiece==0.1.92
 six==1.15.0
 tokenizers==0.10.1
 torch==1.8.0

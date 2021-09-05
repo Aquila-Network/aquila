@@ -34,14 +34,14 @@ services:
       - 5000:5000
     volumes:
       - ${HOME}/aquilax/data:/home/data
-  pdb:
-    image: tiedot:local
-    container_name: pdb
-    restart: always
-    # ports:
-    #   - 5534:5534
-    volumes:
-      - ${HOME}/aquilax/data:/home/data
+  # pdb:
+  #   image: tiedot:local
+  #   container_name: pdb
+  #   restart: always
+  #   # ports:
+  #   #   - 5534:5534
+  #   volumes:
+  #     - ${HOME}/aquilax/data:/home/data
   mercury:
     image: mercury:local
     container_name: mercury
