@@ -123,7 +123,7 @@ def search_docs(db_name, query):
             # score[metadata["url"]] += dists[0][idx_] * math.exp(-0.06*idx_)
             pass
         else:
-            # index[metadata["url"]] = 1
+            index[metadata["url"]] = 1
             score[metadata["url"]] = dists[0][idx_] # * math.exp(-0.06*idx_)
 
     results_d = {}
