@@ -1,6 +1,6 @@
 import express from "express";
 var app = express();
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 const port = 5009
 
 import Mercury from "@postlight/mercury-parser";
@@ -8,7 +8,6 @@ import pkg from 'node-html-parser';
 const { parse } = pkg;
 
 app.post('/process', function (req, res) {
-    console.log(req.body);
     if (req.body.url && req.body.html) {
         Mercury.parse(req.body.url, {
             html: req.body.html

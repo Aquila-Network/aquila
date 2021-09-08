@@ -21,7 +21,8 @@ from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 from bs4 import BeautifulSoup
 
-
+import nltk
+nltk.download('punkt')
 LANGUAGE = "english"
 
 def get_paragraphs(html_doc):
