@@ -81,7 +81,7 @@ def index_website (db_name, paragraphs, title, url):
                 "url": url, 
                 "text": para
             },
-            "code": np.true_divide(v, np.linalg.norm(v)).tolist()
+            "code": v # np.true_divide(v, np.linalg.norm(v)).tolist()
         })
     try:
         dids = db.insert_documents(db_name, docs)
@@ -119,18 +119,19 @@ def search_docs(db_name, query):
         #                                                            - 1->0 : lesser steep curve -
         # (1 - (dists[0][idx_]-min_score) / (max_score-min_score)) * math.exp(-0.06*idx_)
         if index.get(metadata["url"]):
-            index[metadata["url"]] += 1
-            score[metadata["url"]] += dists[0][idx_] * math.exp(-0.06*idx_)
+            # index[metadata["url"]] += 1
+            # score[metadata["url"]] += dists[0][idx_] * math.exp(-0.06*idx_)
+            pass
         else:
-            index[metadata["url"]] = 1
-            score[metadata["url"]] = dists[0][idx_] * math.exp(-0.06*idx_)
+            # index[metadata["url"]] = 1
+            score[metadata["url"]] = dists[0][idx_] # * math.exp(-0.06*idx_)
 
     results_d = {}
-    n_unique_urls = len(index.keys())
+    # n_unique_urls = len(index.keys())
     
     for key in index:
         #                           ---- Representative rebalance ----
-        results_d[key] = score[key] / index[key] / n_unique_urls
+        results_d[key] = score[key] # / index[key] / n_unique_urls
 
     results_d = {k: v for k, v in sorted(results_d.items(), key=lambda item: item[1], reverse=True)}
 
