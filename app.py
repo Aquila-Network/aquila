@@ -30,10 +30,11 @@ def get_paragraphs(html_doc):
     counter = 0
     for para in soup.find_all("p"):
         text_data = para.text
-        for txt in text_data.split("\n"):
-            if txt.strip() != "":
-                counter += 1
-                paras.append(" ".join(txt.strip().split()))
+        # for txt in text_data.split("\n"):
+        #     if txt.strip() != "":
+        #         counter += 1
+        #         paras.append(" ".join(txt.strip().split()))
+        paras.append(" ".join(text_data.strip().split("\n")))
     return paras, counter
 
 def extract_request_params (request):
@@ -69,22 +70,22 @@ def process ():
 
     # process logic
     text_in, nlines = get_paragraphs(html)
-    sentances_ret = []
+    sentances_ret = text_in # []
 
-    parser = PlaintextParser.from_string("\n".join(text_in), Tokenizer(LANGUAGE))
-    stemmer = Stemmer(LANGUAGE)
+    # parser = PlaintextParser.from_string("\n".join(text_in), Tokenizer(LANGUAGE))
+    # stemmer = Stemmer(LANGUAGE)
 
-    summarizer = Summarizer(stemmer)
-    summarizer.stop_words = get_stop_words(LANGUAGE)
+    # summarizer = Summarizer(stemmer)
+    # summarizer.stop_words = get_stop_words(LANGUAGE)
 
-    SENTENCES_COUNT = int(nlines * 0.2)
-    if SENTENCES_COUNT > 100:
-        SENTENCES_COUNT = 100
-    if SENTENCES_COUNT < 1:
-        SENTENCES_COUNT = nlines
+    # SENTENCES_COUNT = int(nlines * 0.2)
+    # if SENTENCES_COUNT > 100:
+    #     SENTENCES_COUNT = 100
+    # if SENTENCES_COUNT < 1:
+    #     SENTENCES_COUNT = nlines
         
-    for sentence in summarizer(parser.document, SENTENCES_COUNT):
-        sentances_ret.append(sentence._text)
+    # for sentence in summarizer(parser.document, SENTENCES_COUNT):
+    #     sentances_ret.append(sentence._text)
 
     # Build response
     return {
