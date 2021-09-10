@@ -1,3 +1,6 @@
+# this script is used to migrate data from old aquilaDB databases to new ones 
+# when a new ML encoder model is added in aquila hub.
+
 from cassandra.cluster import Cluster
 
 from ..index import create_database

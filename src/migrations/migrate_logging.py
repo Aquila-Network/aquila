@@ -1,3 +1,5 @@
+# this script is used to setup initial tables for logging of user behaviours
+
 from cassandra.cluster import Cluster
 
 # create a cassandra session
