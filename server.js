@@ -10,7 +10,7 @@ import Mercury from "@postlight/mercury-parser";
 app.post('/process', function (req, res) {
     if (req.body.url && req.body.html) {
         Mercury.parse(req.body.url, {
-            html: Buffer.from(req.body.html, 'utf8')
+            html: req.body.html
         }).then(result => {
 //             var root = parse(result.content);
             res.send({
