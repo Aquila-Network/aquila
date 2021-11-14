@@ -6,7 +6,13 @@ import hashlib
 import base58
 import json
 
+from sentence_transformers import SentenceTransformer
+
 import os
+
+# define constants
+MODEL_FASTTEXT = "ftxt"
+MODEL_S_TRANSFORMER = "strn"
 
 # Maintain a model directory
 data_dir = os.environ["DATA_STORE_LOCATION"]
@@ -42,29 +48,41 @@ def download_model (url, directory, file_name):
     Download a model from a URL
     """
 
-    # cleanup url - get rid of `ftxt:` in the beginning
-    if url.split(":")[0] == "ftxt":
+    # handle fasttext models from url or IPFS
+    if url.split(":")[0] == MODEL_FASTTEXT:
         url = ":".join(url.split(":")[1:])
-    
+        
         if url.split(":")[0] == "http" or url.split(":")[0] == "https":
-            return downloader.http_download(url, directory, file_name)
+            return MODEL_FASTTEXT, downloader.http_download(url, directory, file_name)
 
         elif url.split(":")[0] == "ipfs":
-            return downloader.ipfs_download(url, directory, file_name)
+            return MODEL_FASTTEXT, downloader.ipfs_download(url, directory, file_name)
+    elif url.split(":")[0] == MODEL_S_TRANSFORMER:
+        url = ":".join(url.split(":")[1:])
+        return MODEL_S_TRANSFORMER, url
     else:
-        logging.error("Invalid encoder URL. Follow this format 'ftxt:<http | ipfs>://<LOCATION | IPFS CID>' ")
-        return None
+        logging.error("Invalid encoder specified in schema definition.")
+        return None, ""
 
-def memload_model (model_filename):
+def memload_model (model_type, model_filename):
     """
     Load a model from disk
     """
 
-    if model_filename:
-        logging.debug("loading model into memory..")
-        return fasttext.load_model(model_filename)
+    if model_type == MODEL_FASTTEXT:
+        if model_filename:
+            logging.debug("loading fasttext model into memory..")
+            return model_type, fasttext.load_model(model_filename)
+        else:
+            return None, None
+    elif model_type == MODEL_S_TRANSFORMER:
+        if model_filename:
+            logging.debug("loading STransformer model into memory..")
+            return model_type, SentenceTransformer(model_filename)
+        else:
+            return None, None
     else:
-        return None
+        return None, None
 
 def preload_model (database_name, json_schema):
     """
@@ -88,8 +106,10 @@ def preload_model (database_name, json_schema):
 
         # keep reference to model memory from hash (hash - mem model map)
         if not model_dict.get(hash_dict[database_name]):
-            model_dict[hash_dict[database_name]] = memload_model(download_model(get_url(json_schema), model_dir, database_name))
-            if model_dict[hash_dict[database_name]]:
+            model_dict[hash_dict[database_name]] = {}
+            model_dict[hash_dict[database_name]]["type"], model_dict[hash_dict[database_name]]["model"] = memload_model(*download_model(get_url(json_schema), model_dir, database_name))
+            
+            if model_dict[hash_dict[database_name]]["model"]:
                 logging.debug("Model loaded for database: "+database_name)
                 return True
             else:
@@ -132,7 +152,8 @@ def compress_data (database_name, texts):
     if not model_dict.get(hash_dict[database_name]):
         # try dynamic loading of model
         try:
-            model_dict[hash_dict[database_name]] = memload_model(model_dir + database_name + ".bin")
+            model_dict[hash_dict[database_name]] = {}
+            model_dict[hash_dict[database_name]]["type"], model_dict[hash_dict[database_name]]["model"] = memload_model(MODEL_FASTTEXT, model_dir + database_name + ".bin")
         except Exception as e:
             logging.error("Model not mem-loaded for database: "+database_name)
             logging.error(e)
@@ -141,7 +162,12 @@ def compress_data (database_name, texts):
     result = []
     try:
         for text in texts:
-            result.append(model_dict[hash_dict[database_name]].get_sentence_vector(text).tolist())
+            # fasttext model prediction
+            if model_dict[hash_dict[database_name]]["type"] == MODEL_FASTTEXT:
+                result.append(model_dict[hash_dict[database_name]]["model"].get_sentence_vector(text).tolist())
+            # stransformer model prediction
+            if model_dict[hash_dict[database_name]]["type"] == MODEL_S_TRANSFORMER:
+                result.append(model_dict[hash_dict[database_name]]["model"].encode(text).tolist())
 
         return result
     except Exception as e:
