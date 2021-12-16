@@ -78,6 +78,8 @@ We currently have multiple client libraries in progress to abstract the communic
 
 [Python](https://github.com/Aquila-Network/AquilaPy)
 
+[Node JS](https://github.com/Aquila-Network/AquilaJS)
+
 # Progress
 This project is still and will be under active development with intermediate production releases. It can either be used as a standalone database or as a participating node in Aquila Network. Please note, [Aquila Port](https://github.com/Aquila-Network/specs/blob/main/README.md#aquila-port) (peer-peer network layer for Aquila DB nodes) is also a work in progress. Currently, you need to deploy your custom models to feed vector embeddings to Aquila DB, until [Aquila Hub](https://github.com/Aquila-Network/specs/blob/main/README.md#aquila-hub) developments get started.
 
