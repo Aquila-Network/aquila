@@ -1,176 +1,89 @@
 import logging
+logging.basicConfig()
+logging.getLogger().setLevel(logging.DEBUG)
 
-import fasttext
-from utils import downloader
-import hashlib
-import base58
-import json
+import asyncio
 
-from sentence_transformers import SentenceTransformer
+from utils import CID, schema
 
-import os
+import encoder as enc_
 
-# define constants
-MODEL_FASTTEXT = "ftxt"
-MODEL_S_TRANSFORMER = "strn"
+SLEEP_PROTECTION = 0.001
 
-# Maintain a model directory
-data_dir = os.environ["DATA_STORE_LOCATION"]
-model_dir = data_dir + "models/"
-model_dict = {}
-hash_dict = None
-
-def write_json_file (file, data):
-    with open(file, 'w') as outfile:
-        json.dump(data, outfile)
-
-def read_json_file (file):
-    with open(file) as json_file:
-        return json.load(json_file)
-
-def get_url (schema):
+def get_database_name (schema_in):
     """
-    Get model url from a schema
-    """
-    
-    if schema.get("encoder") != None:
-        return schema["encoder"]
-    else:
-        return None
-
-def get_url_hash (url):
-    hash_ = hashlib.sha256(url.encode('utf-8'))
-    b58c_ = base58.b58encode(hash_.digest())
-    return b58c_.decode('utf-8')
-
-def download_model (url, directory, file_name):
-    """
-    Download a model from a URL
+    Get databse name from schema
     """
 
-    # handle fasttext models from url or IPFS
-    if url.split(":")[0] == MODEL_FASTTEXT:
-        url = ":".join(url.split(":")[1:])
-        
-        if url.split(":")[0] == "http" or url.split(":")[0] == "https":
-            return MODEL_FASTTEXT, downloader.http_download(url, directory, file_name)
-
-        elif url.split(":")[0] == "ipfs":
-            return MODEL_FASTTEXT, downloader.ipfs_download(url, directory, file_name)
-    elif url.split(":")[0] == MODEL_S_TRANSFORMER:
-        url = ":".join(url.split(":")[1:])
-        return MODEL_S_TRANSFORMER, url
-    else:
-        logging.error("Invalid encoder specified in schema definition.")
-        return None, ""
-
-def memload_model (model_type, model_filename):
-    """
-    Load a model from disk
-    """
-
-    if model_type == MODEL_FASTTEXT:
-        if model_filename:
-            logging.debug("loading fasttext model into memory..")
-            return model_type, fasttext.load_model(model_filename)
-        else:
-            return None, None
-    elif model_type == MODEL_S_TRANSFORMER:
-        if model_filename:
-            logging.debug("loading STransformer model into memory..")
-            return model_type, SentenceTransformer(model_filename)
-        else:
-            return None, None
-    else:
-        return None, None
-
-def preload_model (database_name, json_schema):
-    """
-    Download a model and load it into memory
-    """
-
-    # prefill model & hash dictionary
-    global hash_dict
-    if hash_dict == None:
-        try:
-            hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
-        except Exception as e:
-            logging.error("model & hash dict json read error")
-            logging.error(e)
-            hash_dict = {}
-    
+    database_name = None
     try:
-        # keep reference to model hash from database (DB - hash map)
-        if not hash_dict.get(database_name):
-            hash_dict[database_name] = get_url_hash(get_url(json_schema))
+        schema_def = schema.generate_schema(schema_in)
+        database_name = CID.doc2CID(schema_def)
+    except Exception as e:
+        logging.error(e)
 
-        # keep reference to model memory from hash (hash - mem model map)
-        if not model_dict.get(hash_dict[database_name]):
-            model_dict[hash_dict[database_name]] = {}
-            model_dict[hash_dict[database_name]]["type"], model_dict[hash_dict[database_name]]["model"] = memload_model(*download_model(get_url(json_schema), model_dir, database_name))
-            
-            if model_dict[hash_dict[database_name]]["model"]:
-                logging.debug("Model loaded for database: "+database_name)
-                return True
+    return database_name
+
+class Manager ():
+    def __init__(self):
+        # to track all database - encoder mappings
+        self.encoders_map = {}
+
+    def __del__(self):
+        logging.debug("Killed manager")
+
+    def preload_model (self, json_schema):
+        """
+        Download a model and load it into memory
+        """
+
+        database_name = get_database_name(json_schema)
+        if database_name:
+            if not self.encoders_map.get(database_name):
+                self.encoders_map[database_name] = enc_.Encoder(database_name, asyncio.Queue())
+                if self.encoders_map[database_name].preload_model(json_schema):
+                    return database_name
+                else:
+                    return None
             else:
-                logging.error("Model loading failed for database: "+database_name)
-                # reser DB - hash map
-                hash_dict[database_name] = None
-                return False
-        
-        # persist to disk
-        try:
-            write_json_file(data_dir + 'hub_hash_dict.json', hash_dict)
-            return True
-        except Exception as e:
-            logging.error("model & hash dict json write error")
-            logging.error(e)
-            return False
+                return database_name
+        else:
+            return None
 
-    except Exception as e:
-        logging.error(e)
-        return False
+    async def compress_data (self, database_name, texts):
+        """
+        Load an already existing database 
+        """
+        if self.encoders_map.get(database_name):
+            response_ = None
+            # add compression request to queue, get request id
+            req_id = await self.encoders_map[database_name].enqueue_compress_data(texts)
+            # wait until request id is processed
+            while (True):
+                # response available yet?
+                response_ = self.encoders_map[database_name].response_queue[req_id]
+                if response_ != None:
+                    # response available; take it, reset queue & break waiting
+                    self.encoders_map[database_name].response_queue[req_id] = None
+                    break
+                # sleep for a while
+                await asyncio.sleep(SLEEP_PROTECTION)
+            return response_
+        else:
+            return None
 
-def compress_data (database_name, texts):
-    """
-    Load an already existing database 
-    """
+    # define background task to process request queue for each database object
+    async def background_task(self):
+        logging.debug("===== Background task INIT =====")
+        while self.bg_task_active:
+            # for each database object
+            for key_ in self.encoders_map:
+                # any request available in queue?
+                if self.encoders_map[key_].request_queue.empty():
+                    continue
+                # process request
+                await self.encoders_map[key_].process_queue()
+                # Write to Disk # TODO: write to disk all metadata for each database object serially
+                self.encoders_map[key_].write_to_disk()
 
-    # prefill model & hash dictionary
-    global hash_dict
-    if hash_dict == None:
-        try:
-            hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
-        except Exception as e:
-            logging.error("model & hash dict json read error")
-            logging.error(e)
-            hash_dict = {}
-
-    if not hash_dict.get(database_name):
-        logging.error("Model not pre-loaded for database: "+database_name)
-        return []
-    if not model_dict.get(hash_dict[database_name]):
-        # try dynamic loading of model
-        try:
-            model_dict[hash_dict[database_name]] = {}
-            model_dict[hash_dict[database_name]]["type"], model_dict[hash_dict[database_name]]["model"] = memload_model(MODEL_FASTTEXT, model_dir + database_name + ".bin")
-        except Exception as e:
-            logging.error("Model not mem-loaded for database: "+database_name)
-            logging.error(e)
-            return []
-    
-    result = []
-    try:
-        for text in texts:
-            # fasttext model prediction
-            if model_dict[hash_dict[database_name]]["type"] == MODEL_FASTTEXT:
-                result.append(model_dict[hash_dict[database_name]]["model"].get_sentence_vector(text).tolist())
-            # stransformer model prediction
-            if model_dict[hash_dict[database_name]]["type"] == MODEL_S_TRANSFORMER:
-                result.append(model_dict[hash_dict[database_name]]["model"].encode(text).tolist())
-
-        return result
-    except Exception as e:
-        logging.error(e)
-        logging.error("Model prediction error for database: "+database_name)
-        return []
+            await asyncio.sleep(SLEEP_PROTECTION)
