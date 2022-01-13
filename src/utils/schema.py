@@ -80,7 +80,6 @@ def generate_schema (template):
     generated_schema["definitions"]["metadata"]["properties"] = metadata
     generated_schema["definitions"]["metadata"]["required"] = list(metadata.keys())
 
-
     # validate values
     if type(generated_schema["properties"]["code"].get("maxItems")) != int:
         return None

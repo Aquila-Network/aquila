@@ -100,7 +100,7 @@ class Encoder ():
         self.response_queue = [None] * self.request_id_counter_max
 
     def __del__(self):
-        logging.debug("killed encoder for database: ", self.database_name)
+        logging.debug("killed encoder for database")
 
     def count_request_id (self):
         ret_ = self.request_id_counter
@@ -130,15 +130,17 @@ class Encoder ():
             # keep reference to model memory from hash (hash - mem model map)
             if not model_dict.get(hash_dict[self.database_name]):
                 model_dict[hash_dict[self.database_name]] = {}
-                model_dict[hash_dict[self.database_name]]["type"], model_dict[hash_dict[self.database_name]]["model"] = memload_model(*download_model(get_url(json_schema), model_dir, self.database_name))
+                model_type_, model_file_loc_ = download_model(get_url(json_schema), model_dir, self.database_name)
+                if model_file_loc_ != None:
+                    model_dict[hash_dict[self.database_name]]["type"], model_dict[hash_dict[self.database_name]]["model"] = memload_model(model_type_, model_file_loc_)
                 
-                if model_dict[hash_dict[self.database_name]]["model"]:
+                if model_dict[hash_dict[self.database_name]].get("model"):
                     logging.debug("Model loaded for database: "+self.database_name)
                     return True
                 else:
                     logging.error("Model loading failed for database: "+self.database_name)
-                    # reser DB - hash map
-                    hash_dict[self.database_name] = None
+                    # reset DB - hash map
+                    del hash_dict[self.database_name]
                     return False
             
             # persist to disk # TODO: serialize across objects

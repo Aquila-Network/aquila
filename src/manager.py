@@ -44,6 +44,7 @@ class Manager ():
                 if self.encoders_map[database_name].preload_model(json_schema):
                     return database_name
                 else:
+                    self.encoders_map[database_name] = None
                     return None
             else:
                 return database_name
