@@ -13,20 +13,12 @@ import os
 # define constants
 MODEL_FASTTEXT = "ftxt"
 MODEL_S_TRANSFORMER = "strn"
+PREDICT_BATCH_SIZE = 1000
 
 # Maintain a model directory
 data_dir = os.environ["DATA_STORE_LOCATION"]
 model_dir = data_dir + "models/"
 model_dict = {}
-hash_dict = None
-
-def write_json_file (file, data):
-    with open(file, 'w') as outfile:
-        json.dump(data, outfile)
-
-def read_json_file (file):
-    with open(file) as json_file:
-        return json.load(json_file)
 
 def get_url (schema):
     """
@@ -53,10 +45,10 @@ def download_model (url, directory, file_name):
         url = ":".join(url.split(":")[1:])
         
         if url.split(":")[0] == "http" or url.split(":")[0] == "https":
-            return MODEL_FASTTEXT, downloader.http_download(url, directory, file_name)
+            return MODEL_FASTTEXT, downloader.http_download(url, directory, file_name+".bin")
 
         elif url.split(":")[0] == "ipfs":
-            return MODEL_FASTTEXT, downloader.ipfs_download(url, directory, file_name)
+            return MODEL_FASTTEXT, downloader.ipfs_download(url, directory, file_name+".bin")
     elif url.split(":")[0] == MODEL_S_TRANSFORMER:
         url = ":".join(url.split(":")[1:])
         return MODEL_S_TRANSFORMER, url
@@ -90,8 +82,8 @@ class EncodeRequest ():
         self.text = text_in
 
 class Encoder ():
-    def __init__(self, database_name_in, request_queue_in):
-        self.database_name = database_name_in
+    def __init__(self, encoder_name_in, request_queue_in):
+        self.encoder_name = get_url_hash(encoder_name_in)
         # to handle requests
         self.request_queue = request_queue_in
         self.request_id_counter = 0
@@ -107,50 +99,40 @@ class Encoder ():
         self.request_id_counter = (self.request_id_counter + 1) % self.request_id_counter_max
         return ret_
 
-    def preload_model (self, json_schema):
+    def preload_model (self, json_schema, database_name):
         """
         Download a model and load it into memory
         """
 
         # prefill model & hash dictionary
-        global hash_dict
-        if hash_dict == None:
-            try:
-                hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
-            except Exception as e:
-                logging.error("model & hash dict json read error")
-                logging.error(e)
-                hash_dict = {}
+        global model_dict
         
         try:
-            # keep reference to model hash from database (DB - hash map)
-            if not hash_dict.get(self.database_name):
-                hash_dict[self.database_name] = get_url_hash(get_url(json_schema))
-
-            # keep reference to model memory from hash (hash - mem model map)
-            if not model_dict.get(hash_dict[self.database_name]):
-                model_dict[hash_dict[self.database_name]] = {}
-                model_type_, model_file_loc_ = download_model(get_url(json_schema), model_dir, self.database_name)
+            # load model if not done already
+            if not model_dict.get(self.encoder_name):
+                model_type_, model_file_loc_ = download_model(get_url(json_schema), model_dir, self.encoder_name)
+                # download success
                 if model_file_loc_ != None:
-                    model_dict[hash_dict[self.database_name]]["type"], model_dict[hash_dict[self.database_name]]["model"] = memload_model(model_type_, model_file_loc_)
-                
-                if model_dict[hash_dict[self.database_name]].get("model"):
-                    logging.debug("Model loaded for database: "+self.database_name)
+                    model_dict[self.encoder_name] = {}
+                    # load into memory
+                    model_dict[self.encoder_name]["type"], model_dict[self.encoder_name]["model"] = memload_model(model_type_, model_file_loc_)
+                    # memory loading failed
+                    if model_dict[self.encoder_name]["type"] == None:
+                        logging.error("Memory loading of model failed")
+                        return False
+                else:
+                    return False
+
+                if model_dict[self.encoder_name].get("model"):
+                    logging.debug("Model loaded for database: "+database_name)
                     return True
                 else:
-                    logging.error("Model loading failed for database: "+self.database_name)
+                    logging.error("Model loading failed for database: "+database_name)
                     # reset DB - hash map
-                    del hash_dict[self.database_name]
+                    del model_dict[self.encoder_name]
                     return False
-            
-            # persist to disk # TODO: serialize across objects
-            try:
-                write_json_file(data_dir + 'hub_hash_dict.json', hash_dict)
+            else:
                 return True
-            except Exception as e:
-                logging.error("model & hash dict json write error")
-                logging.error(e)
-                return False
 
         except Exception as e:
             logging.error(e)
@@ -166,13 +148,6 @@ class Encoder ():
 
         return request_.id
 
-    def write_to_disk (self):
-        """
-        Write all metadata to disk periodically
-        """
-
-        pass
-
     async def process_queue (self):
         """
         Load an already existing model, pop request queue,
@@ -181,7 +156,7 @@ class Encoder ():
 
         request_data = []
         request_metadata = []
-        max_batch_len = 64 # model's batching capacity
+        max_batch_len = PREDICT_BATCH_SIZE # model's batching capacity
         # create batch from req. queue
         while(not self.request_queue.empty()):
             # get an item from queue
@@ -194,41 +169,34 @@ class Encoder ():
 
 
         # prefill model & hash dictionary
-        global hash_dict
-        if hash_dict == None:
-            try:
-                hash_dict = read_json_file(data_dir + 'hub_hash_dict.json')
-            except Exception as e:
-                logging.error("model & hash dict json read error")
-                logging.error(e)
-                hash_dict = {}
+        global model_dict
 
-        if not hash_dict.get(self.database_name):
-            logging.error("Model not pre-loaded for database: "+self.database_name)
-            return []
-        if not model_dict.get(hash_dict[self.database_name]):
+        # model_dict[self.encoder_name]
+        if not model_dict.get(self.encoder_name):
             # try dynamic loading of model
             try:
-                model_dict[hash_dict[self.database_name]] = {}
-                model_dict[hash_dict[self.database_name]]["type"], model_dict[hash_dict[self.database_name]]["model"] = memload_model(MODEL_FASTTEXT, model_dir + self.database_name + ".bin")
+                model_dict[self.encoder_name] = {}
+                model_dict[self.encoder_name]["type"], model_dict[self.encoder_name]["model"] = memload_model(MODEL_FASTTEXT, model_dir + self.encoder_name + ".bin")
             except Exception as e:
-                logging.error("Model not mem-loaded for database: "+self.database_name)
+                logging.error("Model not pre-loaded for database.")
                 logging.error(e)
                 return []
         
         result = []
         try:
-            # for text in texts:
             # fasttext model prediction
-            if model_dict[hash_dict[self.database_name]]["type"] == MODEL_FASTTEXT:
-                result = model_dict[hash_dict[self.database_name]]["model"].get_sentence_vector(request_data).tolist()
+            if model_dict[self.encoder_name]["type"] == MODEL_FASTTEXT:
+                result = []
+                # fasttext doesn't take in batch; so, loop it.
+                for line_ in request_data:
+                    result.append(model_dict[self.encoder_name]["model"].get_sentence_vector(line_).tolist())
             # stransformer model prediction
-            if model_dict[hash_dict[self.database_name]]["type"] == MODEL_S_TRANSFORMER:
-                result = model_dict[hash_dict[self.database_name]]["model"].encode(request_data).tolist()
+            if model_dict[self.encoder_name]["type"] == MODEL_S_TRANSFORMER:
+                result = model_dict[self.encoder_name]["model"].encode(request_data).tolist()
 
         except Exception as e:
             logging.error(e)
-            logging.error("Model prediction error for database: "+self.database_name)
+            logging.error("Model prediction error for database.")
         
         # add results to response queue
         self.response_queue[request_metadata[0][0]] = result[0:request_metadata[0][1]]
