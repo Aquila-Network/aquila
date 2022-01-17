@@ -1,4 +1,4 @@
 auth:
   pubkey: "/ossl/public.pem"
 ipfs:
-  api: "http://127.0.0.1:5001/api"
+  gateway: "http://127.0.0.1:8080"
