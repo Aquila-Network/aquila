@@ -137,6 +137,12 @@ async def compress_data ():
 @app.before_serving
 async def init_variables():
     app.manager = man_.Manager()
+    # prepare HUB from backup
+    try:
+        app.manager.prepare_hub()
+    except Exception as e:
+        logging.error("Backup restore failed")
+        logging.error(e)
     # initialize background task controller
     app.manager.bg_task_active = True
 
