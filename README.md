@@ -97,7 +97,6 @@ We have started meeting developers and do small talks on Aquila DB. Here are the
 
 As of current AquilaDB release features, you can build **[Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf)** applications out of the box without any external dependencies. Here are some useful links to learn more about it and start building:
 
-* These use case examples will give you an understanding of what is possible and what not: https://github.com/a-mma/AquilaDB/wiki
 * Microsoft published a paper and youtube video on this to onboard anyone interested: 
   * paper: https://www.microsoft.com/en-us/research/uploads/prod/2017/06/INR-061-Mitra-neuralir-intro.pdf
   * video: https://www.youtube.com/watch?v=g1Pgo5yTIKg
