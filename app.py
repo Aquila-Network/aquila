@@ -5,7 +5,7 @@ from __future__ import division, print_function, unicode_literals
 
 import logging
 
-import ast
+import re
 
 from flask import Flask, request
 from flask_cors import CORS
@@ -26,15 +26,26 @@ nltk.download('punkt')
 LANGUAGE = "english"
 
 def get_paragraphs(html_doc):
-    soup = BeautifulSoup(html_doc, 'html.parser')
+    cleantext = BeautifulSoup(html_doc, "lxml").text
     paras = []
     counter = 0
-    for para in soup.find_all("p"):
-        text_data = para.text
-        for txt in text_data.split("\n"):
-            if txt.strip() != "":
-                counter += 1
-                paras.append(" ".join(txt.strip().split()))
+    
+    pattern_ = r"\n|(?<=[a-z]\.)\s+"
+    result = re.split(pattern_, cleantext)
+    for para_ in result:
+        if para_ != None:
+            # remove citations
+            c_pattern_ = r"\[[^\[]*?\]"
+            para = re.sub(c_pattern_, "", para_)
+            # remove special chars
+            sc_pattern = r"[^A-Za-z0-9]+"
+            para__ = re.sub(sc_pattern, "", para)
+            if para__.strip() != "":
+                # minimum 10 words in a sentance is needed
+                if len(para.split()) > 10:
+                    counter += 1
+                    paras.append(para.strip())
+
     return paras, counter
 
 def extract_request_params (request):
