@@ -7,7 +7,7 @@ WORKDIR $ROOT_DIR
 
 # install aquiladb
 RUN apt update && apt install -y curl && \
-    curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/install.sh | /bin/bash -s -- -m 0
+    curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/python10/install.sh | /bin/bash -s -- -m 0
 
 
 # start a new runner stage
