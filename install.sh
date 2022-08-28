@@ -34,7 +34,7 @@ then
 fi
 
 # system packs install
-apt install -y git wget nano python3.8 python3-pip libssl-dev
+apt install -y git wget nano python3 python3-pip libssl-dev
 if [[ $mini -eq 0 ]]; # if minimal install disabled
 then
     apt install -y libblas-dev liblapack-dev swig
