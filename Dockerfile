@@ -9,7 +9,7 @@ WORKDIR $ROOT_DIR
 
 # install aquiladb
 RUN apt update && apt install -y curl && \
-    curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/python10/install.sh | /bin/bash
+    curl -s -L https://raw.githubusercontent.com/Aquila-Network/AquilaDB/master/install.sh | /bin/bash
 
 # preperations
 ENV PATH="$ROOT_DIR/env/bin:$PATH"
