@@ -81,6 +81,25 @@ We currently have multiple client libraries in progress to abstract the communic
 
 [Node JS](https://github.com/Aquila-Network/AquilaJS)
 
+## Where to get private key (wallet key) for client authentication
+When you use a client library to authenticate with AquilaDB, you might need access the same private key (wallet key) used by AquilaDB. This key is located inside `/ossl/` directory within AquilaDB docker container (in your computer if you have installed AquilaDB directly without docker). To access the keys inside your AquilaDB container, follow below steps:
+
+* identify `CONTAINER ID` for the already running `aquiladb` docker instance:
+`docker ps`
+* take a copy of private keys from docker container to your host machine:
+`docker cp CONTAINER_ID:/ossl/* ./`
+* now you will see a new directory named `ossl` at your current location. Use the keys inside it.
+#### tips for advanced users
+If your pipeline requires the private keys to be generated in advance, you can do it in your host machine and then mount it to the container's `/ossl/` directory. 
+
+Run:
+```
+mkdir -p <host>/ossl/
+openssl genrsa -passout pass:1234 -des3 -out <host>/ossl/private.pem 2048
+openssl rsa -passin pass:1234 -in <host>/ossl/private.pem -outform PEM -pubout -out <host>/ossl/public.pem
+openssl rsa -passin pass:1234 -in <host>/ossl/private.pem -out <host>/ossl/private_unencrypted.pem -outform PEM
+```
+
 # Progress
 This project is still and will be under active development with intermediate production releases. It can either be used as a standalone database or as a participating node in Aquila Network. Please note, [Aquila Port](https://github.com/Aquila-Network/specs/blob/main/README.md#aquila-port) (peer-peer network layer for Aquila DB nodes) is also a work in progress. Currently, you need to deploy your custom models to feed vector embeddings to Aquila DB, until [Aquila Hub](https://github.com/Aquila-Network/specs/blob/main/README.md#aquila-hub) developments get started.
 
