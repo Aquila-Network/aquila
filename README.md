@@ -87,7 +87,7 @@ When you use a client library to authenticate with AquilaDB, you might need acce
 * identify `CONTAINER ID` for the already running `aquiladb` docker instance:
 `docker ps`
 * take a copy of private keys from docker container to your host machine:
-`docker cp CONTAINER_ID:/ossl/* ./`
+`docker cp CONTAINER_ID:/ossl/ ./`
 * now you will see a new directory named `ossl` at your current location. Use the keys inside it.
 #### tips for advanced users
 If your pipeline requires the private keys to be generated in advance, you can do it in your host machine and then mount it to the container's `/ossl/` directory. 
