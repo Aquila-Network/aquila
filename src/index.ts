@@ -1,3 +1,11 @@
-import app from './app';
+import main from './app';
+import { ConfigService } from './lib/ConfigService';
 
-app.listen(3000, () => console.log('App running on port 3000'));
+const configService = new ConfigService();
+
+const port = configService.get('PORT');
+main().then(app => {
+    app.listen(port, () => console.log(`App running on port ${port}`))
+}).catch(err => {
+    console.log(err);
+})

@@ -1,33 +1,25 @@
 import 'reflect-metadata';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import { Container } from 'typedi';
-import { useExpressServer, useContainer, HttpError} from 'routing-controllers';
-import cors from 'cors';
+import { useExpressServer, useContainer} from 'routing-controllers';
 
-useContainer(Container);
-const app = express();
-app.use(cors());
-useExpressServer(app, {
-	middlewares: [express.json()],
-	controllers: [`${__dirname}/controller/*.js`]
-});
+import db from './config/db';
+import { AquilaClientService } from './lib/AquilaClientService';
 
-// exception handling
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (err instanceof HttpError) {
-    return res.status(err.httpCode).send({
-      code: err.httpCode,
-      name: err.name,
-      message: err.message,
-    });
-  } else {
-    res.status(500).send({
-      code: 500,
-      name: 'Unknown Error',
-      message: 'Something went wrong',
-    });
-  }
-  next();
-});
+export default async function main() {
+  useContainer(Container);
 
-export default app;
+  const app = express();
+  useExpressServer(app, {
+    cors: true,
+    middlewares: [`${__dirname}/middleware/**/*.{ts,js}`],
+    controllers: [`${__dirname}/controller/*.js`],
+    defaultErrorHandler: false
+  });
+
+  await db.initialize();
+  const aqc = Container.get(AquilaClientService);
+  await aqc.connect();
+
+  return app;
+}
