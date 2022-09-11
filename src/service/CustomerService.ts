@@ -9,11 +9,37 @@ import { CustomerTemp } from "../entity/CustomerTemp";
 import { CollectionTemp } from "../entity/CollectionTemp";
 import { CreateCustomerOutputDto } from "./dto/CustomerServiceDto";
 import { AquilaClientService } from "../lib/AquilaClientService";
+import { Customer } from "../entity/Customer";
+import { NotFoundError } from "routing-controllers";
+import { AccountStatus } from "./dto/AuthServiceDto";
 
 @Service()
 export class CustomerService {
 
 	public constructor(private aquilaClientService: AquilaClientService) {}
+
+	public async getCustomerById(id: string, accountStatus: AccountStatus) {
+		if(accountStatus === AccountStatus.PERMANENT) {
+			return await this.getPermanentCustomerById(id);
+		}	
+		return await this.getTemporaryCustomerById(id);
+	}
+
+	private async getPermanentCustomerById(id: string): Promise<Customer> {
+		let customer: Customer | null = await Customer.findOne({ where: { id: id }});
+		if(!customer) {
+			throw new NotFoundError("Customer not found");
+		}
+		return customer;
+	}
+
+	private async getTemporaryCustomerById(id: string): Promise<CustomerTemp> {
+		let customer: CustomerTemp | null = await CustomerTemp.findOne({ where: { id: id }});
+		if(!customer) {
+			throw new NotFoundError("Customer not found");
+		}
+		return customer;
+	}
 
 	public async createCustomer(): Promise<CreateCustomerOutputDto> {
 

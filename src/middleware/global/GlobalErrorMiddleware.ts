@@ -3,9 +3,10 @@ import { ExpressErrorMiddlewareInterface, HttpError, Middleware } from "routing-
 import { Service } from "typedi";
 
 @Service()
-@Middleware({ type: 'after'})
+@Middleware({ type: 'after', priority: 1})
 export class GlobalErrorHandler implements ExpressErrorMiddlewareInterface {
 	error(err: Error, req: Request, res: Response, next: NextFunction) {
+		console.log(err);
 		if (err instanceof HttpError) {
 			return res.status(err.httpCode).send({
 				code: err.httpCode,

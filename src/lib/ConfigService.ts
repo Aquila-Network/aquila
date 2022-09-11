@@ -24,14 +24,14 @@ export class ConfigService {
     dotenv.config({ path });
   }
 
-  get<T>(key: string, defaultValue?: T): T {
-    let data: unknown = process.env[key];
+  get(key: string, defaultValue?: string): string {
+    let data = process.env[key];
     if (!data && !defaultValue) {
       throw new Error(`Environment variable not found [${key}]`);
     }
     if (!data && defaultValue) {
       data = defaultValue;
     }
-    return data as T;
+    return data as string;
   }
 }
