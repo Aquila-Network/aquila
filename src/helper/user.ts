@@ -6,7 +6,7 @@ import { AuthService } from "../service/AuthService";
 import { CustomerService } from "../service/CustomerService";
 
 export async function currentUserChecker(action: Action): Promise<Customer|CustomerTemp> {
-	const token = action.request.headers.authorization?.replace('Bearer ', '') || '';
+	const token = (action.request.headers.authorization || "").replace('Bearer ', '') || '';
 	const authService = Container.get(AuthService);
 	const customerService = Container.get(CustomerService);
 	const payload = authService.decodeToken(token);

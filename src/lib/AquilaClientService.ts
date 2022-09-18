@@ -38,8 +38,8 @@ export class AquilaClientService {
 				encoder: "ftxt:https://x.aquila.network/fasttext/en_10d.bin",
 				codelen: 10,
 				metadata: {
-						"name": "string",
-						"age": "number"
+						"para": "string",
+						"bookmark_para_id": "string"
 				}
 			};
 		await this.hub.createDatabase(schema);
