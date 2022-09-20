@@ -56,14 +56,6 @@ export default async function(job: Job<AppJobData, void, AppJobNames>) {
 			const vectorArray = await aquilaClient.getHubServer().compressDocument(collection.aquilaDbName, summary);
 			console.log("From worker job: Hub output", summary, vectorArray);
 			// bulk insert into aquiladb
-			const documents = summary.map((para: string, index: number) => {
-				return {
-					metadata: {
-						para
-					},
-					code: vectorArray[index]
-				}
-			})
 
 			let bookmarkParas: BookmarkPara[] | BookmarkParaTemp[];
 			await db.transaction(async transactionalEntityManager => {
@@ -90,7 +82,8 @@ export default async function(job: Job<AppJobData, void, AppJobNames>) {
 					return {
 						metadata: {
 							para,
-							bookmark_para_id: bookmarkParas[index].id
+							bookmark_para_id: bookmarkParas[index].id,
+							bookmark_id: data.bookmark.id
 						},
 						code: vectorArray[index]
 					}

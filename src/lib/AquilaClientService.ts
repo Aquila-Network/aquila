@@ -39,7 +39,8 @@ export class AquilaClientService {
 				codelen: 10,
 				metadata: {
 						"para": "string",
-						"bookmark_para_id": "string"
+						"bookmark_para_id": "string",
+						"bookmark_id": "string"
 				}
 			};
 		await this.hub.createDatabase(schema);
