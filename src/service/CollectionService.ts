@@ -1,4 +1,4 @@
-import { BadRequestError } from "routing-controllers";
+import { BadRequestError, NotFoundError } from "routing-controllers";
 import { Service } from "typedi";
 
 import { Collection } from "../entity/Collection";
@@ -120,6 +120,37 @@ export class CollectionService {
 			return await this.createNewPermanentCollection(data);
 		}
 		return await this.createNewTemporaryCollection(data);
+	}
+
+	public async getTemporaryCollectionById(id: string) {
+		const collection = await CollectionTemp.findOne({ where: { id } });
+		if(!collection) {
+			throw new NotFoundError("Collection Not found");
+		}
+		return collection;
+	}
+
+	public async getPermanentCollectionById(id: string) {
+		const collection = await Collection.findOne({ where: { id }});
+		if(!collection) {
+			throw new NotFoundError("Collection not found");
+		}
+		return collection;
+	}
+
+	public async getCollectionById(id: string, accountStatus: AccountStatus) {
+		if(accountStatus === AccountStatus.TEMPORARY) {
+			return await this.getTemporaryCollectionById(id);
+		}	
+		return await this.getPermanentCollectionById(id)
+	}
+
+	public async getPublicCollectionById(id: string) {
+		const collection = await Collection.findOne({ where: { id, isShareable: true }});
+		if(!collection) {
+			throw new NotFoundError("Collection not found");
+		}
+		return collection;
 	}
 
 }

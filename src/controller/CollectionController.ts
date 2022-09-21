@@ -37,6 +37,13 @@ export class CollectionController {
 		return await this.collectionService.getAllCollections(options, AccountStatus.PERMANENT);
 	}
 
+	@Get('/public/:collectionId')
+	public async getPublicCollectionById(
+		@Param('collectionId') collectionId: string
+	) {
+		return await this.collectionService.getPublicCollectionById(collectionId);
+	}
+
 	@Authorized()
 	@Get('/my-collections')
 	public async getCurrentCustomerCollections(
