@@ -1,4 +1,4 @@
-import { Authorized, CurrentUser, Get, JsonController, Patch, Post } from "routing-controllers";
+import { Authorized, CurrentUser, Get, JsonController, Param, Patch, Post } from "routing-controllers";
 import { Service } from "typedi";
 
 import { Customer } from "../entity/Customer";
@@ -11,6 +11,13 @@ import { CreateCustomerResponseDto } from "./dto/CustomerControllerDto";
 export class CustomerControler {
 
 	public constructor(private customerService: CustomerService){}
+
+	@Get('/public/:customerId')
+	public async getCustomerPublicInfoById(
+		@Param('customerId') customerId: string
+	) {
+		return await this.customerService.getCustomerPublicInfoById(customerId);
+	}
 
 	@Authorized()
 	@Get('/me')

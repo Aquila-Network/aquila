@@ -91,4 +91,15 @@ export class CustomerService {
 		return false;
 	}
 
+	public async getCustomerPublicInfoById(id: string) {
+		const customer = await this.getPermanentCustomerById(id);
+		return {
+			id: id,
+			firstName: customer.firstName,
+			lastName: customer.lastName,
+			desc: customer.desc,
+			customerId: customer.customerId
+		};
+	}
+
 }
