@@ -36,7 +36,7 @@ export class Bookmark extends BaseEntity {
 	@Column({ type: 'varchar', length: 255, nullable: true})
 	public links: string;
 
-	@Column({ name: 'id_hidden', type: 'boolean', default: false})
+	@Column({ name: 'is_hidden', type: 'boolean', default: false})
 	public isHidden: boolean;
 
 	@Column({ type: 'enum', enum: BookmarkStatus, default: BookmarkStatus.NOT_PROCESSED})
