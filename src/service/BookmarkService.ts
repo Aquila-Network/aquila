@@ -129,7 +129,7 @@ export class BookmarkService {
 			const docExists = documentObjs[doc.metadata.bookmark_id];
 			if(docExists) {
 				docExists.dist = docExists.dist + newDists[index];
-				docExists.paras.push({ dist: newDists[index], pata: doc.metadata.para});
+				docExists.paras.push({ dist: newDists[index], para: doc.metadata.para});
 			}else {
 				documentObjs[doc.metadata.bookmark_id] = {
 					bookmarkParaId: doc.metadata.bookmark_para_id,
@@ -140,14 +140,12 @@ export class BookmarkService {
 			}
 		});
 		const documents = Object.values(documentObjs).sort((a: any, b: any) => (b.dist - a.dist))
-		console.log(JSON.stringify(documents));
 
 		// sort result from aquiladb and select records within limit and offset
 		const totalRecords = documents.length;
 		const start = (options.page -1) * options.limit;
 		const end = ((options.page -1) * options.limit) + options.limit;
 		const records = documents.slice(start, end);
-		console.log("Strart end ", start, end, JSON.stringify(records));
 
 		// fetch all bookmarks
 		const bookmarkIds = records.map((item: any) => item.bookmarkId);
@@ -174,7 +172,6 @@ export class BookmarkService {
 			limit: options.limit,
 			bookmarks: bookmarkData
 		}
-		console.log(output);
 		return output;
 	} 
 
@@ -211,14 +208,12 @@ export class BookmarkService {
 			}
 		});
 		const documents = Object.values(documentObjs).sort((a: any, b: any) => (b.dist - a.dist))
-		console.log(JSON.stringify(documents));
 
 		// sort result from aquiladb and select records within limit and offset
 		const totalRecords = documents.length;
 		const start = (options.page -1) * options.limit;
 		const end = ((options.page -1) * options.limit) + options.limit;
 		const records = documents.slice(start, end);
-		console.log("Strart end ", start, end, JSON.stringify(records));
 
 		// fetch all bookmarks
 		const bookmarkIds = records.map((item: any) => item.bookmarkId);
@@ -245,7 +240,6 @@ export class BookmarkService {
 			limit: options.limit,
 			bookmarks: bookmarkData
 		}
-		console.log(output);
 		return output;
 	}
 

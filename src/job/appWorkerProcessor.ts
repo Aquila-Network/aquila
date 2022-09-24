@@ -15,21 +15,22 @@ import { Bookmark, BookmarkStatus } from "../entity/Bookmark";
 import { BookmarkPara } from "../entity/BookmarkPara";
 import { BookmarkParaTemp } from "../entity/BookmarkParaTemp";
 import { BookmarkTemp, BookmarkTempStatus } from "../entity/BookmarkTemp";
+import { ConfigService } from "../lib/ConfigService";
 
 
 async function summarize(html: string) {
-	const response = await axios.post('http://localhost:5008/process', { html });	
+	const configService = Container.get(ConfigService);
+	const response = await axios.post(configService.get("SUMMARIZER_URL"), { html });	
 	return response.data.result;
 }
 
-let aquilaClient, dataSource: DataSource;
+let dataSource: DataSource;
 
 export default async function(job: Job<AppJobData, void, AppJobNames>) {
 	if(job.name === AppJobNames.INDEX_DOCUMENT) {
 			const { data  } = <{data: IndexDocumentData}>job;
 			// extract metadata from html
 			const parsedHtml = await Mercury.parse(data.bookmark.url, { html: data.bookmark.html});
-			console.log("From worker: parsedHtml", job.data, parsedHtml);
 			// generate array summary from text content
 			const summary = await summarize(parsedHtml.content || "");
 
@@ -54,7 +55,6 @@ export default async function(job: Job<AppJobData, void, AppJobNames>) {
 			}
 			// generate vector from array of paragraph 
 			const vectorArray = await aquilaClient.getHubServer().compressDocument(collection.aquilaDbName, summary);
-			console.log("From worker job: Hub output", summary, vectorArray);
 			// bulk insert into aquiladb
 
 			let bookmarkParas: BookmarkPara[] | BookmarkParaTemp[];
@@ -88,9 +88,7 @@ export default async function(job: Job<AppJobData, void, AppJobNames>) {
 						code: vectorArray[index]
 					}
 				})
-				console.log("COLLECTIONS*******: ", collection, documents);
-				const output = await aquilaClient.getDbServer().createDocuments((collection as Collection | CollectionTemp).aquilaDbName, documents)
-				console.log("From worker: output", output, documents);
+				await aquilaClient.getDbServer().createDocuments((collection as Collection | CollectionTemp).aquilaDbName, documents)
 
 				// update status as PROCESSED
 				let bookmark: Bookmark | BookmarkTemp | null;
@@ -110,9 +108,5 @@ export default async function(job: Job<AppJobData, void, AppJobNames>) {
 
 				await transactionalEntityManager.save(bookmark);
 			});
-
-			const searchData = tf.randomUniform([1, 10]).arraySync() as number[][];
-			const result = await aquilaClient.getDbServer().searchKDocuments(collection.aquilaDbName, searchData, 100);
-			console.log("Result from server", JSON.stringify(result));
 	}
 }

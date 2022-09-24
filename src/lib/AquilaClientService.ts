@@ -2,19 +2,22 @@ import { AquilaClient, Db, Hub, Schema, Wallet } from "aquila-js";
 import path from "path";
 import { Service } from "typedi";
 import crypto from 'crypto';
+import { ConfigService } from "./ConfigService";
 
 @Service()
 export class AquilaClientService {
 	private db: Db;
 	private hub: Hub;
 
+	public constructor(private configService: ConfigService) {}
+
 	public async connect() {
 		const wallet = new Wallet( path.join(__dirname, '../../private_unencrypted.pem'));
-		const dbUrl = 'http://localhost';
-		const dbPort = 5001;
+		const dbUrl = this.configService.get("AQUILA_DB_HOST");
+		const dbPort = parseInt(this.configService.get("AQUILA_DB_PORT"), 10);
 		const hubWallet = new Wallet( path.join(__dirname, '../../private_unencrypted_hub.pem'));
-		const hubUrl = 'http://localhost';
-		const hubPort = 5002;
+		const hubUrl = this.configService.get("AQUILA_HUB_HOST");
+		const hubPort = parseInt(this.configService.get("AQUILA_HUB_PORT"), 10);
 
 		// connecting to aquila db server
 		this.db = await AquilaClient.getDbServer(dbUrl, dbPort, wallet);

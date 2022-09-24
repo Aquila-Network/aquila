@@ -14,7 +14,6 @@ export class AddBookmarkValidator implements ExpressMiddlewareInterface {
 
 
 	public async use(req: Request, res: Response, next: NextFunction) {
-		console.log(this.jwtPayloadData);
 		const validators = [
 			body('html')
 				.trim().not().isEmpty()
@@ -49,7 +48,6 @@ export class AddBookmarkValidator implements ExpressMiddlewareInterface {
 					const jwtPayloadData = req.jwtTokenPayload;
 					if(jwtPayloadData) {
 						const collectionService = Container.get(CollectionService);
-						console.log(value);
 						const collection = await collectionService.getCollectionById(value, jwtPayloadData.accountStatus);
 						if(collection.customerId !== jwtPayloadData.customerId) {
 							throw new Error("Invalid collection id");	
