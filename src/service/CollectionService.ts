@@ -1,18 +1,18 @@
-import { BadRequestError, NotFoundError } from "routing-controllers";
+import { NotFoundError } from "routing-controllers";
 import { Service } from "typedi";
 
 import { Collection } from "../entity/Collection";
 import { CollectionTemp } from "../entity/CollectionTemp";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { AccountStatus } from "./dto/AuthServiceDto";
-import { CreateCollectionDto, GetAllCollectionsInputOptionsDto, getAllCollectionsOutputDto } from "./dto/CollectionServiceDto";
+import { GetAllCollectionsInputOptionsDto, GetAllCollectionsOutputDto } from "./dto/CollectionServiceDto";
 
 @Service()
 export class CollectionService {
 
-	public constructor(private aquilaClientService: AquilaClientService) {}
+	public constructor() {}
 
-	private async getAllTemporaryCollections(options: GetAllCollectionsInputOptionsDto): Promise<getAllCollectionsOutputDto> {
+	private async getAllTemporaryCollections(options: GetAllCollectionsInputOptionsDto): Promise<GetAllCollectionsOutputDto> {
 		const allowedWhere: ['isShareable'] = ['isShareable'];
 		const where = allowedWhere.reduce((prev: {[key: string]: string | boolean}, current) =>{
 			if(options.where && current in options.where) {
@@ -33,7 +33,7 @@ export class CollectionService {
 		};
 	}
 
-	public async getAllPermanentCollections(options: GetAllCollectionsInputOptionsDto) {
+	public async getAllPermanentCollections(options: GetAllCollectionsInputOptionsDto): Promise<GetAllCollectionsOutputDto> {
 		const allowedWhere: ['isShareable'] = ['isShareable'];
 		const where = allowedWhere.reduce((prev: {[key: string]: string | boolean}, current) =>{
 			if(options.where && current in options.where) {
@@ -54,7 +54,7 @@ export class CollectionService {
 		};
 	}
 
-	public async getAllCollections(options: GetAllCollectionsInputOptionsDto, accountStatus: AccountStatus) {
+	public async getAllCollections(options: GetAllCollectionsInputOptionsDto, accountStatus: AccountStatus): Promise<GetAllCollectionsOutputDto> {
 		if(accountStatus === AccountStatus.TEMPORARY) {
 			return await this.getAllTemporaryCollections(options);
 		}
@@ -71,58 +71,14 @@ export class CollectionService {
 		return collections;
 	}
 
-	public async getCustomerCollectionsByCustomerId(customerId: string, accountStatus: AccountStatus) {
+	public async getCustomerCollectionsByCustomerId(customerId: string, accountStatus: AccountStatus): Promise<Collection[]|CollectionTemp[]> {
 		if(accountStatus === AccountStatus.PERMANENT) {
 			return await this.getPermanentCustomerCollectionsByCustomerId(customerId);
 		}
 		return await this.getTempCustomerCollectionsByCustomerId(customerId);
 	}
 	
-	private async getTemporaryCollectionDocumentsByCollectionId(collectionId: string) {
-		// get aquila db collection name	
-		const collection = await CollectionTemp.findOne({ where: { id: collectionId }});
-		if(!collection) {
-			throw new BadRequestError('Collection not found');
-		}
-		const matrix: number[][] = [[]];
-		const documents = this.aquilaClientService.getDbServer().searchKDocuments(collection.aquilaDbName, matrix, 10 );
-		return documents;	
-	}
-
-	private async getPermanentCollectionDocumentsByCollectionId(collectionId: string) {
-		// get aquila db collection name	
-		const collection = await Collection.findOne({ where: { id: collectionId }});
-		if(!collection) {
-			throw new BadRequestError('Collection not found');
-		}
-		const matrix: number[][] = [[]];
-		const documents = this.aquilaClientService.getDbServer().searchKDocuments(collection.aquilaDbName, matrix, 10 );
-		return documents;
-	}
-
-	public async getCollectionDocumentsByCollectionId(collectionId: string, accountStatus: AccountStatus) {
-		if(accountStatus === AccountStatus.PERMANENT) {
-			return await this.getPermanentCollectionDocumentsByCollectionId(collectionId);
-		}
-		return await this.getTemporaryCollectionDocumentsByCollectionId(collectionId);
-	}
-
-	private async createNewTemporaryCollection(data: CreateCollectionDto) {
-		
-	}
-
-	private async createNewPermanentCollection(data: CreateCollectionDto) {
-
-	}
-
-	public async createNewCollection(data: CreateCollectionDto, accountStatus: AccountStatus) {
-		if(accountStatus === AccountStatus.PERMANENT) {
-			return await this.createNewPermanentCollection(data);
-		}
-		return await this.createNewTemporaryCollection(data);
-	}
-
-	public async getTemporaryCollectionById(id: string) {
+	public async getTemporaryCollectionById(id: string): Promise<CollectionTemp> {
 		const collection = await CollectionTemp.findOne({ where: { id } });
 		if(!collection) {
 			throw new NotFoundError("Collection Not found");
@@ -130,7 +86,7 @@ export class CollectionService {
 		return collection;
 	}
 
-	public async getPermanentCollectionById(id: string) {
+	public async getPermanentCollectionById(id: string): Promise<Collection> {
 		const collection = await Collection.findOne({ where: { id }});
 		if(!collection) {
 			throw new NotFoundError("Collection not found");
@@ -138,14 +94,14 @@ export class CollectionService {
 		return collection;
 	}
 
-	public async getCollectionById(id: string, accountStatus: AccountStatus) {
+	public async getCollectionById(id: string, accountStatus: AccountStatus): Promise<Collection|CollectionTemp> {
 		if(accountStatus === AccountStatus.TEMPORARY) {
 			return await this.getTemporaryCollectionById(id);
 		}	
 		return await this.getPermanentCollectionById(id)
 	}
 
-	public async getPublicCollectionById(id: string) {
+	public async getPublicCollectionById(id: string): Promise<Collection> {
 		const collection = await Collection.findOne({ where: { id, isShareable: true }});
 		if(!collection) {
 			throw new NotFoundError("Collection not found");

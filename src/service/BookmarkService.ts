@@ -13,14 +13,14 @@ import { AppQueue } from "../job/AppQueue";
 import { AppJobNames, IndexDocumentData } from "../job/types";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { AccountStatus } from "./dto/AuthServiceDto";
-import { AddBookmarkInputDto, GetAllBookmarksByCollectionIdOptionsInputDto, GetAllBookmarksByCollectionIdOutputDto, GetBookmarksByCollectionIdOptionsInputDto } from "./dto/BookmarkServiceDto";
+import { AddBookmarkInputDto, GetAllBookmarksByCollectionIdOptionsInputDto, GetBookmarksByCollectionIdOutputDto, GetBookmarksByCollectionIdOptionsInputDto } from "./dto/BookmarkServiceDto";
 
 @Service()
 export class BookmarkService {
 
 	public constructor(private appQueue: AppQueue, private aquilaClientService: AquilaClientService) {}
 
-	private async addTemporaryBookmark(data: AddBookmarkInputDto) {
+	private async addTemporaryBookmark(data: AddBookmarkInputDto): Promise<BookmarkTemp> {
 		let bookmark = new BookmarkTemp();
 		await dataSource.transaction(async transactionalEntityManager => {
 			bookmark.url = data.url;
@@ -33,7 +33,7 @@ export class BookmarkService {
 		return bookmark;
 	}
 
-	private async addPermanentBookmark(data: AddBookmarkInputDto) {
+	private async addPermanentBookmark(data: AddBookmarkInputDto): Promise<Bookmark> {
 		let bookmark = new Bookmark();
 		await dataSource.transaction(async transactionalEntityManager => {
 			bookmark.url = data.url;
@@ -46,14 +46,14 @@ export class BookmarkService {
 		return bookmark;
 	}
 
-	public async addBookmark(data: AddBookmarkInputDto, accountStatus: AccountStatus) {
+	public async addBookmark(data: AddBookmarkInputDto, accountStatus: AccountStatus): Promise<Bookmark|BookmarkTemp> {
 		if(accountStatus === AccountStatus.TEMPORARY) {
 			return await this.addTemporaryBookmark(data);
 		}
 		return await this.addPermanentBookmark(data);
 	}	
 
-	private async getAllTemporaryBookmarksByCollectionId(collectionId: string, options: GetAllBookmarksByCollectionIdOptionsInputDto): Promise<GetAllBookmarksByCollectionIdOutputDto> {
+	private async getAllTemporaryBookmarksByCollectionId(collectionId: string, options: GetAllBookmarksByCollectionIdOptionsInputDto): Promise<GetBookmarksByCollectionIdOutputDto> {
 		const skip = (options.page - 1) * options.limit;
 		const take = options.limit;
 		const totalRecords = await BookmarkTemp.count({ where: { collectionId, status: BookmarkTempStatus.PROCESSED }});
@@ -80,7 +80,7 @@ export class BookmarkService {
 		}
 	}
 
-	private async getAllPermanentBookmarksByCollectionId(collectionId: string, options: GetAllBookmarksByCollectionIdOptionsInputDto): Promise<GetAllBookmarksByCollectionIdOutputDto> {
+	private async getAllPermanentBookmarksByCollectionId(collectionId: string, options: GetAllBookmarksByCollectionIdOptionsInputDto): Promise<GetBookmarksByCollectionIdOutputDto> {
 		const skip = (options.page - 1) * options.limit;
 		const take = options.limit;
 		const totalRecords = await Bookmark.count({ where: { collectionId, status: BookmarkStatus.PROCESSED }});
@@ -107,7 +107,7 @@ export class BookmarkService {
 		}	
 	}
 
-	private async getTemporaryBookmarksByCollectionId(collectionId: string, options: GetBookmarksByCollectionIdOptionsInputDto) {
+	private async getTemporaryBookmarksByCollectionId(collectionId: string, options: GetBookmarksByCollectionIdOptionsInputDto): Promise<GetBookmarksByCollectionIdOutputDto> {
 		if(!options.query) {
 			return await this.getAllTemporaryBookmarksByCollectionId(collectionId, options);
 		}
@@ -178,7 +178,7 @@ export class BookmarkService {
 		return output;
 	} 
 
-	private async getPermanentBookmarksByCollectionId(collectionId: string, options: GetBookmarksByCollectionIdOptionsInputDto) {
+	private async getPermanentBookmarksByCollectionId(collectionId: string, options: GetBookmarksByCollectionIdOptionsInputDto): Promise<GetBookmarksByCollectionIdOutputDto> {
 		if(!options.query) {
 			return await this.getAllPermanentBookmarksByCollectionId(collectionId, options);
 		}
@@ -249,7 +249,7 @@ export class BookmarkService {
 		return output;
 	}
 
-	public async getBookmarksByCollectionId(collectionId: string, options: GetBookmarksByCollectionIdOptionsInputDto, accountStatus: AccountStatus) {
+	public async getBookmarksByCollectionId(collectionId: string, options: GetBookmarksByCollectionIdOptionsInputDto, accountStatus: AccountStatus): Promise<GetBookmarksByCollectionIdOutputDto> {
 		if(accountStatus === AccountStatus.TEMPORARY) {
 			return await this.getTemporaryBookmarksByCollectionId(collectionId, options);
 		}

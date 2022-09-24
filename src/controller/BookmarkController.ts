@@ -1,11 +1,16 @@
-import { Authorized, Body, Get, JsonController, Param, Post, QueryParams } from "routing-controllers";
+import { Body, Get, JsonController, Param, Post, QueryParams, UseBefore } from "routing-controllers";
 import { Service } from "typedi";
+import { Bookmark } from "../entity/Bookmark";
+import { BookmarkTemp } from "../entity/BookmarkTemp";
 
 import { JwtPayloadData } from "../helper/decorators/jwtPayloadData";
+import { AuthMiddleware } from "../middleware/global/AuthMiddleware";
+import { AddBookmarkValidator } from "../middleware/validator/bookmark/AddBookmarkValidator";
+import { GetBookmarkByCollectionIdValidator } from "../middleware/validator/bookmark/GetBookmarkByCollectionIdValidator";
 import { BookmarkService } from "../service/BookmarkService";
 import { JwtPayload } from "../service/dto/AuthServiceDto";
 import { GetBookmarksByCollectionIdOptionsInputDto } from "../service/dto/BookmarkServiceDto";
-import { AddBookmarkReqBodyDto, GetBookmarksByCollectionIdReqQueryParamsDto } from "./dto/BookmarkControllerDto";
+import { AddBookmarkReqBodyDto, GetBookmarksByCollectionIdReqQueryParamsDto, GetBookmarksByCollectionIdResBodyDto } from "./dto/BookmarkControllerDto";
 
 @Service()
 @JsonController('/bookmark')
@@ -13,23 +18,22 @@ export class BookmarkController {
 
 	public constructor(private bookmarkService: BookmarkService) {}
 
-	@Authorized()
+	@UseBefore(AuthMiddleware, AddBookmarkValidator)
 	@Post('/')
 	public async addBookmark(
 		@Body() body: AddBookmarkReqBodyDto,
 		@JwtPayloadData() JwtPayloadData: JwtPayload
-	) {
-		const bookmark = await this.bookmarkService.addBookmark(body, JwtPayloadData.accountStatus);
-		return bookmark
+	): Promise<Bookmark|BookmarkTemp> {
+		return await this.bookmarkService.addBookmark(body, JwtPayloadData.accountStatus);
 	}
 
-	@Authorized()
+	@UseBefore(AuthMiddleware, GetBookmarkByCollectionIdValidator)
 	@Get('/:collectionId/search')
 	public async getBookmarksByCollectionId(
 		@Param('collectionId') collectionId: string,
 		@QueryParams() queryParams: GetBookmarksByCollectionIdReqQueryParamsDto,
 		@JwtPayloadData() JwtPayloadData: JwtPayload
-	) {
+	): Promise<GetBookmarksByCollectionIdResBodyDto> {
 		const options: GetBookmarksByCollectionIdOptionsInputDto = {
 			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
 			page: queryParams.page ? parseInt(queryParams.page, 10) : 0

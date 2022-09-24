@@ -7,7 +7,7 @@ import base58 from 'bs58';
 import dataSource from '../config/db';
 import { CustomerTemp } from "../entity/CustomerTemp";
 import { CollectionTemp } from "../entity/CollectionTemp";
-import { ActivateCustomerByIdInputDataDto, CreateCustomerOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
+import { ActivateCustomerByIdInputDataDto, CreateCustomerOutputDto, GetCustomerPublicInfoByIdOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { Customer } from "../entity/Customer";
 import { NotFoundError } from "routing-controllers";
@@ -103,7 +103,7 @@ export class CustomerService {
 		return customer;
 	}
 
-	public async getCustomerPublicInfoById(id: string) {
+	public async getCustomerPublicInfoById(id: string): Promise<GetCustomerPublicInfoByIdOutputDto> {
 		const customer = await this.getPermanentCustomerById(id);
 		return {
 			id: id,
@@ -114,7 +114,7 @@ export class CustomerService {
 		};
 	}
 
-	public async activateCustomerById(id: string, data: ActivateCustomerByIdInputDataDto) {
+	public async activateCustomerById(id: string, data: ActivateCustomerByIdInputDataDto): Promise<Customer> {
 		// get temporary custoemr
 		const customerTemp = await this.getTemporaryCustomerById(id);
 

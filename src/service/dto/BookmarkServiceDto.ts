@@ -26,7 +26,7 @@ export interface BookmarkData {
 	description: string;
 }
 
-export interface GetAllBookmarksByCollectionIdOutputDto {
+export interface GetBookmarksByCollectionIdOutputDto {
 	totalPages: number;
 	totalRecords: number;
 	currentPage: number;	

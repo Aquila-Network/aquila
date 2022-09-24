@@ -19,6 +19,7 @@ export default async function main() {
   useContainer(Container);
 
   const app = express();
+  app.use(express.json());
   useExpressServer(app, {
     cors: true,
     authorizationChecker,

@@ -33,9 +33,13 @@ export class AuthService {
 		return token;
 	}
 
-	public async login(secretKey: string, accountStatus: AccountStatus): Promise<string> {
-		if(accountStatus === AccountStatus.PERMANENT) {
+	public async login(secretKey: string): Promise<string> {
+		try{
 			return await this.loginPermanentCustoemr(secretKey);
+		}catch(e) {
+			if(!(e instanceof BadRequestError)) {
+				throw e;
+			}
 		}
 		return await this.loginTemporaryCustomer(secretKey);
 	}

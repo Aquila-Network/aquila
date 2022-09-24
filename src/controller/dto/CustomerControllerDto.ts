@@ -19,3 +19,11 @@ export interface UpdateCustomerReqBodyDto {
 	email: string;
 	desc: string;
 }
+
+export interface GetCustomerPublicInfoByIdRespBodyDto {
+	id: string;
+	firstName: string;
+	lastName: string;
+	desc: string;
+	customerId: number;
+}

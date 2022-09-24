@@ -1,12 +1,6 @@
 import { Collection } from "../../entity/Collection";
 import { CollectionTemp } from "../../entity/CollectionTemp";
 
-export interface CreateCollectionDto {
-	html: string;
-	url: string;
-	collectionId: string;
-}
-
 export interface GetAllCollectionsInputOptionsDto {
 	limit: number;
 	page: number;
@@ -15,7 +9,7 @@ export interface GetAllCollectionsInputOptionsDto {
 	}
 }
 
-export interface getAllCollectionsOutputDto {
+export interface GetAllCollectionsOutputDto {
 	totalRecords: number;
 	totalPages: number,
 	currentPage: number,
