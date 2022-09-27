@@ -6,11 +6,12 @@ import { CustomerTemp } from "../entity/CustomerTemp";
 import { JwtPayloadData } from "../helper/decorators/jwtPayloadData";
 import { AuthMiddleware } from "../middleware/global/AuthMiddleware";
 import { ActivateCustomerValidator } from "../middleware/validator/customer/ActivateCustomerValidator";
+import { CreateCustomerValidator } from "../middleware/validator/customer/CreateCustomerValidator";
 import { GetCustomerPublicInfoByIdValidator } from "../middleware/validator/customer/GetCustomerPublicInfoByIdValidator";
 import { UpdateCustomerValidator } from "../middleware/validator/customer/UpdateCustomerValidator";
 import { CustomerService } from "../service/CustomerService";
 import { JwtPayload } from "../service/dto/AuthServiceDto";
-import { ActivateCustomerReqBodyDto, CreateCustomerResponseDto, GetCustomerPublicInfoByIdRespBodyDto, UpdateCustomerReqBodyDto } from "./dto/CustomerControllerDto";
+import { ActivateCustomerReqBodyDto, CreateCustomerReqBodyDto, CreateCustomerResponseDto, GetCustomerPublicInfoByIdRespBodyDto, UpdateCustomerReqBodyDto } from "./dto/CustomerControllerDto";
 
 @Service()
 @JsonController('/customer')
@@ -43,9 +44,12 @@ export class CustomerControler {
 		return customer;
 	}
 
+	@UseBefore(CreateCustomerValidator)
 	@Post('/')
-	public async createCustomer(): Promise<CreateCustomerResponseDto> {
-		return await this.customerService.createCustomer();
+	public async createCustomer(
+		@Body() body: CreateCustomerReqBodyDto
+	): Promise<CreateCustomerResponseDto> {
+		return await this.customerService.createCustomer(body);
 	}
 
 	@UseBefore(AuthMiddleware,ActivateCustomerValidator)

@@ -1,5 +1,4 @@
 import { Service } from "typedi";
-import randomAnimalName from 'random-animal-name';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import base58 from 'bs58';
@@ -7,7 +6,7 @@ import base58 from 'bs58';
 import dataSource from '../config/db';
 import { CustomerTemp } from "../entity/CustomerTemp";
 import { CollectionTemp } from "../entity/CollectionTemp";
-import { ActivateCustomerByIdInputDataDto, CreateCustomerOutputDto, GetCustomerPublicInfoByIdOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
+import { ActivateCustomerByIdInputDataDto, CreateCustomerInputDataDto, CreateCustomerOutputDto, GetCustomerPublicInfoByIdOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { Customer } from "../entity/Customer";
 import { NotFoundError } from "routing-controllers";
@@ -47,14 +46,14 @@ export class CustomerService {
 		return customer;
 	}
 
-	public async createCustomer(): Promise<CreateCustomerOutputDto> {
+	public async createCustomer(data: CreateCustomerInputDataDto): Promise<CreateCustomerOutputDto> {
 
 		const customer = new CustomerTemp();
 		const collection = new CollectionTemp();
 
 		await dataSource.transaction(async transactionalEntityManager => {
 			// create an new record in customer
-			const [firstName, lastName] = randomAnimalName().split(' ');
+			const {firstName, lastName} = data;
 
 			const randomNumber = Math.random().toString();
 			const hash = crypto.createHash('sha256');

@@ -1,6 +1,11 @@
 import { CollectionTemp } from "../../entity/CollectionTemp";
 import { CustomerTemp } from "../../entity/CustomerTemp";
 
+export interface CreateCustomerInputDataDto {
+	firstName: string;
+	lastName: string;
+}
+
 export interface CreateCustomerOutputDto {
 	customer: CustomerTemp;
 	collection: CollectionTemp;

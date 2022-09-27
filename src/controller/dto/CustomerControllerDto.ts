@@ -1,6 +1,11 @@
 import { CollectionTemp } from "../../entity/CollectionTemp";
 import { CustomerTemp } from "../../entity/CustomerTemp";
 
+export interface CreateCustomerReqBodyDto {
+	firstName: string;
+	lastName: string;
+}
+
 export interface CreateCustomerResponseDto {
 	customer: CustomerTemp,
 	collection: CollectionTemp
