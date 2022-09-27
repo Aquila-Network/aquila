@@ -1,4 +1,5 @@
 import { Service } from "typedi";
+import randomAnimalName from 'random-animal-name';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import base58 from 'bs58';
@@ -6,7 +7,7 @@ import base58 from 'bs58';
 import dataSource from '../config/db';
 import { CustomerTemp } from "../entity/CustomerTemp";
 import { CollectionTemp } from "../entity/CollectionTemp";
-import { ActivateCustomerByIdInputDataDto, CreateCustomerInputDataDto, CreateCustomerOutputDto, GetCustomerPublicInfoByIdOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
+import { ActivateCustomerByIdInputDataDto, CreateCustomerInputDataDto, CreateCustomerOutputDto, GetCustomerPublicInfoByIdOutputDto, GetRandomCustomerNameOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { Customer } from "../entity/Customer";
 import { NotFoundError } from "routing-controllers";
@@ -22,6 +23,15 @@ import { Bookmark, BookmarkStatus } from "../entity/Bookmark";
 export class CustomerService {
 
 	public constructor(private aquilaClientService: AquilaClientService) {}
+
+	public async getRandomCustomerName(): Promise<GetRandomCustomerNameOutputDto> {
+		const [firstName, lastName] = randomAnimalName().split(' ');
+
+		return {
+			firstName, 
+			lastName
+		};
+	}
 
 	public async getCustomerById(id: string, accountStatus: AccountStatus) {
 		if(accountStatus === AccountStatus.PERMANENT) {
