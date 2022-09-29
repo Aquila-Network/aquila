@@ -18,6 +18,8 @@ import { BookmarkPara } from "../entity/BookmarkPara";
 import { BookmarkParaTemp } from "../entity/BookmarkParaTemp";
 import { Collection } from "../entity/Collection";
 import { Bookmark, BookmarkStatus } from "../entity/Bookmark";
+import { CollectionSubscriptionTemp } from "../entity/CollectionSubscriptionTemp";
+import { CollectionSubscription } from "../entity/CollectionSubscription";
 
 @Service()
 export class CustomerService {
@@ -138,6 +140,9 @@ export class CustomerService {
 		// get all bookmark paras to permanent account
 		const bookmarkParasTemp = await BookmarkParaTemp.find({ where: { bookmarkId: In(bookmarkTempIds)}})
 
+		// get all collection subscriptions to permanent account
+		const collectionSubTemp = await CollectionSubscriptionTemp.find({ where: { subscriberId: id}})
+
 		// create customer
 		const customer = new Customer();
 		customer.id = customerTemp.id;
@@ -189,17 +194,30 @@ export class CustomerService {
 			bookmarkPara.bookmarkId = item.bookmarkId;
 			bookmarkPara.createdAt = item.createdAt;
 			return bookmarkPara;
-		})
+		});
+
+		// create collection subscriptions
+		const collectionSubs = collectionSubTemp.map(item => {
+			const collectionSub = new CollectionSubscription();
+			collectionSub.id = item.id;
+			collectionSub.subscriberId = item.subscriberId;
+			collectionSub.collectionId = item.collectionId;
+			collectionSub.subscribedAt = item.subscribedAt;
+			collectionSub.createdAt = item.createdAt;
+			return collectionSub;
+		});
 
 		await dataSource.transaction(async transactionalEntityManager => {
 			transactionalEntityManager.save(customer);
 			transactionalEntityManager.save(collections);
 			transactionalEntityManager.save(bookmarks);
 			transactionalEntityManager.save(bookmarkParas);
+			transactionalEntityManager.save(collectionSubs);
 			transactionalEntityManager.remove(customerTemp);
 			transactionalEntityManager.remove(collectionsTemp);
 			transactionalEntityManager.remove(bookmarksTemp);
 			transactionalEntityManager.remove(bookmarkParasTemp);
+			transactionalEntityManager.remove(collectionSubTemp);
 		});
 		return customer;
 	}
