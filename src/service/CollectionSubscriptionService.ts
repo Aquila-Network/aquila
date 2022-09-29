@@ -100,4 +100,22 @@ export class CollectionSubscriptionService {
 		return await this.removePermanentCustomerCollectionSubscription(collectionId, customerId);
 	}
 
+	private async getTemporaryCollectionFollowerCount(collectionId: string): Promise<number> {
+		const count = await CollectionSubscriptionTemp.count({ where: { collectionId }});
+		return count;
+	}
+	
+	private async getPermanentCollectionFollowerCount(collectionId: string): Promise<number> {
+		const count = await CollectionSubscription.count({ where: { collectionId }});
+		return count;
+	}
+
+	public async getCollectionFollowerCount(collectionId: string, accountStatus: AccountStatus): Promise<number> {
+		
+		if(accountStatus === AccountStatus.TEMPORARY) {
+			return await this.getTemporaryCollectionFollowerCount(collectionId);
+		}
+		return await this.getPermanentCollectionFollowerCount(collectionId);
+	}
+
 }
