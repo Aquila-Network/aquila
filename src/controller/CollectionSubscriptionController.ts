@@ -40,7 +40,7 @@ export class CollectionSubscriptionController {
 	public async removeCollectionSubscription(
 		@Param('collectionId') collectionId: string,
 		@JwtPayloadData() JwtPayloadData: JwtPayload
-	): Promise<void> {
+	): Promise<CollectionSubscription | CollectionSubscriptionTemp | null> {
 		
 		return await this.collectionSubscriptionService.removeCollectionSubscription(collectionId, JwtPayloadData.customerId, JwtPayloadData.accountStatus);
 	}

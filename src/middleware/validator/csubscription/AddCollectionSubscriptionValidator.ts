@@ -5,12 +5,13 @@ import Container, { Service } from "typedi";
 
 import { JwtPayloadData } from "../../../helper/decorators/jwtPayloadData";
 import { CollectionService } from "../../../service/CollectionService";
+import { CollectionSubscriptionService } from "../../../service/CollectionSubscriptionService";
 import { AccountStatus, JwtPayload } from "../../../service/dto/AuthServiceDto";
 import { validate } from "../../../utils/validate";
 
 @Service()
 export class AddCollectionSubscriptionValidator implements ExpressMiddlewareInterface {
-	public constructor(private collectionService: CollectionService, @JwtPayloadData() private jwtPayloadData: JwtPayload) {}
+	public constructor(private collectionService: CollectionService, private collectionSubService: CollectionSubscriptionService, @JwtPayloadData() private jwtPayloadData: JwtPayload) {}
 
 
 	public async use(req: Request, res: Response, next: NextFunction) {
@@ -26,9 +27,21 @@ export class AddCollectionSubscriptionValidator implements ExpressMiddlewareInte
 					const jwtPayloadData = req.jwtTokenPayload;
 					if(jwtPayloadData) {
 						const collectionService = Container.get(CollectionService);
-						const collection = await collectionService.getCollectionById(value, AccountStatus.PERMANENT); // jwtPayloadData.accountStatus);
+						const collection = await collectionService.getCollectionById(value, AccountStatus.PERMANENT);
 						if(collection === undefined) {
 							throw new Error("Collection doesn't exist");	
+						}
+					}
+					return true;
+				})
+				.bail()
+				.custom(async (value) => {
+					const jwtPayloadData = req.jwtTokenPayload;
+					if(jwtPayloadData) {
+						const collectionSubService = Container.get(CollectionSubscriptionService);
+						const collection = await collectionSubService.getCollectionSubscription(value, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
+						if(collection !== null) {
+							throw new Error("Collection is subscribed already");	
 						}
 					}
 					return true;
