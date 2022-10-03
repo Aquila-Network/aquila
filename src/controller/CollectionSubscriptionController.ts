@@ -5,8 +5,8 @@ import { CollectionSubscriptionTemp } from "../entity/CollectionSubscriptionTemp
 
 import { JwtPayloadData } from "../helper/decorators/jwtPayloadData";
 import { AuthMiddleware } from "../middleware/global/AuthMiddleware";
-import { AddCollectionSubscriptionValidator } from "../middleware/validator/csubscription/AddCollectionSubscriptionValidator";
-import { RemoveCollectionSubscriptionValidator } from "../middleware/validator/csubscription/RemoveCollectionSubscriptionValidator";
+import { SubscribeCollectionValidator } from "../middleware/validator/csubscription/SubscribeCollectionValidator";
+import { UnSubscribeCollectionValidator } from "../middleware/validator/csubscription/UnSubscribeCollectionValidator";
 import { CollectionSubscriptionService } from "../service/CollectionSubscriptionService";
 import { JwtPayload } from "../service/dto/AuthServiceDto";
 
@@ -18,31 +18,31 @@ export class CollectionSubscriptionController {
 
 	@UseBefore(AuthMiddleware)
 	@Get('/list')
-	public async listCollectionSubscription(
+	public async getCurrentCustomerSubscriptions(
 		@JwtPayloadData() JwtPayloadData: JwtPayload
 	): Promise<CollectionSubscriptionTemp[] | CollectionSubscription[]> {
 		
-		return await this.collectionSubscriptionService.getCollectionSubscriptionList(JwtPayloadData.customerId, JwtPayloadData.accountStatus);
+		return await this.collectionSubscriptionService.getCustomerSubscriptions(JwtPayloadData.customerId, JwtPayloadData.accountStatus);
 	}
 
-	@UseBefore(AuthMiddleware, AddCollectionSubscriptionValidator)
+	@UseBefore(AuthMiddleware, SubscribeCollectionValidator)
 	@Post('/:collectionId/add')
-	public async addCollectionSubscription(
+	public async subscribeCollection(
 		@Param('collectionId') collectionId: string,
 		@JwtPayloadData() JwtPayloadData: JwtPayload
 	): Promise<CollectionSubscription|CollectionSubscriptionTemp> {
 		
-		return await this.collectionSubscriptionService.addCollectionSubscription(collectionId, JwtPayloadData.customerId, JwtPayloadData.accountStatus);
+		return await this.collectionSubscriptionService.subscribeCollection(collectionId, JwtPayloadData.customerId, JwtPayloadData.accountStatus);
 	}
 
-	@UseBefore(AuthMiddleware, RemoveCollectionSubscriptionValidator)
+	@UseBefore(AuthMiddleware, UnSubscribeCollectionValidator)
 	@Post('/:collectionId/remove')
-	public async removeCollectionSubscription(
+	public async unSubscribeCollection(
 		@Param('collectionId') collectionId: string,
 		@JwtPayloadData() JwtPayloadData: JwtPayload
 	): Promise<CollectionSubscription | CollectionSubscriptionTemp | null> {
 		
-		return await this.collectionSubscriptionService.removeCollectionSubscription(collectionId, JwtPayloadData.customerId, JwtPayloadData.accountStatus);
+		return await this.collectionSubscriptionService.unSubscribeCollection(collectionId, JwtPayloadData.customerId, JwtPayloadData.accountStatus);
 	}
 
 }

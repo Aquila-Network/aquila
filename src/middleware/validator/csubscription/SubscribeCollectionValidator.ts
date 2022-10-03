@@ -10,7 +10,7 @@ import { AccountStatus, JwtPayload } from "../../../service/dto/AuthServiceDto";
 import { validate } from "../../../utils/validate";
 
 @Service()
-export class AddCollectionSubscriptionValidator implements ExpressMiddlewareInterface {
+export class SubscribeCollectionValidator implements ExpressMiddlewareInterface {
 	public constructor(private collectionService: CollectionService, private collectionSubService: CollectionSubscriptionService, @JwtPayloadData() private jwtPayloadData: JwtPayload) {}
 
 
@@ -39,7 +39,7 @@ export class AddCollectionSubscriptionValidator implements ExpressMiddlewareInte
 					const jwtPayloadData = req.jwtTokenPayload;
 					if(jwtPayloadData) {
 						const collectionSubService = Container.get(CollectionSubscriptionService);
-						const collection = await collectionSubService.getCollectionSubscription(value, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
+						const collection = await collectionSubService.isCollectionSubscribedByCustomer(value, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
 						if(collection !== null) {
 							throw new Error("Collection is subscribed already");	
 						}

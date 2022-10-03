@@ -9,7 +9,7 @@ import { AccountStatus, JwtPayload } from "../../../service/dto/AuthServiceDto";
 import { validate } from "../../../utils/validate";
 
 @Service()
-export class RemoveCollectionSubscriptionValidator implements ExpressMiddlewareInterface {
+export class UnSubscribeCollectionValidator implements ExpressMiddlewareInterface {
 	public constructor(private collectionSubService: CollectionSubscriptionService, @JwtPayloadData() private jwtPayloadData: JwtPayload) {}
 
 

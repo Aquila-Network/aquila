@@ -8,9 +8,7 @@ import { AccountStatus } from "./dto/AuthServiceDto";
 @Service()
 export class CollectionSubscriptionService {
 
-	public constructor() {}
-
-	private async addTemporaryCollectionSubscription(collectionId: string, customerId: string): Promise<CollectionSubscriptionTemp> {
+	private async subscribeTemporaryCollection(collectionId: string, customerId: string): Promise<CollectionSubscriptionTemp> {
 		let subscription = new CollectionSubscriptionTemp();
 		await dataSource.transaction(async transactionalEntityManager => {
 			subscription.collectionId = collectionId;
@@ -20,7 +18,7 @@ export class CollectionSubscriptionService {
 		return subscription;
 	}
 	
-	private async addPermanentCollectionSubscription(collectionId: string, customerId: string): Promise<CollectionSubscription> {
+	private async subscribePermanentCollection(collectionId: string, customerId: string): Promise<CollectionSubscription> {
 		let subscription = new CollectionSubscription();
 		await dataSource.transaction(async transactionalEntityManager => {
 			subscription.collectionId = collectionId;
@@ -30,12 +28,12 @@ export class CollectionSubscriptionService {
 		return subscription;
 	}
 
-	public async addCollectionSubscription(collectionId: string, customerId: string, accountStatus: AccountStatus): Promise<CollectionSubscription|CollectionSubscriptionTemp> {
+	public async subscribeCollection(collectionId: string, customerId: string, accountStatus: AccountStatus): Promise<CollectionSubscription|CollectionSubscriptionTemp> {
 		
 		if(accountStatus === AccountStatus.TEMPORARY) {
-			return await this.addTemporaryCollectionSubscription(collectionId, customerId);
+			return await this.subscribeTemporaryCollection(collectionId, customerId);
 		}
-		return await this.addPermanentCollectionSubscription(collectionId, customerId);
+		return await this.subscribePermanentCollection(collectionId, customerId);
 	}
 
 	private async getTemporaryCollectionSubscriptionList(customerId: string): Promise<CollectionSubscriptionTemp[]> {
@@ -48,7 +46,7 @@ export class CollectionSubscriptionService {
 		return collections;
 	}
 
-	public async getCollectionSubscriptionList(customerId: string, accountStatus: AccountStatus): Promise<CollectionSubscriptionTemp[] | CollectionSubscription[]> {
+	public async getCustomerSubscriptions(customerId: string, accountStatus: AccountStatus): Promise<CollectionSubscriptionTemp[] | CollectionSubscription[]> {
 		
 		if(accountStatus === AccountStatus.TEMPORARY) {
 			return await this.getTemporaryCollectionSubscriptionList(customerId);
@@ -56,25 +54,37 @@ export class CollectionSubscriptionService {
 		return await this.getPermanentCollectionSubscriptionList(customerId);
 	}
 
-	private async getTemporaryCustomerCollectionSubscription(collectionId: string, customerId: string): Promise<CollectionSubscriptionTemp | null> {
-		const collection = await CollectionSubscriptionTemp.findOne({ where: { collectionId, subscriberId: customerId }});
-		return collection;
-	}
-	
-	private async getPermanentCustomerCollectionSubscription(collectionId: string, customerId: string): Promise<CollectionSubscription | null> {
-		const collection = await CollectionSubscription.findOne({ where: { collectionId, subscriberId: customerId }});
-		return collection;
-	}
+	public async isCollectionSubscribedByTemporaryCustomer(collectionId: string, customerId: string): Promise<boolean> {
+		// will return null if query can't find a result
+		const subscription = await CollectionSubscriptionTemp.findOne({ where: { collectionId, subscriberId: customerId} });
 
-	public async getCollectionSubscription(collectionId: string, customerId: string, accountStatus: AccountStatus): Promise<CollectionSubscriptionTemp | CollectionSubscription | null> {
-		
-		if(accountStatus === AccountStatus.TEMPORARY) {
-			return await this.getTemporaryCustomerCollectionSubscription(collectionId, customerId);
+		if(subscription) {
+			return true;
 		}
-		return await this.getPermanentCustomerCollectionSubscription(collectionId, customerId);
-	}
+	
+		return false;
+	 }
 
-	private async removeTemporaryCustomerCollectionSubscription(collectionId: string, customerId: string): Promise<CollectionSubscriptionTemp | null> {
+	public async isCollectionSubscribedByPermanentCustomer(collectionId: string, customerId: string): Promise<boolean> {
+		// will return null if query can't find a result
+		const subscription = await CollectionSubscription.findOne({ where: { collectionId, subscriberId: customerId} });
+		
+		if(subscription) {
+			return true;
+		}
+	
+		return false;
+	 }
+	 
+	 public async isCollectionSubscribedByCustomer(collectionId: string, customerId: string, accountStatus: AccountStatus): Promise<boolean> {
+		if(accountStatus === AccountStatus.TEMPORARY) {
+			return await this.isCollectionSubscribedByTemporaryCustomer(collectionId, customerId);
+		}
+
+		return await this.isCollectionSubscribedByPermanentCustomer(collectionId, customerId);
+	 }
+
+	private async unSubscribeTemporaryCollection(collectionId: string, customerId: string): Promise<CollectionSubscriptionTemp | null> {
 		const collection = await CollectionSubscriptionTemp.findOne({ where: { collectionId, subscriberId: customerId }});
 		await dataSource.transaction(async transactionalEntityManager => {
 			transactionalEntityManager.remove(collection);
@@ -83,7 +93,7 @@ export class CollectionSubscriptionService {
 		return collection;
 	}
 	
-	private async removePermanentCustomerCollectionSubscription(collectionId: string, customerId: string): Promise<CollectionSubscription | null> {
+	private async unSubscribePermanentCollection(collectionId: string, customerId: string): Promise<CollectionSubscription | null> {
 		const collection = await CollectionSubscription.findOne({ where: { collectionId, subscriberId: customerId }});
 		await dataSource.transaction(async transactionalEntityManager => {
 			transactionalEntityManager.remove(collection);
@@ -92,12 +102,12 @@ export class CollectionSubscriptionService {
 		return collection;
 	}
 
-	public async removeCollectionSubscription(collectionId: string, customerId: string, accountStatus: AccountStatus): Promise<CollectionSubscription | CollectionSubscriptionTemp | null> {
+	public async unSubscribeCollection(collectionId: string, customerId: string, accountStatus: AccountStatus): Promise<CollectionSubscription | CollectionSubscriptionTemp | null> {
 		
 		if(accountStatus === AccountStatus.TEMPORARY) {
-			return await this.removeTemporaryCustomerCollectionSubscription(collectionId, customerId);
+			return await this.unSubscribeTemporaryCollection(collectionId, customerId);
 		}
-		return await this.removePermanentCustomerCollectionSubscription(collectionId, customerId);
+		return await this.unSubscribePermanentCollection(collectionId, customerId);
 	}
 
 	private async getTemporaryCollectionFollowerCount(collectionId: string): Promise<number> {
@@ -110,7 +120,7 @@ export class CollectionSubscriptionService {
 		return count;
 	}
 
-	public async getCollectionFollowerCount(collectionId: string, accountStatus: AccountStatus): Promise<number> {
+	public async getCollectionSubscriberCount(collectionId: string, accountStatus: AccountStatus): Promise<number> {
 		
 		if(accountStatus === AccountStatus.TEMPORARY) {
 			return await this.getTemporaryCollectionFollowerCount(collectionId);
