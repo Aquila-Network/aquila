@@ -1,4 +1,5 @@
 import { Service } from "typedi";
+import randomAnimalName from 'random-animal-name';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import base58 from 'bs58';
@@ -6,7 +7,7 @@ import base58 from 'bs58';
 import dataSource from '../config/db';
 import { CustomerTemp } from "../entity/CustomerTemp";
 import { CollectionTemp } from "../entity/CollectionTemp";
-import { ActivateCustomerByIdInputDataDto, CreateCustomerInputDataDto, CreateCustomerOutputDto, GetCustomerPublicInfoByIdOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
+import { ActivateCustomerByIdInputDataDto, CreateCustomerInputDataDto, CreateCustomerOutputDto, GetCustomerPublicInfoByIdOutputDto, GetRandomCustomerNameOutputDto, UpdateCustomerByIdInputDataDto } from "./dto/CustomerServiceDto";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { Customer } from "../entity/Customer";
 import { NotFoundError } from "routing-controllers";
@@ -17,11 +18,22 @@ import { BookmarkPara } from "../entity/BookmarkPara";
 import { BookmarkParaTemp } from "../entity/BookmarkParaTemp";
 import { Collection } from "../entity/Collection";
 import { Bookmark, BookmarkStatus } from "../entity/Bookmark";
+import { CollectionSubscriptionTemp } from "../entity/CollectionSubscriptionTemp";
+import { CollectionSubscription } from "../entity/CollectionSubscription";
 
 @Service()
 export class CustomerService {
 
 	public constructor(private aquilaClientService: AquilaClientService) {}
+
+	public async getRandomCustomerName(): Promise<GetRandomCustomerNameOutputDto> {
+		const [firstName, lastName] = randomAnimalName().split(' ');
+
+		return {
+			firstName, 
+			lastName
+		};
+	}
 
 	public async getCustomerById(id: string, accountStatus: AccountStatus) {
 		if(accountStatus === AccountStatus.PERMANENT) {
@@ -128,6 +140,9 @@ export class CustomerService {
 		// get all bookmark paras to permanent account
 		const bookmarkParasTemp = await BookmarkParaTemp.find({ where: { bookmarkId: In(bookmarkTempIds)}})
 
+		// get all collection subscriptions to permanent account
+		const collectionSubTemp = await CollectionSubscriptionTemp.find({ where: { subscriberId: id}})
+
 		// create customer
 		const customer = new Customer();
 		customer.id = customerTemp.id;
@@ -179,17 +194,30 @@ export class CustomerService {
 			bookmarkPara.bookmarkId = item.bookmarkId;
 			bookmarkPara.createdAt = item.createdAt;
 			return bookmarkPara;
-		})
+		});
+
+		// create collection subscriptions
+		const collectionSubs = collectionSubTemp.map(item => {
+			const collectionSub = new CollectionSubscription();
+			collectionSub.id = item.id;
+			collectionSub.subscriberId = item.subscriberId;
+			collectionSub.collectionId = item.collectionId;
+			collectionSub.subscribedAt = item.subscribedAt;
+			collectionSub.createdAt = item.createdAt;
+			return collectionSub;
+		});
 
 		await dataSource.transaction(async transactionalEntityManager => {
 			transactionalEntityManager.save(customer);
 			transactionalEntityManager.save(collections);
 			transactionalEntityManager.save(bookmarks);
 			transactionalEntityManager.save(bookmarkParas);
+			transactionalEntityManager.save(collectionSubs);
 			transactionalEntityManager.remove(customerTemp);
 			transactionalEntityManager.remove(collectionsTemp);
 			transactionalEntityManager.remove(bookmarksTemp);
 			transactionalEntityManager.remove(bookmarkParasTemp);
+			transactionalEntityManager.remove(collectionSubTemp);
 		});
 		return customer;
 	}

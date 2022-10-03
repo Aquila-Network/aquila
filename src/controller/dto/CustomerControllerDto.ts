@@ -32,3 +32,8 @@ export interface GetCustomerPublicInfoByIdRespBodyDto {
 	desc: string;
 	customerId: number;
 }
+
+export interface GetRandomCustomerNameRespBodyDto {
+	firstName: string;
+	lastName: string;
+}

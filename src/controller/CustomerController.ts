@@ -11,7 +11,7 @@ import { GetCustomerPublicInfoByIdValidator } from "../middleware/validator/cust
 import { UpdateCustomerValidator } from "../middleware/validator/customer/UpdateCustomerValidator";
 import { CustomerService } from "../service/CustomerService";
 import { JwtPayload } from "../service/dto/AuthServiceDto";
-import { ActivateCustomerReqBodyDto, CreateCustomerReqBodyDto, CreateCustomerResponseDto, GetCustomerPublicInfoByIdRespBodyDto, UpdateCustomerReqBodyDto } from "./dto/CustomerControllerDto";
+import { ActivateCustomerReqBodyDto, CreateCustomerReqBodyDto, CreateCustomerResponseDto, GetCustomerPublicInfoByIdRespBodyDto, GetRandomCustomerNameRespBodyDto, UpdateCustomerReqBodyDto } from "./dto/CustomerControllerDto";
 
 @Service()
 @JsonController('/customer')
@@ -60,5 +60,11 @@ export class CustomerControler {
 	): Promise<Customer> {
 		return await this.customerService.activateCustomerById(jwtPayloadData.customerId, body);
 	}	
+
+	@Get('/generate-name')
+	public async generateRandomCustomerName(
+	): Promise<GetRandomCustomerNameRespBodyDto> {
+		return await this.customerService.getRandomCustomerName();
+	}
 
 }

@@ -38,8 +38,8 @@ export class ActivateCustomerValidator implements ExpressMiddlewareInterface {
 				.isLength({ min: 50})
 				.withMessage("Description should have atleast 50 characters")
 				.isLength({max: 255})
-				.withMessage("Description should be less than or equal to 255 characters")
-				.matches(/^[a-zA-Z0-9]*[a-zA-Z0-9]$/).withMessage("Description must contain only alpha numeric characters"),
+				.withMessage("Description should be less than or equal to 255 characters"),
+				// .matches(/^[a-zA-Z0-9]*[a-zA-Z0-9]$/).withMessage("Description must contain only alpha numeric characters"),
 		];
 
 		await validate(validators, req);
