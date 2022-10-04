@@ -3,7 +3,6 @@ import { Service } from "typedi";
 
 import { Collection } from "../entity/Collection";
 import { CollectionTemp } from "../entity/CollectionTemp";
-import { AquilaClientService } from "../lib/AquilaClientService";
 import { AccountStatus } from "./dto/AuthServiceDto";
 import { GetAllCollectionsInputOptionsDto, GetAllCollectionsOutputDto } from "./dto/CollectionServiceDto";
 
@@ -13,17 +12,21 @@ export class CollectionService {
 	public constructor() {}
 
 	private async getAllTemporaryCollections(options: GetAllCollectionsInputOptionsDto): Promise<GetAllCollectionsOutputDto> {
-		const allowedWhere: ['isShareable'] = ['isShareable'];
+		const allowedWhere: ['isShareable', 'isFeatured'] = ['isShareable', 'isFeatured'];
+
 		const where = allowedWhere.reduce((prev: {[key: string]: string | boolean}, current) =>{
 			if(options.where && current in options.where) {
 				prev[current] = options.where[current] as boolean | string;
 			}
 			return prev;
 		}, {})
+
 		const totalRecords = await CollectionTemp.count({ where });
 		const skip = (options.page - 1) * options.limit;
 		const take = options.limit;
+		
 		const collections = await CollectionTemp.find({ where, take, skip});
+
 		return {
 			totalRecords,
 			totalPages: Math.ceil(totalRecords / options.limit),
@@ -41,10 +44,13 @@ export class CollectionService {
 			}
 			return prev;
 		}, {})
+
 		const totalRecords = await Collection.count({ where });
 		const skip = (options.page - 1) * options.limit;
 		const take = options.limit;
+
 		const collections = await Collection.find({ where, take, skip});
+		
 		return {
 			totalRecords,
 			totalPages: Math.ceil(totalRecords / options.limit),

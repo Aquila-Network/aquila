@@ -24,6 +24,9 @@ export class Collection extends BaseEntity {
 	@Column({ name: 'indexed_docs_count', type: 'bigint', default: 0})
 	public indexedDocsCount: number;
 
+	@Column({ name: 'is_featured', type: 'boolean', default: false})
+	public isFeatured: boolean;
+
 	@CreateDateColumn({ name: 'created_at'})
 	public createdAt: Date;
 
