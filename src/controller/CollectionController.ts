@@ -30,6 +30,22 @@ export class CollectionController {
 		};
 		return await this.collectionService.getAllCollections(options, AccountStatus.PERMANENT);
 	}
+	
+	@UseBefore(GetAllPublicCollectionValidator)
+	@Get('/public/featured')
+	public async getAllPublicFeaturedCollection(
+		@QueryParams() queryParams: GetAllPublicCollectionReqQueryParamsDto
+	): Promise<GetAllPublicCollectionResPayloadDto> {
+		const options = {
+			limit: queryParams.limit? parseInt(queryParams.limit) : 10,
+			page: queryParams.page ? parseInt(queryParams.page)  : 1,
+			where: {
+				isShareable: true,
+				isFeatured: true
+			}
+		};
+		return await this.collectionService.getAllCollections(options, AccountStatus.PERMANENT);
+	}
 
 	@UseBefore(GetPublicCollectionByIdValidator)
 	@Get('/public/:collectionId')

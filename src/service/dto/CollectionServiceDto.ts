@@ -6,6 +6,7 @@ export interface GetAllCollectionsInputOptionsDto {
 	page: number;
 	where?: {
 		isShareable?: boolean;
+		isFeatured?: boolean;
 	}
 }
 
