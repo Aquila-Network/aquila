@@ -15,6 +15,11 @@ export interface GetBookmarksByCollectionIdOptionsInputDto {
 
 export type GetAllBookmarksByCollectionIdOptionsInputDto = Omit<GetBookmarksByCollectionIdOptionsInputDto, 'query'>;
 
+export interface GetFeaturedBookmarksOptionsInputDto {
+	limit: number;
+	page: number;
+}
+
 export interface BookmarkData {
 	id: string;
 	collectionId: string;
@@ -27,6 +32,14 @@ export interface BookmarkData {
 }
 
 export interface GetBookmarksByCollectionIdOutputDto {
+	totalPages: number;
+	totalRecords: number;
+	currentPage: number;	
+	limit: number;
+	bookmarks: BookmarkData[] 
+}
+
+export interface GetFeaturedBookmarksOutputDto {
 	totalPages: number;
 	totalRecords: number;
 	currentPage: number;	
