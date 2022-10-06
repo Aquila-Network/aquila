@@ -37,7 +37,7 @@ export class BookmarkController {
 	): Promise<GetBookmarksByCollectionIdResBodyDto> {
 		const options: GetBookmarksByCollectionIdOptionsInputDto = {
 			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
-			page: queryParams.page ? parseInt(queryParams.page, 10) : 0
+			page: queryParams.page ? parseInt(queryParams.page, 10) : 1
 		}
 		if(queryParams.q) {
 			options.query = queryParams.q;
@@ -52,7 +52,7 @@ export class BookmarkController {
 	): Promise<GetFeaturedBookmarksResBodyDto> {
 		const options: GetFeaturedBookmarksOptionsInputDto = {
 			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
-			page: queryParams.page ? parseInt(queryParams.page, 10) : 0
+			page: queryParams.page ? parseInt(queryParams.page, 10) : 1
 		}
 		return this.bookmarkService.getFeaturedBookmarks(options);
 	}

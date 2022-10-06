@@ -25,7 +25,7 @@ export class CollectionService {
 		const skip = (options.page - 1) * options.limit;
 		const take = options.limit;
 		
-		const collections = await CollectionTemp.find({ where, take, skip});
+		const collections = await CollectionTemp.find({ where, order: { createdAt: "DESC" }, take, skip});
 
 		return {
 			totalRecords,
@@ -37,7 +37,7 @@ export class CollectionService {
 	}
 
 	public async getAllPermanentCollections(options: GetAllCollectionsInputOptionsDto): Promise<GetAllCollectionsOutputDto> {
-		const allowedWhere: ['isShareable'] = ['isShareable'];
+		const allowedWhere: ['isShareable', 'isFeatured'] = ['isShareable', 'isFeatured'];
 		const where = allowedWhere.reduce((prev: {[key: string]: string | boolean}, current) =>{
 			if(options.where && current in options.where) {
 				prev[current] = options.where[current] as boolean | string;
@@ -49,7 +49,7 @@ export class CollectionService {
 		const skip = (options.page - 1) * options.limit;
 		const take = options.limit;
 
-		const collections = await Collection.find({ where, take, skip});
+		const collections = await Collection.find({ where, order: { createdAt: "DESC" }, take, skip});
 		
 		return {
 			totalRecords,

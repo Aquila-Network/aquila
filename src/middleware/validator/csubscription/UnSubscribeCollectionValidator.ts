@@ -26,8 +26,8 @@ export class UnSubscribeCollectionValidator implements ExpressMiddlewareInterfac
 					const jwtPayloadData = req.jwtTokenPayload;
 					if(jwtPayloadData) {
 						const collectionSubService = Container.get(CollectionSubscriptionService);
-						const collection = await collectionSubService.getCollectionSubscription(value, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
-						if(collection === null) {
+						const status = await collectionSubService.isCollectionSubscribedByCustomer(value, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
+						if(status) {
 							throw new Error("Collection is not already subscribed");	
 						}
 					}

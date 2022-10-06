@@ -256,7 +256,7 @@ export class BookmarkService {
 		const query = Bookmark.createQueryBuilder("bookmark")
 							.innerJoinAndSelect(Collection, "collection", "collection.id = bookmark.collectionId")
 							.where("collection.isFeatured = :isFeatured", { isFeatured: true })
-							.orderBy("RAND(123)")
+							// .orderBy("RANDOM()")
 		const totalRecords = await query.getCount()
 		const featuredBookmarks = await query.skip(skip).take(take).getMany()
 		// find all paragraphs for bookmark
