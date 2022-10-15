@@ -1,0 +1,24 @@
+.box-center-layout {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+
+	&__box {
+		background: #fff;
+		width: 350px;
+		padding: 20px;
+		border-radius: 3px;
+		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+	}
+
+	&__box-header {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__box-header-logo {
+		cursor: pointer;
+	}
+
+}
