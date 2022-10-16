@@ -1,6 +1,6 @@
 import { BadRequestError, InternalServerError } from "routing-controllers";
 import { Service } from "typedi";
-import { In } from "typeorm";
+import { In, createQueryBuilder } from "typeorm";
 
 import dataSource from "../config/db";
 import { Bookmark, BookmarkStatus } from "../entity/Bookmark";
@@ -13,7 +13,7 @@ import { AppQueue } from "../job/AppQueue";
 import { AppJobNames, IndexDocumentData } from "../job/types";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { AccountStatus } from "./dto/AuthServiceDto";
-import { AddBookmarkInputDto, GetAllBookmarksByCollectionIdOptionsInputDto, GetBookmarksByCollectionIdOutputDto, GetBookmarksByCollectionIdOptionsInputDto } from "./dto/BookmarkServiceDto";
+import { AddBookmarkInputDto, GetAllBookmarksByCollectionIdOptionsInputDto, GetBookmarksByCollectionIdOutputDto, GetBookmarksByCollectionIdOptionsInputDto, GetFeaturedBookmarksOutputDto } from "./dto/BookmarkServiceDto";
 
 @Service()
 export class BookmarkService {
@@ -248,5 +248,36 @@ export class BookmarkService {
 			return await this.getTemporaryBookmarksByCollectionId(collectionId, options);
 		}
 		return await this.getPermanentBookmarksByCollectionId(collectionId, options);
+	}
+
+	public async getFeaturedBookmarks(options: GetBookmarksByCollectionIdOptionsInputDto): Promise<GetFeaturedBookmarksOutputDto> {
+		const skip = (options.page - 1) * options.limit;
+		const take = options.limit;
+		const query = Bookmark.createQueryBuilder("bookmark")
+							.innerJoinAndSelect(Collection, "collection", "collection.id = bookmark.collectionId")
+							.where("collection.isFeatured = :isFeatured", { isFeatured: true })
+							// .orderBy("RANDOM()")
+		const totalRecords = await query.getCount()
+		const featuredBookmarks = await query.skip(skip).take(take).getMany()
+		// find all paragraphs for bookmark
+		const bookmarkIds = featuredBookmarks.map(item => item.id);
+		const paras = await BookmarkPara.find({ where: { bookmarkId: In(bookmarkIds)}});
+		const bookmarkData = featuredBookmarks.map(item => ({
+			id: item.id,
+			collectionId: item.collectionId,
+			url: item.url,
+			title: item.title,
+			author: item.author,
+			coverImg: item.coverImg,
+			summary: item.summary,
+			description: paras.find(para => para.bookmarkId === item.id)?.content || ''
+		}));
+		return {
+			totalRecords,
+			totalPages: Math.ceil(totalRecords / take),
+			currentPage: options.page,
+			limit: options.limit,
+			bookmarks: bookmarkData
+		}	
 	}
 }

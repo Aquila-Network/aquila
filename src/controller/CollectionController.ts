@@ -4,11 +4,12 @@ import { Service } from "typedi";
 import { Collection } from "../entity/Collection";
 import { CollectionTemp } from "../entity/CollectionTemp";
 import { JwtPayloadData } from "../helper/decorators/jwtPayloadData";
+import { GetAllFeaturedCollectionValidator } from "../middleware/validator/collection/GetAllFeaturedCollectionValidator";
 import { GetAllPublicCollectionValidator } from "../middleware/validator/collection/GetAllPublicCollectionValidator";
 import { GetPublicCollectionByIdValidator } from "../middleware/validator/collection/GetPublicCollectionByIdValidator";
 import { CollectionService } from "../service/CollectionService";
 import { AccountStatus, JwtPayload } from "../service/dto/AuthServiceDto";
-import { GetAllPublicCollectionReqQueryParamsDto, GetAllPublicCollectionResPayloadDto } from "./dto/CollectionControllerDto";
+import { GetAllFeaturedCollectionReqQueryParamsDto, GetAllFeaturedCollectionResPayloadDto, GetAllPublicCollectionReqQueryParamsDto, GetAllPublicCollectionResPayloadDto } from "./dto/CollectionControllerDto";
 
 @Service()
 @JsonController('/collection')
@@ -31,11 +32,11 @@ export class CollectionController {
 		return await this.collectionService.getAllCollections(options, AccountStatus.PERMANENT);
 	}
 	
-	@UseBefore(GetAllPublicCollectionValidator)
+	@UseBefore(GetAllFeaturedCollectionValidator)
 	@Get('/public/featured')
 	public async getAllPublicFeaturedCollection(
-		@QueryParams() queryParams: GetAllPublicCollectionReqQueryParamsDto
-	): Promise<GetAllPublicCollectionResPayloadDto> {
+		@QueryParams() queryParams: GetAllFeaturedCollectionReqQueryParamsDto
+	): Promise<GetAllFeaturedCollectionResPayloadDto> {
 		const options = {
 			limit: queryParams.limit? parseInt(queryParams.limit) : 10,
 			page: queryParams.page ? parseInt(queryParams.page)  : 1,

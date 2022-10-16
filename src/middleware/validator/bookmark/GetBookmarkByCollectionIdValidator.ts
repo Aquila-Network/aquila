@@ -38,7 +38,6 @@ export class GetBookmarkByCollectionIdValidator implements ExpressMiddlewareInte
 				const jwtPayloadData = req.jwtTokenPayload;
 					if(jwtPayloadData) {
 						const collectionService = Container.get(CollectionService);
-						console.log(value);
 						const collection = await collectionService.getCollectionById(value, jwtPayloadData.accountStatus);
 						if(collection.customerId !== jwtPayloadData.customerId) {
 							throw new Error("Invalid collection id");	

@@ -7,10 +7,11 @@ import { JwtPayloadData } from "../helper/decorators/jwtPayloadData";
 import { AuthMiddleware } from "../middleware/global/AuthMiddleware";
 import { AddBookmarkValidator } from "../middleware/validator/bookmark/AddBookmarkValidator";
 import { GetBookmarkByCollectionIdValidator } from "../middleware/validator/bookmark/GetBookmarkByCollectionIdValidator";
+import { GetFeaturedBookmarkValidator } from "../middleware/validator/bookmark/GetFeaturedBookmarkValidator";
 import { BookmarkService } from "../service/BookmarkService";
 import { JwtPayload } from "../service/dto/AuthServiceDto";
-import { GetBookmarksByCollectionIdOptionsInputDto } from "../service/dto/BookmarkServiceDto";
-import { AddBookmarkReqBodyDto, GetBookmarksByCollectionIdReqQueryParamsDto, GetBookmarksByCollectionIdResBodyDto } from "./dto/BookmarkControllerDto";
+import { GetBookmarksByCollectionIdOptionsInputDto, GetFeaturedBookmarksOptionsInputDto } from "../service/dto/BookmarkServiceDto";
+import { AddBookmarkReqBodyDto, GetBookmarksByCollectionIdReqQueryParamsDto, GetBookmarksByCollectionIdResBodyDto, GetFeaturedBookmarksReqQueryParamsDto, GetFeaturedBookmarksResBodyDto } from "./dto/BookmarkControllerDto";
 
 @Service()
 @JsonController('/bookmark')
@@ -36,11 +37,24 @@ export class BookmarkController {
 	): Promise<GetBookmarksByCollectionIdResBodyDto> {
 		const options: GetBookmarksByCollectionIdOptionsInputDto = {
 			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
-			page: queryParams.page ? parseInt(queryParams.page, 10) : 0
+			page: queryParams.page ? parseInt(queryParams.page, 10) : 1
 		}
 		if(queryParams.q) {
 			options.query = queryParams.q;
 		}
 		return this.bookmarkService.getBookmarksByCollectionId(collectionId, options, JwtPayloadData.accountStatus);
 	}
+
+	@UseBefore(GetFeaturedBookmarkValidator)
+	@Get('/public/featured')
+	public async getAllFeaturedBookmark(
+		@QueryParams() queryParams: GetFeaturedBookmarksReqQueryParamsDto
+	): Promise<GetFeaturedBookmarksResBodyDto> {
+		const options: GetFeaturedBookmarksOptionsInputDto = {
+			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
+			page: queryParams.page ? parseInt(queryParams.page, 10) : 1
+		}
+		return this.bookmarkService.getFeaturedBookmarks(options);
+	}
+	
 }

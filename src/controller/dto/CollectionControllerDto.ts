@@ -13,3 +13,16 @@ export interface GetAllPublicCollectionResPayloadDto {
 	limit: number;
 	collections: Collection[] | CollectionTemp[]
 }
+
+export interface GetAllFeaturedCollectionReqQueryParamsDto {
+	limit?: string;
+	page?: string;
+}
+
+export interface GetAllFeaturedCollectionResPayloadDto {
+	totalRecords: number;
+	totalPages: number;
+	currentPage: number,
+	limit: number;
+	collections: Collection[] | CollectionTemp[]
+}
