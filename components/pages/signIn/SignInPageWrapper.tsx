@@ -1,10 +1,15 @@
+import { FC } from "react";
 import BoxCenterLayout from "../../layout/boxCenter/BoxCenterLayout";
 import SignInForm from "./SignInForm";
 
-const SignInPageWrapper = () => {
+interface SignInPageWrapperProps {
+	onSignIn: Function
+}
+
+const SignInPageWrapper: FC<SignInPageWrapperProps> = (props) => {
 	return (
 		<BoxCenterLayout>
-			<SignInForm />
+			<SignInForm onSignIn={props.onSignIn} />
 		</BoxCenterLayout>
 	)
 }

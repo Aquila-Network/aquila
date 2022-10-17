@@ -11,7 +11,9 @@ const BoxCenterLayout = (props: any) => {
 				<div className={classes["box-center-layout__box-header"]}>
 					<div className={classes["box-center-layout__box-header-logo"]}>
 						<Link href="/">
-							<Img src={Logo} />
+							<a>
+								<Img src={Logo} />
+							</a>
 						</Link>
 					</div>
 				</div>
