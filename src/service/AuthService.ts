@@ -54,6 +54,8 @@ export class AuthService {
 		// if valid secret generate token
 		const payload = {
 			customerId: customer.id,
+			firstName: customer.firstName,
+			lastName: customer.lastName,
 			accountStatus: AccountStatus.PERMANENT
 		};
 		const token = this.generateToken(payload);
@@ -70,6 +72,8 @@ export class AuthService {
 			// if valid secret generate token
 			const payload = {
 				customerId: customer.id,
+				firstName: customer.firstName,
+				lastName: customer.lastName,
 				accountStatus: AccountStatus.TEMPORARY
 			};
 			const token = this.generateToken(payload);
