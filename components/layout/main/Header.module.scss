@@ -1,0 +1,42 @@
+.header {
+    padding: 10px 0px;
+
+    &__container {
+        width: 1280px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__brand-link {
+        display: flex;
+        text-decoration: none;
+        align-items: center;
+    }
+
+    &__brand-img-container {
+        width: 50px;
+    }
+
+    &__brand-text {
+        font-size: 16px;
+        font-weight: 500;
+        color: #202A38;
+    }
+
+    &__nav-list-container {
+        display: flex;
+        list-style: none;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__nav-list-link {
+        text-decoration: none;
+        color: #202A38;
+        transition: all .3;
+    }
+    &__nav-list-link:hover {
+        color: #0FBD86;
+    }
+}

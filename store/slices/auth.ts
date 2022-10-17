@@ -1,27 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 import { AppState } from "..";
 
 interface AuthState {
 	isSignedIn: boolean;
-	authToken: string | null;
-	user: {
-		userId: string;
-		name: string;
+	token: string | null;
+	accountStatus: string | null;
+	customer: {
+		customerId: string;
 	} | null;
 }
 
 interface SignInPayloadAction {
-	authToken: string;
-	user: {
-		userId: string;
+	token: string;
+	accountStatus: string;
+	customer: {
+		customerId: string;
 		name: string;
 	}
 }
 
 const initialState: AuthState = {
 	isSignedIn: false,
-	authToken: null,
-	user: null
+	token: null,
+	accountStatus: null,
+	customer: null
 }
 
 export const authSlice = createSlice({
@@ -30,13 +33,23 @@ export const authSlice = createSlice({
 	reducers: {
 		signIn: (state, action: PayloadAction<SignInPayloadAction>) => {
 			state.isSignedIn = true;
-			state.user = action.payload.user;
-			state.authToken = action.payload.authToken;
+			state.customer = action.payload.customer;
+			state.token = action.payload.token;
+			state.accountStatus = action.payload.accountStatus;
 		},
 		signOut: (state) => {
 			state.isSignedIn = false
-			state.authToken = null;
-			state.user = null;
+			state.token = null;
+			state.customer = null;
+			state.accountStatus = null;
+		}
+	},
+	extraReducers: {
+		[HYDRATE]: (state, action) => {
+			return {
+				...state,
+				...action.payload.auth
+			}
 		}
 	}
 });
