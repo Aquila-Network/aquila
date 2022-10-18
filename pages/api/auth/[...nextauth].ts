@@ -3,11 +3,12 @@ import Credentials from 'next-auth/providers/credentials';
 import jwt from 'jsonwebtoken';
 
 import api from '../../../utils/api';
-import { AxiosError } from 'axios';
 
 interface AuthPayload {
 	accountStatus: string;
 	customerId: string;
+	firstName: string;
+	lastName: string;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -30,10 +31,11 @@ export const authOptions: NextAuthOptions = {
 				if(!token) {
 					throw new Error('Something went wrong');
 				}
-				console.log(response.data);
 				const data = jwt.decode(token) as unknown as AuthPayload;
 				return {
 					customerId: data.customerId,
+					firstName: data.firstName,
+					lastName: data.lastName,
 					accountStatus: data.accountStatus,
 					token: token
 				} as User;
@@ -46,6 +48,12 @@ export const authOptions: NextAuthOptions = {
 			if(token.customerId) {
 				session.user.customerId = token.customerId;
 			}
+			if(token.firstName) {
+				session.user.firstName = token.firstName;
+			}
+			if(token.lastName) {
+				session.user.lastName = token.lastName;
+			}
 			if(token.accountStatus) {
 				session.user.accountStatus = token.accountStatus;
 			}
@@ -57,6 +65,8 @@ export const authOptions: NextAuthOptions = {
 		jwt({ token, user}) {
 			if(user) {
 				token.customerId = user.customerId;
+				token.firstName = user.firstName;
+				token.lastName = user.lastName;
 				token.accountStatus = user.accountStatus;
 				token.token = user.token;
 			}

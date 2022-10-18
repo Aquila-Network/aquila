@@ -1,0 +1,26 @@
+.search-bar {
+	padding: 10px 5px;
+
+	&__container {
+		display: flex;
+		border-bottom: 1px solid #AEBCD1;
+		padding: 10px 5px;
+	}
+
+	&__input {
+		margin-right: 10px;
+		width: 100%;
+		border: none;
+		outline: none;
+	}
+
+	&__input::placeholder {
+		color: #AEBCD1;
+	}
+
+	&__btn {
+		border: none;
+		outline: none;
+		background: transparent;
+	}
+}

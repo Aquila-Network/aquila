@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 0px;
+
+    &__info {
+        color: #202A38;
+    }
+    
+    &__info-title {
+        margin: 0px;
+        font-weight: 500;
+    }
+
+    &__info-desc {
+        margin: 0px;
+        font-size: 14px;
+        color: #415572;
+    }
+
+}

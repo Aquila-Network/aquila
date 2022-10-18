@@ -1,0 +1,21 @@
+.settings {
+    width: 900px;
+    margin: auto;
+    margin-top: 20px;
+
+    &__header {
+    }
+
+    &__body {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    &__sidebar {
+        width: 250px;
+    }
+
+    &__content {
+        width: 100%;
+    }
+}

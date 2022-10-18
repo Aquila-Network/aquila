@@ -1,0 +1,13 @@
+.explore-category-item {
+	margin-top: 15px;
+
+	&__title {
+		margin-bottom: 20px;
+		font-size: 24px;
+	}
+
+	&__explore-list {
+		display: flex;
+		justify-content: space-between;
+	}
+}

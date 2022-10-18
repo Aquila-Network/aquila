@@ -1,0 +1,37 @@
+.explore {
+	width: 250px;
+	padding: 20px 15px;
+	border-radius: 3px;
+	border: 1px solid #ddd;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 20px;
+		padding-bottom: 20px;
+		border-bottom: 2px solid #ddd;
+	}
+
+	&__header-title {
+		color: #202A38;
+		font-size: 22px;
+		font-weight: 500;
+		text-decoration: none;
+		margin: 0px;
+	}
+
+
+	&__header-title:hover {
+		color: #0FBD86;
+	}
+
+	&__header-avatar {
+		margin-right: 10px;
+	}
+
+	&__content-desc {
+		color: #415572;
+		font-size: 14px;
+	}
+
+}
