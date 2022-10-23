@@ -1,7 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { store } from "../store";
+import axios from "axios";
 
-console.log(process.env.NEXT_PUBLIC_API_URL);
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_AQUILA_API_URL,

@@ -1,3 +1,7 @@
+import { AxiosError } from "axios";
+import { AsyncThunkSubmissionError } from "../errors/AsyncThunkSubmissionError";
+
+
 const isArrayFieldError = (item: any) => {
     const match = item.param.match(/\[(\d+)\]/);
     if (match && match.length === 2) {
@@ -55,4 +59,20 @@ const isArrayFieldError = (item: any) => {
     return formErrors;
   };
   
-  export default collectValidationErrors;
+interface SubmissionErrorResponse<T> {
+    message: string;
+    errors: Array<T>;
+}
+
+export const createSubmissionErrorFromErrObj = <T extends {}> (error: AxiosError<SubmissionErrorResponse<T>> | Error) => {
+    let message = "Something went wrong";
+    let validationErrors: T | null = null;
+    if(error instanceof AxiosError) {
+        message = error.response?.data.message;
+        if(error.response?.status === 400) {
+            validationErrors = collectValidationErrors(error.response.data.errors);
+        }
+    }
+    const errObj = new AsyncThunkSubmissionError<T>(message, validationErrors);
+    return errObj;
+}

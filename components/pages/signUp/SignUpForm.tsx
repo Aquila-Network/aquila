@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { AppState } from '../../../store';
+
 import classes from './SignupForm.module.scss';
 
 interface SignUpFormProps {
@@ -9,7 +11,8 @@ interface SignUpFormProps {
 	name: {
 		firstName: string | null;
 		lastName: string | null;
-	}
+	},
+	signUpState: AppState["signUp"]
 }
 
 type FormData = {
@@ -20,21 +23,31 @@ type FormData = {
 const SignUpForm: FC<SignUpFormProps> = (props) => {
 	const {
 		name,
-		onSignUp
+		onSignUp,
+		signUpState
 	} = props;
 
-	const { register, handleSubmit, setValue } = useForm<FormData>();
+	const { register, handleSubmit, setValue, setError, formState: { errors } } = useForm<FormData>();
 
 	useEffect(() => {
 		if(name.firstName && name.lastName) {
 			setValue("firstName", name.firstName);
 			setValue("lastName", name.lastName);
 		}	
-	}, [name, setValue])
+	}, [name.firstName, name.lastName, setValue])
+
+	useEffect(() => {
+		if(signUpState.errors) {
+			signUpState.errors.firstName && setError("firstName", { type: 'custom', message: signUpState.errors.firstName });
+			signUpState.errors.lastName && setError("lastName", { type: 'custom', message: signUpState.errors.lastName });
+		}
+	}, [signUpState])
 
 	const onSubmitHandler = (data: any) => {
 		onSignUp(data);
 	};
+
+	console.log(errors);
 
 	return (
 		<div className={classes["signup-box"]}>
@@ -51,6 +64,7 @@ const SignUpForm: FC<SignUpFormProps> = (props) => {
 							type="text"
 							placeholder="First name"
 						/>
+						{errors.firstName && <p className={classes["signup-box__form-error"]}>{errors.firstName.message}</p>}
 					</div>
 					<div className={classes["signup-box__form-item"]}>
 						<label className={classes["signup-box__form-label"]}>Signup name</label>
@@ -60,6 +74,7 @@ const SignUpForm: FC<SignUpFormProps> = (props) => {
 							type="text"
 							placeholder="Last name"
 						/>
+						{errors.lastName && <p className={classes["signup-box__form-error"]}>{errors.lastName.message}</p>}
 					</div>
 					<div className={`${classes["signup-box__form-item"]} ${classes["signup-box__form-item--btn-container"]}`}>
 						<button className={classes["signup-box__form-btn"]}>Continue</button>

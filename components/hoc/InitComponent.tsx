@@ -9,7 +9,6 @@ interface InitCompoentProps {
 
 const InitComponent: FC<InitCompoentProps> = (props) => {
     const { status, data} = useSession();
-    console.log(status, data);
     const dispatch = useAppDispatch();
     useEffect(() => {
         if(status === 'authenticated') {

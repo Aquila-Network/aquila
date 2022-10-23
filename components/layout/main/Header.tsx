@@ -60,14 +60,8 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
 								<Link href="/explore"><a className={classes["header__nav-list-link"]} >Explore</a></Link>
 							</li>
 							<li>
-								<Link href="/"><a className={classes["header__nav-list-link"]} >Download</a></Link>
-							</li>
-							<li>
 								<a className={classes["header__nav-list-link"]}  href="https://blog.aquila.network/">Blog</a>
 							</li>
-							<li>
-								<a className={classes["header__nav-list-link"]} href="https://github.com/Aquila-Network">Github</a>
-							</li>	
 							{!props.isAuth &&	
 							<li>
 								<Link href="/sign-in"><a className={classes["header__nav-list-link"]} >Sign In</a></Link>

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { useAppSelector } from '../../../store';
 import { selectAuth } from '../../../store/slices/auth';
+import BaseLayout from '../base/baseLayout';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -34,19 +35,21 @@ const MainLayout: FC<MainLayoutProps> = (props) => {
 
 
 	return (
-		<div className={classes["main-layout"]}>
-			<div className={classes["main-layout__top"]}>
-				<section className={classes["main-layout__header"]}>
-					<Header signedInUser={signedInUser} isAuth={authState.isSignedIn} onSignOut={signOutHandler} />
-				</section>
-				<section className={classes["main-layout__body"]}>{props.children}</section>
+		<BaseLayout>
+			<div className={classes["main-layout"]}>
+				<div className={classes["main-layout__top"]}>
+					<section className={classes["main-layout__header"]}>
+						<Header signedInUser={signedInUser} isAuth={authState.isSignedIn} onSignOut={signOutHandler} />
+					</section>
+					<section className={classes["main-layout__body"]}>{props.children}</section>
+				</div>
+				<div className={classes["main-layout__bottom"]}>
+					<section className={classes["main-layout__footer"]}>
+						<Footer />
+					</section>
+				</div>
 			</div>
-			<div className={classes["main-layout__bottom"]}>
-				<section className={classes["main-layout__footer"]}>
-					<Footer />
-				</section>
-			</div>
-		</div>
+		</BaseLayout>
 	)
 }
 

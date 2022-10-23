@@ -20,7 +20,6 @@ const SignInPage: NextPage = () => {
 	const signInHandler = async (secretKey: string) => {
 		const resp = await signIn('credentials',{ redirect: false, secretKey });
 		if(resp?.ok) {
-			alert("Success");
 			router.push('/home');
 			return;
 		}
