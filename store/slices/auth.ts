@@ -8,6 +8,8 @@ interface AuthState {
 	accountStatus: string | null;
 	customer: {
 		customerId: string;
+		firstName: string;
+		lastName: string;
 	} | null;
 }
 
@@ -16,7 +18,8 @@ interface SignInPayloadAction {
 	accountStatus: string;
 	customer: {
 		customerId: string;
-		name: string;
+		firstName: string;
+		lastName: string;
 	}
 }
 

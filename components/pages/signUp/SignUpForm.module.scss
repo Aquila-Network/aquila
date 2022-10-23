@@ -33,6 +33,12 @@
 		box-sizing: border-box;
 	}
 
+	&__form-error {
+		margin-top: 5px;
+		color: #F87272;
+		font-size: 12px;
+	}
+
 	&__form-btn {
 		width: 100%;
 		background: none;

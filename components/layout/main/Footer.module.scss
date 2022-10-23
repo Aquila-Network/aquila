@@ -1,4 +1,23 @@
 .footer {
     padding: 5px 0px;
     text-align: center;
+
+    &__icon-menu {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0px;
+    }
+
+    &__icon-menu-link {
+        font-size: 25px;
+        color: #202A38;
+        transition: all .3s;
+    }
+
+
+    &__icon-menu-link:hover {
+        color: #0FBD86;
+    }
 }

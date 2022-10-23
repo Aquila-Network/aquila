@@ -17,7 +17,8 @@ export const getServerSideProps = wrapper.getServerSideProps(store=> async (ctx)
     const session = await unstable_getServerSession(ctx.req, ctx.res, authOptions);
     if(session) {
         store.dispatch(signIn({  token: session?.user.token, accountStatus: session?.user.accountStatus, customer: {
-            name: 'null',
+            firstName: session?.user.firstName,
+            lastName: session?.user.lastName,
             customerId: session?.user.customerId
         }}))
     }

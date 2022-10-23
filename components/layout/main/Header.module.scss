@@ -1,11 +1,11 @@
 .header {
-    padding: 10px 0px;
+    padding: 20px 0px;
 
     &__container {
-        width: 1280px;
         margin: auto;
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     &__brand-link {
@@ -31,6 +31,10 @@
         gap: 10px;
     }
 
+    &__nav-list-item {
+        position: relative;
+    }
+
     &__nav-list-link {
         text-decoration: none;
         color: #202A38;
@@ -38,5 +42,42 @@
     }
     &__nav-list-link:hover {
         color: #0FBD86;
+    }
+
+    &__nav-dropdown {
+        position: absolute;
+        list-style: none;
+        padding: 0px;
+        background: #fff;
+        min-width: 150px;
+        right: 0px;
+        margin-top: 10px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+        // box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    }
+
+    &__nav-dropdown::before {
+        content: '';
+        width: 0px;
+        height: 0px;
+        border: 10px solid #fff;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        position: absolute;
+        top: -20px;
+        right: 10px;
+    }
+
+    &__nav-dropdown-link {
+        text-decoration: none;
+        color: #202A38;
+        font-size: 14px;
+        display: block;
+        padding: 10px 20px;
+    }
+
+    &__nav-dropdown-link:hover {
+        background: #EFF2F6;
     }
 }

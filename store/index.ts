@@ -3,12 +3,19 @@ import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import authReducer from './slices/auth';
+import generatedNameReducer from './slices/generateName';
+import signUpReducer from './slices/signup';
 
 export const createStore = () => {
 	return configureStore({
 		reducer: {
-			auth: authReducer
-		}
+			auth: authReducer,
+			generatedName: generatedNameReducer,
+			signUp: signUpReducer
+		},
+		middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+			serializableCheck: false
+		})
 	});
 }
 

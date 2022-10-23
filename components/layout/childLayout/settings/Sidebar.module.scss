@@ -1,0 +1,21 @@
+.sidebar {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+
+    &__item {
+        padding: 10px 5px;
+    }
+
+    &__item-link {
+        font-size: 16px;
+        text-decoration: none;
+        color: #202A38;
+        transition: all .3s;
+    }
+
+
+    &__item-link:hover {
+        color: #0FBD86;
+    }
+}
