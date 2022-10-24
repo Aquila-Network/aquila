@@ -16,9 +16,9 @@ export class AddBookmarkValidator implements ExpressMiddlewareInterface {
 	public async use(req: Request, res: Response, next: NextFunction) {
 		const validators = [
 			body('html')
-				.trim().not().isEmpty()
-				.withMessage("Html is required")
-				.bail()
+				// .trim().not().isEmpty()
+				// .withMessage("Html is required")
+				// .bail()
 				.isLength({max: 900000})
 				.withMessage("Html content length should be less than 900,000 characters"),
 

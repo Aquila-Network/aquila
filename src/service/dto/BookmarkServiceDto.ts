@@ -2,7 +2,7 @@ import { Bookmark } from "../../entity/Bookmark";
 import { BookmarkTemp } from "../../entity/BookmarkTemp";
 
 export interface AddBookmarkInputDto {
-	html: string;
+	html?: string;
 	url: string;
 	collectionId: string;
 }
