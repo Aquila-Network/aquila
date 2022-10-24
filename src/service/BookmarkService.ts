@@ -1,6 +1,7 @@
 import { BadRequestError, InternalServerError } from "routing-controllers";
 import { Service } from "typedi";
 import { In, createQueryBuilder } from "typeorm";
+import puppeteer from 'puppeteer-core';
 
 import dataSource from "../config/db";
 import { Bookmark, BookmarkStatus } from "../entity/Bookmark";
@@ -14,17 +15,38 @@ import { AppJobNames, IndexDocumentData } from "../job/types";
 import { AquilaClientService } from "../lib/AquilaClientService";
 import { AccountStatus } from "./dto/AuthServiceDto";
 import { AddBookmarkInputDto, GetAllBookmarksByCollectionIdOptionsInputDto, GetBookmarksByCollectionIdOutputDto, GetBookmarksByCollectionIdOptionsInputDto, GetFeaturedBookmarksOutputDto } from "./dto/BookmarkServiceDto";
+import { ConfigService } from "../lib/ConfigService";
 
 @Service()
 export class BookmarkService {
 
-	public constructor(private appQueue: AppQueue, private aquilaClientService: AquilaClientService) {}
+	public constructor(private appQueue: AppQueue, private aquilaClientService: AquilaClientService, private configService: ConfigService) {}
+
+	private async fetchWebsiteContent(url: string): Promise<string> {
+		const broswerlessAPIKey = this.configService.get("BROWSERLESS_API_KEY");
+		const browser = await puppeteer.connect({
+			browserWSEndpoint: `wss://chrome.browserless.io?token=${broswerlessAPIKey}&ignoreDefaultArgs=true`,
+		});
+
+		const page = await browser.newPage();
+		await page.goto('https://aquila.network', {waitUntil: 'domcontentloaded'});
+		const content = await page.content();
+		await browser.close();
+
+		return content;
+	}
 
 	private async addTemporaryBookmark(data: AddBookmarkInputDto): Promise<BookmarkTemp> {
 		let bookmark = new BookmarkTemp();
 		await dataSource.transaction(async transactionalEntityManager => {
 			bookmark.url = data.url;
-			bookmark.html = data.html;
+			let htmlTmp = ""
+			if(data.html !== undefined) {
+				htmlTmp = await this.fetchWebsiteContent(data.url);
+			}
+			
+			bookmark.html = data.html || htmlTmp;
+			
 			bookmark.collectionId = data.collectionId;
 			await transactionalEntityManager.save(bookmark);
 
@@ -37,7 +59,14 @@ export class BookmarkService {
 		let bookmark = new Bookmark();
 		await dataSource.transaction(async transactionalEntityManager => {
 			bookmark.url = data.url;
-			bookmark.html = data.html;
+			
+			let htmlTmp = ""
+			if(data.html === undefined) {
+				htmlTmp = await this.fetchWebsiteContent(data.url);
+			}
+			
+			bookmark.html = data.html || htmlTmp;
+
 			bookmark.collectionId = data.collectionId;
 			await transactionalEntityManager.save(bookmark);
 

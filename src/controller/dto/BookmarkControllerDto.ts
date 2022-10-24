@@ -1,5 +1,5 @@
 export interface AddBookmarkReqBodyDto {
-	html: string;
+	html?: string;
 	url: string;
 	collectionId: string;
 }
