@@ -1,0 +1,24 @@
+.alert {
+    padding: 10px;
+    border-radius: 3px;
+
+    &--success {
+        background: #EAFAF4;
+        color: #36D399;
+    }
+
+    &--info {
+        background: #E6F7FE;
+        color: #3ABFF8;
+    }
+
+    &--danger {
+        background: #FEE7E7;
+        color: #F87272;
+    }
+
+    &__text {
+        font-size: 14px;
+        text-align: center;
+    }
+}

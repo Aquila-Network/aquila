@@ -4,8 +4,8 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	&__header {
-		border-bottom: 1px solid #CED7E3;
+	&__header--with-border {
+		box-shadow: inset 0px -1px 1px #EFF2F6;
 	}
 
 }

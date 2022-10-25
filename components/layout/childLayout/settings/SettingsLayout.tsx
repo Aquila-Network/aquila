@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { AppState } from "../../../../store";
 import MainLayout from "../../main/MainLayout";
 import Header from "./Header";
 
@@ -7,6 +8,7 @@ import Sidebar from "./Sidebar";
 
 interface SettingsLayoutProps {
     children: React.ReactNode;
+    authState: AppState["auth"];
 }
 
 const SettingsLayout: FC<SettingsLayoutProps> = (props) => {
@@ -14,7 +16,7 @@ const SettingsLayout: FC<SettingsLayoutProps> = (props) => {
         <MainLayout>
             <section className={classes.settings}>
                 <section className={classes.settings__header}>
-                    <Header />
+                    <Header authState={props.authState}/>
                 </section>
                 <section className={classes.settings__body}>
                     <aside className={classes.settings__sidebar}>

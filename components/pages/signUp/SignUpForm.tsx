@@ -47,13 +47,11 @@ const SignUpForm: FC<SignUpFormProps> = (props) => {
 		onSignUp(data);
 	};
 
-	console.log(errors);
-
 	return (
 		<div className={classes["signup-box"]}>
 			<form onSubmit={handleSubmit(onSubmitHandler)}>
 				<div className={classes["signup-box__header"]}>
-					<h3 className={classes["signup-box__title"]}>Continue as Guest</h3>
+					<h3 className={classes["signup-box__title"]}>Generate Account</h3>
 				</div>
 				<div className={classes["signup-box__form"]}>
 					<div className={classes["signup-box__form-item"]}>
@@ -77,7 +75,7 @@ const SignUpForm: FC<SignUpFormProps> = (props) => {
 						{errors.lastName && <p className={classes["signup-box__form-error"]}>{errors.lastName.message}</p>}
 					</div>
 					<div className={`${classes["signup-box__form-item"]} ${classes["signup-box__form-item--btn-container"]}`}>
-						<button className={classes["signup-box__form-btn"]}>Continue</button>
+						<button className={classes["signup-box__form-btn"]}>Generate Account</button>
 					</div>
 				</div>
 				<div className={classes["signup-box__footer"]}>

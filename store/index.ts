@@ -3,6 +3,7 @@ import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import authReducer from './slices/auth';
+import getCurrentLoggedInCustomerReducer from "./slices/customer/getCurrentLoggedInCustomer";
 import generatedNameReducer from './slices/generateName';
 import signUpReducer from './slices/signup';
 
@@ -11,7 +12,8 @@ export const createStore = () => {
 		reducer: {
 			auth: authReducer,
 			generatedName: generatedNameReducer,
-			signUp: signUpReducer
+			signUp: signUpReducer,
+			getCurrentLoggedInCustomer: getCurrentLoggedInCustomerReducer
 		},
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware({
 			serializableCheck: false

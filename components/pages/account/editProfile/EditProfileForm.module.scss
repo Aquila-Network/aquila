@@ -24,11 +24,22 @@
         transition: all .3s;
         border: 1px solid #202A38;
         cursor: pointer;
-    }
+        display: flex;
+        align-items: center;
+    } 
 
+    &__form-btn-spinner {
+        margin-right: 5px;
+    }
 
     &__form-btn:hover {
         border-color: #36D399;
         color: #36D399;
+    }
+
+    &__form-btn:disabled {
+        border-color: #6D87AC;
+        color: #6D87AC;
+        cursor:not-allowed;
     }
 }

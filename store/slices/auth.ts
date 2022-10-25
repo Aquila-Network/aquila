@@ -11,6 +11,7 @@ interface AuthState {
 		firstName: string;
 		lastName: string;
 	} | null;
+	status: 'idle' | 'pending' | 'succeeded' | 'failed';
 }
 
 interface SignInPayloadAction {
@@ -27,7 +28,8 @@ const initialState: AuthState = {
 	isSignedIn: false,
 	token: null,
 	accountStatus: null,
-	customer: null
+	customer: null,
+	status: 'idle'
 }
 
 export const authSlice = createSlice({
@@ -39,12 +41,14 @@ export const authSlice = createSlice({
 			state.customer = action.payload.customer;
 			state.token = action.payload.token;
 			state.accountStatus = action.payload.accountStatus;
+			state.status = "succeeded";
 		},
 		signOut: (state) => {
 			state.isSignedIn = false
 			state.token = null;
 			state.customer = null;
 			state.accountStatus = null;
+			state.status = "succeeded";
 		}
 	},
 	extraReducers: {
