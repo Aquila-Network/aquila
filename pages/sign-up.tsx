@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastOptions } from 'react-toastify';
 
 import SignUpPageWrapper from "../components/pages/signUp/SignUpPageWrapper";
@@ -15,9 +15,10 @@ const SignUpPage: NextPage = () => {
 	const router = useRouter();
 	const authState = useAppSelector(selectAuth);
 	const signUpState = useAppSelector(selectSignUp);
+	const [accountCreated, setAccountCreated] = useState(false);
 
 	useEffect(() => {
-		if(authState.isSignedIn) {
+		if(authState.isSignedIn && !accountCreated) {
 			router.replace('/home');
 		}
 	}, [router, authState])
@@ -40,10 +41,10 @@ const SignUpPage: NextPage = () => {
 		}
 		dispatch(signUp(data)).unwrap()
 		.then(async (data) => {
-			toast("Continue as guest", { ...toastOptions, type: "success"})
+			toast("Account Genreated", { ...toastOptions, type: "success"})
 			const result = await signIn("credentials", {secretKey: data.secretKey, redirect: false});
 			if(result?.ok) {
-				router.push("/home")
+				setAccountCreated(true);
 			}
 		})
 		.catch((e) => {
@@ -56,6 +57,7 @@ const SignUpPage: NextPage = () => {
 			onSignUp={signUpHandler}
 			signUpState={signUpState}
 			name={{firstName: generatedName.firstName, lastName: generatedName.lastName}}
+			accountCreated={accountCreated}
 		/>
 	);
 }

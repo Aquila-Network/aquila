@@ -1,0 +1,15 @@
+.story {
+    background: #EFF2F6;
+    padding: 100px 0px;
+    text-align: center;
+
+    &__title {
+        font-size: 24px;
+        color: #202A38;
+    }
+
+    &__link {
+        text-decoration: none;
+        color: #0FBD86;
+    }
+}

@@ -3,20 +3,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppState } from "..";
 import api from "../../utils/api";
 import { AsyncThunkSubmissionError } from "./errors/AsyncThunkSubmissionError";
+import { Customer } from "./types/Customer";
 import { ValidationErrors } from "./types/validationErrors";
 import { createSubmissionErrorFromErrObj } from "./utils/createError";
-
-interface Customer {
-    id: string;
-    firstName: string;
-    lastName: string;
-    avatar: string;
-    secretKey: string;
-    desc: string;
-    isActive: boolean;
-    createdAt: string;
-    updatedAt: string;
-}
 
 interface Collection {
     id: string;

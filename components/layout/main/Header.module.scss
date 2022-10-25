@@ -39,7 +39,14 @@
         text-decoration: none;
         color: #202A38;
         transition: all .3;
+        cursor: pointer;
+        font-weight: 500;
     }
+
+    &__nav-list-link--active {
+        color: #0FBD86;
+    }
+
     &__nav-list-link:hover {
         color: #0FBD86;
     }

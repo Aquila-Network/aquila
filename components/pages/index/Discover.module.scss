@@ -1,0 +1,29 @@
+.discover {
+    margin: auto;
+    margin-top: 80px;
+    display: flex;
+    max-width: 1280px;
+    &__text-area {
+        flex-basis: 50%;
+        padding: 50px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    &__title {
+        font-size: 25px;
+        color: #202A38;
+    }
+
+    &__desc {
+        font-size: 20px;
+        color: #415572;
+    }
+
+    &__img-area {
+        flex-basis: 50%;
+    }    
+}

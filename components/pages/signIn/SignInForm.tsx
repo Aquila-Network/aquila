@@ -28,7 +28,7 @@ const SignInForm = (props:any) => {
 				<div className={classes["login-box__footer"]}>
 					<p className={classes["login-box__footer-text"]}>
 						<span>Don&apos;t have an account?  </span>
-						<Link href="/sign-up"><a className={classes["login-box__footer-link"]}>Continue as guest</a></Link>
+						<Link href="/sign-up"><a className={classes["login-box__footer-link"]}>Generate an account</a></Link>
 					</p>
 				</div>
 			</form>
