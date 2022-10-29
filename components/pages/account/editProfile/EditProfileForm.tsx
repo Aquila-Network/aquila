@@ -40,7 +40,6 @@ const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus}) =>
             </div>
             <div className={classes["edit-profile-form__form-group"]}>
                 <button disabled className={classes["edit-profile-form__form-btn"]} type="submit" value="Save" >
-                    <div className={classes["edit-profile-form__form-btn-spinner"]}><Oval color='#6D87AC' secondaryColor="#6D87AC" strokeWidth={10} height="20px" width={20} /></div>
                     <span>{accountStatus === "TEMPORARY" ? 'Activate Account' : 'Save' }</span>
                 </button>
             </div>

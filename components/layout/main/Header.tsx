@@ -9,10 +9,13 @@ import Container from "../../ui/layout/Container";
 import Modal from "../../ui/modal/Modal";
 import AddLink from "./AddLink";
 import { useRouter } from "next/router";
+import { AppState } from "../../../store";
 
 interface HeaderProps {
 	onSignOut: Function
+	onSubmitAddLink: Function
 	isAuth: boolean;
+	addLinkState: AppState["addLink"];
 	signedInUser: {
 		firstName: string;
 		lastName: string;
@@ -114,7 +117,11 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
 				</Container>
 			</header>
 			{showAddLinkModal &&
-			<AddLink onClose={onCloseModalHander} />
+			<AddLink 
+				addLinkState={props.addLinkState}
+				onSubmitAddLink={props.onSubmitAddLink}
+				onClose={onCloseModalHander}
+			/>
 			}
 		</>
 	)
