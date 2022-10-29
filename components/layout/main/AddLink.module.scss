@@ -53,6 +53,12 @@
         border-radius: 3px;
     }
 
+    &__form-control-error {
+        color: #F87272;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
     &__form-btn {
         outline: none;
         background: #fff;
@@ -67,5 +73,9 @@
     &__form-btn:hover {
         color: #0FBD86;
         border-color: #0FBD86;
+    }
+    &__form-btn:disabled {
+        color: #AEBCD1;
+        border-color: #AEBCD1;;
     }
 }

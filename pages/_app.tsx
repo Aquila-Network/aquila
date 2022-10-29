@@ -6,6 +6,7 @@ import { wrapper } from '../store';
 import '../styles/globals.scss';
 import { Session } from 'next-auth';
 import InitComponent from '../components/hoc/InitComponent';
+import BaseLayout from '../components/layout/base/baseLayout';
 
 interface ApplicationProps {
   session: Session
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps: { session, ...rest} }: AppProps<Applicati
     <SessionProvider session={session}>
       <Provider store={store}>
         <InitComponent>
-          <Component {...props.pageProps} />
+          <BaseLayout>
+            <Component {...props.pageProps} />
+          </BaseLayout>
         </InitComponent>
       </Provider>
     </SessionProvider>

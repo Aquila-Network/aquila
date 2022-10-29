@@ -6,6 +6,8 @@ import authReducer from './slices/auth';
 import getCurrentLoggedInCustomerReducer from "./slices/customer/getCurrentLoggedInCustomer";
 import generatedNameReducer from './slices/generateName';
 import signUpReducer from './slices/signup';
+import addLinkReducer from './slices/bookmark/addLink';
+import getLoggedInCustCollectionsReducer from './slices/collection/getLoggedInCustCollections';
 
 export const createStore = () => {
 	return configureStore({
@@ -13,7 +15,9 @@ export const createStore = () => {
 			auth: authReducer,
 			generatedName: generatedNameReducer,
 			signUp: signUpReducer,
-			getCurrentLoggedInCustomer: getCurrentLoggedInCustomerReducer
+			getCurrentLoggedInCustomer: getCurrentLoggedInCustomerReducer,
+			addLink: addLinkReducer,
+			getLoggedInCustCollections: getLoggedInCustCollectionsReducer,
 		},
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware({
 			serializableCheck: false
