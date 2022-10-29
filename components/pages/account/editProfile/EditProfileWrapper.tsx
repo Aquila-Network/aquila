@@ -11,6 +11,9 @@ import classes from './EditProfileWrapper.module.scss';
 interface EditProfileWrapperProps {
     currentLoggedInCustomerState: AppState["getCurrentLoggedInCustomer"];
     authState: AppState["auth"];
+    updateCustomerState: AppState["updateCustomer"];
+    activateCustomerState: AppState["activateCustomer"];
+    onSubmit: Function
 }
 
 const EditProfileWrapper: FC<EditProfileWrapperProps> = (props) => {
@@ -31,7 +34,13 @@ const EditProfileWrapper: FC<EditProfileWrapperProps> = (props) => {
                     <Alert message={props.currentLoggedInCustomerState.errorMessage|| ""} type="danger" />
                 }
                 {props.currentLoggedInCustomerState.customer &&
-                    <EditProfileForm accountStatus={props.authState.accountStatus} customer={props.currentLoggedInCustomerState.customer} />
+                    <EditProfileForm
+                        onSubmit={props.onSubmit}
+                        accountStatus={props.authState.accountStatus}
+                        customer={props.currentLoggedInCustomerState.customer}
+                        activateCustomerState={props.activateCustomerState}
+                        updateCustomerState={props.updateCustomerState}
+                    />
                 }
             </div>
         </SettingsLayout>
