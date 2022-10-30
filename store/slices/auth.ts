@@ -53,9 +53,11 @@ export const authSlice = createSlice({
 	},
 	extraReducers: {
 		[HYDRATE]: (state, action) => {
-			return {
-				...state,
-				...action.payload.auth
+			if(action.payload.auth.status !== "idle") {
+				return {
+					...state,
+					...action.payload.auth
+				}
 			}
 		}
 	}
