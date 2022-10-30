@@ -97,7 +97,7 @@ const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus, onS
                 <label className={classes["edit-profile-form__form-label"]}>Description</label>
                 <textarea {...register("desc")}className={classes["edit-profile-form__form-control"]} rows={5} ></textarea>
                 {errors.desc && <p className={classes["edit-profile-form__form-control-error"]}>{errors.desc.message}</p>}
-            </div>
+            </div>  
             <div className={classes["edit-profile-form__form-group"]}>
                 <button
                     disabled={updateCustomerState.status === "pending" || activateCustomerState.status === "pending"}
@@ -107,6 +107,10 @@ const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus, onS
                 >
                     <span>{accountStatus === "TEMPORARY" ? 'Activate Account' : 'Save' }</span>
                 </button>
+            </div>
+            <div style={{marginTop: "50px"}} className={classes["edit-profile-form__form-group"]}>
+                <label className={classes["edit-profile-form__form-label"]}>Secret Key</label>
+                <input disabled className={classes["edit-profile-form__form-control"]} type="text" value={customer.secretKey} />
             </div>
         </form>
     )

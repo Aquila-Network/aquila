@@ -1,12 +1,18 @@
+import { FC } from "react";
+import { AppState } from "../../../store";
 import MainLayout from "../../layout/main/MainLayout";
 import Container from "../../ui/layout/Container";
 import ExploreCategoryList from "./ExploreCategoryList";
 
-const ExplorePageWrapper = () => {
+interface ExplorePageWrapperProps {
+    featuredCollectionsState: AppState["getFeaturedCollections"];
+}
+
+const ExplorePageWrapper: FC<ExplorePageWrapperProps> = (props) => {
     return (
         <MainLayout>
             <Container>
-                <ExploreCategoryList />
+                <ExploreCategoryList featuredCollectionsState={props.featuredCollectionsState} />
             </Container>
         </MainLayout>
     )
