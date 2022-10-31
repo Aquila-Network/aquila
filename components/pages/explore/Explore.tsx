@@ -13,7 +13,7 @@ const Explore: FC<ExploreProps> = (props) => {
 		<div className={classes.explore}>
 			<div className={classes.explore__header}>
 				<div className={classes["explore__header-avatar"]}>
-					<Avatar />
+					<Avatar name={props.collection.name} />
 				</div>
 				<a href="#" className={classes["explore__header-title"]}>{props.collection.name}</a>
 			</div>

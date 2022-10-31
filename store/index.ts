@@ -11,6 +11,7 @@ import getLoggedInCustCollectionsReducer from './slices/collection/getLoggedInCu
 import activateCustomerReducer from './slices/customer/activateCustomer';
 import updateCustomerReducer from './slices/customer/updateCustomer';
 import getFeaturedCollectionsReducer from "./slices/collection/getFeaturedCollections";
+import getLoggedInCustBookmarksReducer from "./slices/bookmark/getLoggedInCustBookmarks";
 
 export const createStore = () => {
 	return configureStore({
@@ -23,7 +24,8 @@ export const createStore = () => {
 			getLoggedInCustCollections: getLoggedInCustCollectionsReducer,
 			activateCustomer: activateCustomerReducer,
 			updateCustomer: updateCustomerReducer,
-			getFeaturedCollections: getFeaturedCollectionsReducer
+			getFeaturedCollections: getFeaturedCollectionsReducer,
+			getLoggedInCustBookmarks: getLoggedInCustBookmarksReducer,
 		},
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware({
 			serializableCheck: false
