@@ -1,15 +1,28 @@
+import { FC, useRef } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import classes from './SearchBar.module.scss';
 
-const SearchBar = () => {
+interface SearchBarProps {
+	onSearch: Function
+}
+
+const SearchBar: FC<SearchBarProps> = (props) => {
+	const { onSearch } = props;
+	const searchValueRef = useRef<HTMLInputElement>(null);
+
+	const onSubmitHandler = (e: any) => {
+		e.preventDefault();
+		onSearch(searchValueRef.current?.value)
+	}
+
 	return (
 		<div className={classes["search-bar"]}>
-			<div className={classes["search-bar__container"]}>
-				<input className={classes["search-bar__input"]} placeholder='Search Bookmarks...' type="text" />
+			<form className={classes["search-bar__container"]} onSubmit={onSubmitHandler}>
+				<input ref={searchValueRef} className={classes["search-bar__input"]} placeholder='Search Bookmarks...' type="text" />
 				<button className={classes["search-bar__btn"]}>
 					<IoSearch />
 				</button>
-			</div>
+			</form>
 		</div>
 	)
 }

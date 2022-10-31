@@ -18,6 +18,7 @@
 		border-radius: 3px;
 		color: #2E3D51;
 		transition: all .3s;
+		cursor: pointer;
 	}
 
 	&__header-subscribe-btn:hover {
@@ -60,14 +61,21 @@
 	}
 
 	&__body-share-bookmark-btn {
-		background: #fff;
 		position: absolute;
-		right: 5px;
-		top: 50%;
-		margin-top: -12px;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
 		font-size: 12px;
-		padding: 2px 5px;
-		color: #415572;
+		padding: 5px;
+		color: #fff;
+		background: #3ABFF8;
+		border-radius: 3px;
+		cursor: pointer;
+		transition: all .3s;
+	}
+
+	&__body-share-bookmark-btn:hover {
+		background: #089DDE;
 	}
 
 	&__body-share-bookmark-link {
