@@ -1,0 +1,110 @@
+.search-profile {
+	padding: 15px;
+	margin-top: 20px;
+	border: 1px solid #CED7E3;
+	border-radius: 3px;
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 10px;
+	}
+
+	&__header-subscribe-btn {
+		margin-top: 5px;
+		background: transparent;
+		border: 1px solid #8DA2BE;
+		outline: none;
+		border-radius: 3px;
+		color: #2E3D51;
+		transition: all .3s;
+		cursor: pointer;
+	}
+
+	&__header-subscribe-btn:hover {
+		color: #0FBD86;
+		border-color: #0FBD86;
+	}
+
+	&__header-subscribe-btn:disabled {
+		color: #CED7E3;
+		border-color: #CED7E3;
+	}
+
+	&__header-left {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	&__header-name {
+		color: #202A38;
+		font-size: 25px;
+	}
+
+	&__body-desc {
+		color: #415572;
+		margin: 0px;
+		font-size: 14px;
+		margin-bottom: 20px;
+	}
+
+	&__body-bookmark-title {
+		font-size: 14px;
+		margin-bottom: 5px;
+		color: #415572;
+	}
+
+	&__body-share-bookmark-box {
+		overflow: hidden;
+		background: #EFF2F6;
+		position: relative;
+		box-sizing:border-box;
+		margin: 0px auto;
+		padding: 3px 4px;
+		border-radius: 3px;
+	}
+
+	&__body-share-bookmark-btn {
+		position: absolute;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
+		font-size: 12px;
+		padding: 5px;
+		color: #fff;
+		background: #3ABFF8;
+		border-radius: 3px;
+		cursor: pointer;
+		transition: all .3s;
+	}
+
+	&__body-share-bookmark-btn:hover {
+		background: #089DDE;
+	}
+
+	&__body-share-bookmark-link {
+		width: 100%;
+		margin: 0px;
+		border: none;
+		outline: none;
+		background: transparent;
+		font-size: 12px;
+		color: #415572;
+	}
+
+	&__body-feedback-container {
+		margin-top: 20px;
+	}
+
+	&__body-feedback-txt {
+		color: #097654;
+		text-decoration: none;
+		font-size: 14px;
+		transition: all .3s;
+	}
+
+	&__body-feedback-txt:hover {
+		color: #0FBD86;
+	}
+}

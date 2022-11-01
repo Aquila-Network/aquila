@@ -3,7 +3,7 @@ import { HYDRATE } from "next-redux-wrapper";
 import { AppState } from "..";
 
 interface AuthState {
-	isSignedIn: boolean;
+	isSignedIn: boolean | null;
 	token: string | null;
 	accountStatus: string | null;
 	customer: {
@@ -25,7 +25,7 @@ interface SignInPayloadAction {
 }
 
 const initialState: AuthState = {
-	isSignedIn: false,
+	isSignedIn: null,
 	token: null,
 	accountStatus: null,
 	customer: null,
