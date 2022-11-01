@@ -11,7 +11,13 @@ import getLoggedInCustCollectionsReducer from './slices/collection/getLoggedInCu
 import activateCustomerReducer from './slices/customer/activateCustomer';
 import updateCustomerReducer from './slices/customer/updateCustomer';
 import getFeaturedCollectionsReducer from "./slices/collection/getFeaturedCollections";
-import getLoggedInCustBookmarksReducer from "./slices/bookmark/getLoggedInCustBookmarks";
+import getLoggedInCustBookmarksByCollectionIdReducer from "./slices/bookmark/getLoggedInCustBookmarksByCollectionId";
+import getPublicBookmarksByCollectionIdReducer from "./slices/bookmark/getPublicBookmarksByCollectionId";
+import getCustomerByIdReducer from './slices/customer/getCustomerById';
+import getCollectionByIdReducer from './slices/collection/getCollectionById';
+import subscribeCollectionByIdReducer from './slices/collection/subscribeCollectionById';
+import isCollectionSubscribedReducer from './slices/collection/isCollectionSubscribed';
+import unSubscribbeCollectionByIdReducer from './slices/collection/unSubscribeCollectionById';
 
 export const createStore = () => {
 	return configureStore({
@@ -25,7 +31,13 @@ export const createStore = () => {
 			activateCustomer: activateCustomerReducer,
 			updateCustomer: updateCustomerReducer,
 			getFeaturedCollections: getFeaturedCollectionsReducer,
-			getLoggedInCustBookmarks: getLoggedInCustBookmarksReducer,
+			getLoggedInCustBookmarksByCollectionId: getLoggedInCustBookmarksByCollectionIdReducer,
+			getPublicBookmarksByCollectionId: getPublicBookmarksByCollectionIdReducer,
+			getCustomerById: getCustomerByIdReducer,
+			getCollectionById: getCollectionByIdReducer,
+			subscribeCollectionById: subscribeCollectionByIdReducer,
+			isCollectionSubscribed: isCollectionSubscribedReducer,
+			unSubscribeCollectionById: unSubscribbeCollectionByIdReducer,
 		},
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware({
 			serializableCheck: false

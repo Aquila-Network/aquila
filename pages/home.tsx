@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import HomePageWrapper from "../components/pages/home/HomePageWrapper";
 import { useAppSelector, useAppDispatch } from "../store";
-import {getLoggedInCustBookmarks, GetLoggedInCustBookmarksInputOptions, selectGetLoggedInCustBookmarks } from "../store/slices/bookmark/getLoggedInCustBookmarks";
+import {getLoggedInCustBookmarksByCollectionId, GetLoggedInCustBookmarksByCollectionIdInputOptions, selectGetLoggedInCustBookmarksByCollectionId } from "../store/slices/bookmark/getLoggedInCustBookmarksByCollectionId";
 import { selectGetLoggedInCustCollections } from "../store/slices/collection/getLoggedInCustCollections";
 import { getCurrentLoggedInCustomer, getCurrentLoggedInCustomerSlice, selectGetCurrentLoggedInCustomer } from "../store/slices/customer/getCurrentLoggedInCustomer";
 
 const HomePage = () => {
     const currentLoggedInCustomerState = useAppSelector(selectGetCurrentLoggedInCustomer);
     const getLoggedInCustCollections = useAppSelector(selectGetLoggedInCustCollections)
-    const getLoggedInCustBookmarksState = useAppSelector(selectGetLoggedInCustBookmarks);
+    const getLoggedInCustBookmarksState = useAppSelector(selectGetLoggedInCustBookmarksByCollectionId);
     const dispatch = useAppDispatch();
     const [query, setQuery] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -19,14 +19,14 @@ const HomePage = () => {
 
     useEffect(() => {
         if(getLoggedInCustCollections.collecitons && getLoggedInCustCollections.collecitons.length > 0) {
-            const options: GetLoggedInCustBookmarksInputOptions = {
+            const options: GetLoggedInCustBookmarksByCollectionIdInputOptions = {
                 collectionId: getLoggedInCustCollections.collecitons[0].id,
                 page: currentPage
             }
             if(query) {
                 options.query = query;
             }
-            dispatch(getLoggedInCustBookmarks(options))
+            dispatch(getLoggedInCustBookmarksByCollectionId(options))
         }
     }, [dispatch, getLoggedInCustCollections.collecitons, query, currentPage])
 

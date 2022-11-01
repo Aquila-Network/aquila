@@ -5,7 +5,7 @@ import api from "../../../utils/api";
 import { Bookmark } from "../types/Bookmark";
 
 
-interface GetLoggedInCustBookmarksState {
+interface GetPublicBookmarksByCollectionIdState {
     status: 'idle' | 'pending' | 'succeeded' | 'failed';
     bookmarks: null | Bookmark[];
     totalPages: number | null;
@@ -16,7 +16,7 @@ interface GetLoggedInCustBookmarksState {
     errorMessage: null | string;
 }
 
-interface GetLoggedInCustBookmarksData {
+interface GetPublicBookmarksByCollectionIdData {
     bookmarks: null | Bookmark[];
     totalPages: number | null;
     totalRecords: number | null;
@@ -25,18 +25,18 @@ interface GetLoggedInCustBookmarksData {
     query: string | null;
 }
 
-type GetLoggedInCustBookmarksResPayload = Omit<GetLoggedInCustBookmarksData, "query">;
+type GetPublicBookmarksByCollectionIdResPayload = Omit<GetPublicBookmarksByCollectionIdData, "query">;
 
-export interface GetLoggedInCustBookmarksInputOptions {
+export interface GetPublicBookmarksByCollectionIdInputOptions {
     collectionId: string;
     limit?: number;
     query?: string;
     page?: number;
 }
 
-export const getLoggedInCustBookmarks = createAsyncThunk<GetLoggedInCustBookmarksData, GetLoggedInCustBookmarksInputOptions>('/bookmarks/collection/search', async (options: GetLoggedInCustBookmarksInputOptions) => {
+export const getPublicBookmarksByCollectionId = createAsyncThunk<GetPublicBookmarksByCollectionIdData, GetPublicBookmarksByCollectionIdInputOptions>('/bookmarks/public/collection/search', async (options: GetPublicBookmarksByCollectionIdInputOptions) => {
     try{
-        const resp = await api.get<GetLoggedInCustBookmarksResPayload>(`/bookmark/${options.collectionId}/search`, {params: options});
+        const resp = await api.get<GetPublicBookmarksByCollectionIdResPayload>(`/bookmark/public/${options.collectionId}/search`, {params: options});
         return {
             ...resp.data,
             query: options.query || null
@@ -50,7 +50,7 @@ export const getLoggedInCustBookmarks = createAsyncThunk<GetLoggedInCustBookmark
     }
 })
 
-const initialState: GetLoggedInCustBookmarksState = {
+const initialState: GetPublicBookmarksByCollectionIdState = {
     status: 'idle',
     bookmarks: null,
     totalPages: null,
@@ -61,12 +61,12 @@ const initialState: GetLoggedInCustBookmarksState = {
     errorMessage: null
 }
 
-const getLoggedInCustBookmarksSlice = createSlice({
-    name: 'getLoggedInCustBookmarks',
+const getPublicBookmarksByCollectionIdSlice = createSlice({
+    name: 'getBookmarksByCollectionId',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getLoggedInCustBookmarks.pending, (state) => {
+        builder.addCase(getPublicBookmarksByCollectionId.pending, (state) => {
             state.status = 'pending';
             state.bookmarks = null;
             state.totalPages = null;
@@ -77,7 +77,7 @@ const getLoggedInCustBookmarksSlice = createSlice({
             state.errorMessage = null;
         });
 
-        builder.addCase(getLoggedInCustBookmarks.fulfilled, (state, action) => {
+        builder.addCase(getPublicBookmarksByCollectionId.fulfilled, (state, action) => {
             state.status = 'succeeded';
             state.bookmarks = action.payload.bookmarks;
             state.totalRecords = action.payload.totalRecords;
@@ -88,7 +88,7 @@ const getLoggedInCustBookmarksSlice = createSlice({
             state.errorMessage = null;
         });
 
-        builder.addCase(getLoggedInCustBookmarks.rejected, (state, action) => {
+        builder.addCase(getPublicBookmarksByCollectionId.rejected, (state, action) => {
             state.status = 'failed';
             state.bookmarks = null;
             state.totalPages = null;
@@ -102,6 +102,6 @@ const getLoggedInCustBookmarksSlice = createSlice({
 })
 
 
-export const selectGetLoggedInCustBookmarks = (state: AppState) => state.getLoggedInCustBookmarks;
+export const selectGetPublicBookmarksByCollectionId = (state: AppState) => state.getPublicBookmarksByCollectionId;
 
-export default getLoggedInCustBookmarksSlice.reducer;
+export default getPublicBookmarksByCollectionIdSlice.reducer;
