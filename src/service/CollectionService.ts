@@ -49,7 +49,7 @@ export class CollectionService {
 		const skip = (options.page - 1) * options.limit;
 		const take = options.limit;
 
-		const collections = await Collection.find({ where, order: { createdAt: "DESC" }, take, skip});
+		const collections = await Collection.find({ where, order: { createdAt: "DESC" }, take, skip, relations: { customer: true }});
 		
 		return {
 			totalRecords,

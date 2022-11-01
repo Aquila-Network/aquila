@@ -1,3 +1,4 @@
+import { NotFoundError } from "routing-controllers";
 import { Service } from "typedi";
 
 import dataSource from "../config/db";
@@ -86,19 +87,19 @@ export class CollectionSubscriptionService {
 
 	private async unSubscribeTemporaryCollection(collectionId: string, customerId: string): Promise<CollectionSubscriptionTemp | null> {
 		const collection = await CollectionSubscriptionTemp.findOne({ where: { collectionId, subscriberId: customerId }});
-		await dataSource.transaction(async transactionalEntityManager => {
-			transactionalEntityManager.remove(collection);
-		});
-
+		if(!collection) {
+			throw new NotFoundError("Subscription not found");
+		}
+		await collection.remove();
 		return collection;
 	}
 	
 	private async unSubscribePermanentCollection(collectionId: string, customerId: string): Promise<CollectionSubscription | null> {
 		const collection = await CollectionSubscription.findOne({ where: { collectionId, subscriberId: customerId }});
-		await dataSource.transaction(async transactionalEntityManager => {
-			transactionalEntityManager.remove(collection);
-		});
-
+		if(!collection) {
+			throw new NotFoundError("Subscription not found");
+		}
+		await collection.remove()
 		return collection;
 	}
 

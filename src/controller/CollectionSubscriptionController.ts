@@ -35,6 +35,16 @@ export class CollectionSubscriptionController {
 		return await this.collectionSubscriptionService.subscribeCollection(collectionId, JwtPayloadData.customerId, JwtPayloadData.accountStatus);
 	}
 
+	@UseBefore(AuthMiddleware)
+	@Post('/:collectionId/is-subscribed')
+	public async isCollectionAlreadySubscribed(
+		@Param('collectionId') collectionId: string,
+		@JwtPayloadData() jwtPayloadData: JwtPayload
+	):Promise<{ isSubscribed: boolean}> {
+		const isSubscribed = await this.collectionSubscriptionService.isCollectionSubscribedByCustomer(collectionId, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
+		return { isSubscribed };
+	}
+
 	@UseBefore(AuthMiddleware, UnSubscribeCollectionValidator)
 	@Post('/:collectionId/remove')
 	public async unSubscribeCollection(

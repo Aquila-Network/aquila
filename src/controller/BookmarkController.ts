@@ -8,8 +8,10 @@ import { AuthMiddleware } from "../middleware/global/AuthMiddleware";
 import { AddBookmarkValidator } from "../middleware/validator/bookmark/AddBookmarkValidator";
 import { GetBookmarkByCollectionIdValidator } from "../middleware/validator/bookmark/GetBookmarkByCollectionIdValidator";
 import { GetFeaturedBookmarkValidator } from "../middleware/validator/bookmark/GetFeaturedBookmarkValidator";
+import { GetPublicBookmarkByCollectionIdParamValidator } from "../middleware/validator/bookmark/GetPublicBookmarkByCollectionIdParamValidator";
+import { GetPublicBookmarkByCollectionIdValidator } from "../middleware/validator/bookmark/GetPublicBookmarkByCollectionIdValidator";
 import { BookmarkService } from "../service/BookmarkService";
-import { JwtPayload } from "../service/dto/AuthServiceDto";
+import { AccountStatus, JwtPayload } from "../service/dto/AuthServiceDto";
 import { GetBookmarksByCollectionIdOptionsInputDto, GetFeaturedBookmarksOptionsInputDto } from "../service/dto/BookmarkServiceDto";
 import { AddBookmarkReqBodyDto, GetBookmarksByCollectionIdReqQueryParamsDto, GetBookmarksByCollectionIdResBodyDto, GetFeaturedBookmarksReqQueryParamsDto, GetFeaturedBookmarksResBodyDto } from "./dto/BookmarkControllerDto";
 
@@ -39,10 +41,26 @@ export class BookmarkController {
 			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
 			page: queryParams.page ? parseInt(queryParams.page, 10) : 1
 		}
-		if(queryParams.q) {
-			options.query = queryParams.q;
+		if(queryParams.query) {
+			options.query = queryParams.query;
 		}
 		return this.bookmarkService.getBookmarksByCollectionId(collectionId, options, JwtPayloadData.accountStatus);
+	}
+
+	@UseBefore(GetPublicBookmarkByCollectionIdValidator, GetPublicBookmarkByCollectionIdParamValidator)
+	@Get('/public/:collectionId/search')
+	public async getPublicBookmarksByCollectionId(
+		@Param('collectionId') collectionId: string,
+		@QueryParams() queryParams: GetBookmarksByCollectionIdReqQueryParamsDto,
+	): Promise<GetBookmarksByCollectionIdResBodyDto> {
+		const options: GetBookmarksByCollectionIdOptionsInputDto = {
+			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
+			page: queryParams.page ? parseInt(queryParams.page, 10) : 1
+		}
+		if(queryParams.query) {
+			options.query = queryParams.query;
+		}
+		return this.bookmarkService.getBookmarksByCollectionId(collectionId, options, AccountStatus.PERMANENT);
 	}
 
 	@UseBefore(GetFeaturedBookmarkValidator)

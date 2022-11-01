@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Customer } from "./Customer";
 
 @Entity({ name: 'collection'})
 export class Collection extends BaseEntity {
@@ -14,6 +15,10 @@ export class Collection extends BaseEntity {
 
 	@Column({ name: 'customer_id', type: 'uuid' })
 	public customerId: string;
+
+	@ManyToOne(type => Customer)
+	@JoinColumn({ name: 'customer_id', referencedColumnName: 'id'})
+	public customer: Customer;
 
 	@Column({ name: 'aquila_db_name', type: 'varchar', length: 255, unique: true})
 	public aquilaDbName: string;

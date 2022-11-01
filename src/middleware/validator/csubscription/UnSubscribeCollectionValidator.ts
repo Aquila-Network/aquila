@@ -1,17 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { param } from "express-validator";
 import { ExpressMiddlewareInterface } from "routing-controllers";
-import Container, { Service } from "typedi";
+import { Service } from "typedi";
 
-import { JwtPayloadData } from "../../../helper/decorators/jwtPayloadData";
-import { CollectionSubscriptionService } from "../../../service/CollectionSubscriptionService";
-import { AccountStatus, JwtPayload } from "../../../service/dto/AuthServiceDto";
 import { validate } from "../../../utils/validate";
 
 @Service()
 export class UnSubscribeCollectionValidator implements ExpressMiddlewareInterface {
-	public constructor(private collectionSubService: CollectionSubscriptionService, @JwtPayloadData() private jwtPayloadData: JwtPayload) {}
-
 
 	public async use(req: Request, res: Response, next: NextFunction) {
 		const validators = [
@@ -21,18 +16,6 @@ export class UnSubscribeCollectionValidator implements ExpressMiddlewareInterfac
 				.bail()
 				.isUUID()
 				.withMessage("Invalid Collection Id")
-				.bail()
-				.custom(async (value) => {
-					const jwtPayloadData = req.jwtTokenPayload;
-					if(jwtPayloadData) {
-						const collectionSubService = Container.get(CollectionSubscriptionService);
-						const status = await collectionSubService.isCollectionSubscribedByCustomer(value, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
-						if(status) {
-							throw new Error("Collection is not already subscribed");	
-						}
-					}
-					return true;
-				})
 		];
 
 		await validate(validators, req);

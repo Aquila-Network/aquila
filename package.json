@@ -36,6 +36,7 @@
       "body-parser": "^1.20.0",
       "bs58": "^5.0.0",
       "bullmq": "^1.90.1",
+      "cheerio": "^1.0.0-rc.12",
       "class-transformer": "^0.5.1",
       "class-validator": "^0.13.2",
       "cors": "^2.8.5",

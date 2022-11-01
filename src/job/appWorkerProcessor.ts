@@ -29,84 +29,86 @@ let dataSource: DataSource;
 export default async function(job: Job<AppJobData, void, AppJobNames>) {
 	if(job.name === AppJobNames.INDEX_DOCUMENT) {
 			const { data  } = <{data: IndexDocumentData}>job;
-			// extract metadata from html
-			const parsedHtml = await Mercury.parse(data.bookmark.url, { html: data.bookmark.html});
-			// generate array summary from text content
-			const summary = await summarize(parsedHtml.content || "");
 
-			// connect to db
+			// load database
 			if(!dataSource) {
 				dataSource = await db.initialize();
 			}
 
-			// connect to aquila
-			const aquilaClient = Container.get(AquilaClientService)
-			await aquilaClient.connect();
-
-			// load collection
-			let collection: Collection | CollectionTemp | null;
+			// load bookmark
+			let bookmarkObj: Bookmark | BookmarkTemp | null; 
 			if(data.accountStatus === AccountStatus.TEMPORARY) {
-				collection = await CollectionTemp.findOne({ where: { id: data.bookmark.collectionId }});
+				bookmarkObj = await BookmarkTemp.findOne({ where: {id: data.bookmarkId}});
 			}else {
-				collection = await Collection.findOne({ where: { id: data.bookmark.collectionId }});
+				bookmarkObj = await Bookmark.findOne({ where: {id : data.bookmarkId}});
 			}
-			if(collection === null) {
-				throw new Error('Invalid collection');
-			}
-			// generate vector from array of paragraph 
-			const vectorArray = await aquilaClient.getHubServer().compressDocument(collection.aquilaDbName, summary);
-			// bulk insert into aquiladb
+			if(bookmarkObj) {
+				const bookmark: Bookmark | BookmarkTemp = bookmarkObj;
+				// extract metadata from html
+				const parsedHtml = await Mercury.parse(bookmark.url, { html: bookmark.html});
+				// generate array summary from text content
+				const summary = await summarize(parsedHtml.content || "");
 
-			let bookmarkParas: BookmarkPara[] | BookmarkParaTemp[];
-			await db.transaction(async transactionalEntityManager => {
-				// insert all para to bookmark_para table
+				// connect to aquila
+				const aquilaClient = Container.get(AquilaClientService)
+				await aquilaClient.connect();
+
+				// load collection
+				let collection: Collection | CollectionTemp | null;
 				if(data.accountStatus === AccountStatus.TEMPORARY) {
-					bookmarkParas = summary.map((para: string) => {
-						const bookmarkPara = new BookmarkParaTemp()
-						bookmarkPara.bookmarkId = data.bookmark.id,
-						bookmarkPara.content = para;
-						return bookmarkPara;
-					})
-					await transactionalEntityManager.save(bookmarkParas);
+					collection = await CollectionTemp.findOne({ where: { id: bookmark.collectionId }});
 				}else {
+					collection = await Collection.findOne({ where: { id: bookmark.collectionId }});
+				}
+				if(collection === null) {
+					throw new Error('Collection not found');
+				}
+				// generate vector from array of paragraph 
+				const vectorArray = await aquilaClient.getHubServer().compressDocument(collection.aquilaDbName, summary);
+				// bulk insert into aquiladb
+
+				let bookmarkParas: BookmarkPara[] | BookmarkParaTemp[];
+				await db.transaction(async transactionalEntityManager => {
+					// insert all para to bookmark_para table
+					if(data.accountStatus === AccountStatus.TEMPORARY) {
 						bookmarkParas = summary.map((para: string) => {
-						const bookmarkPara = new BookmarkPara()
-						bookmarkPara.bookmarkId = data.bookmark.id,
-						bookmarkPara.content = para;
-						return bookmarkPara;
+							const bookmarkPara = new BookmarkParaTemp()
+							bookmarkPara.bookmarkId = bookmark.id,
+							bookmarkPara.content = para;
+							return bookmarkPara;
+						})
+						await transactionalEntityManager.save(bookmarkParas);
+					}else {
+							bookmarkParas = summary.map((para: string) => {
+							const bookmarkPara = new BookmarkPara()
+							bookmarkPara.bookmarkId = bookmark.id,
+							bookmarkPara.content = para;
+							return bookmarkPara;
+						})
+						await transactionalEntityManager.save(bookmarkParas);
+					}
+					// create documents on aquiladb
+					const documents = summary.map((para: string, index: number) => {
+						return {
+							metadata: {
+								para,
+								bookmark_para_id: bookmarkParas[index].id,
+								bookmark_id: bookmark.id
+							},
+							code: vectorArray[index]
+						}
 					})
-					await transactionalEntityManager.save(bookmarkParas);
-				}
-				// create documents on aquiladb
-				const documents = summary.map((para: string, index: number) => {
-					return {
-						metadata: {
-							para,
-							bookmark_para_id: bookmarkParas[index].id,
-							bookmark_id: data.bookmark.id
-						},
-						code: vectorArray[index]
-					}
-				})
-				await aquilaClient.getDbServer().createDocuments((collection as Collection | CollectionTemp).aquilaDbName, documents)
+					await aquilaClient.getDbServer().createDocuments((collection as Collection | CollectionTemp).aquilaDbName, documents)
 
-				// update status as PROCESSED
-				let bookmark: Bookmark | BookmarkTemp | null;
-				if(data.accountStatus === AccountStatus.TEMPORARY) {
-					bookmark = await BookmarkTemp.findOne({ where: { id: data.bookmark.id}})
-					if(!bookmark) {
-						throw new Error("Invalid bookmark id");
+					// update status as PROCESSED
+					if(data.accountStatus === AccountStatus.TEMPORARY) {
+						bookmark.status = BookmarkTempStatus.PROCESSED;
+					}else {
+						bookmark.status = BookmarkStatus.PROCESSED;
 					}
-					bookmark.status = BookmarkTempStatus.PROCESSED;
-				}else {
-					bookmark = await Bookmark.findOne({ where: { id: data.bookmark.id}})
-					if(!bookmark) {
-						throw new Error("Invalid bookmark id");
-					}
-					bookmark.status = BookmarkStatus.PROCESSED;
-				}
 
-				await transactionalEntityManager.save(bookmark);
-			});
+					await transactionalEntityManager.save(bookmark);
+				});
+			}
 	}
 }

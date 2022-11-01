@@ -1,7 +1,8 @@
 import { BadRequestError, InternalServerError } from "routing-controllers";
 import { Service } from "typedi";
-import { In, createQueryBuilder } from "typeorm";
+import { In } from "typeorm";
 import puppeteer from 'puppeteer-core';
+import * as cheerio from "cheerio";
 
 import dataSource from "../config/db";
 import { Bookmark, BookmarkStatus } from "../entity/Bookmark";
@@ -29,7 +30,7 @@ export class BookmarkService {
 		});
 
 		const page = await browser.newPage();
-		await page.goto('https://aquila.network', {waitUntil: 'domcontentloaded'});
+		await page.goto(url, {waitUntil: 'domcontentloaded'});
 		const content = await page.content();
 		await browser.close();
 
@@ -41,16 +42,21 @@ export class BookmarkService {
 		await dataSource.transaction(async transactionalEntityManager => {
 			bookmark.url = data.url;
 			let htmlTmp = ""
-			if(data.html !== undefined) {
+			if(data.html === undefined) {
 				htmlTmp = await this.fetchWebsiteContent(data.url);
 			}
-			
+			const $ = cheerio.load(htmlTmp);
+			const title = $("head").find("title").text() || "";
+			const metaDescription = $("meta[name='description']").attr("content") || "";
+
 			bookmark.html = data.html || htmlTmp;
-			
+			bookmark.title = title;
+			bookmark.summary = metaDescription;
+				
 			bookmark.collectionId = data.collectionId;
 			await transactionalEntityManager.save(bookmark);
 
-			await this.appQueue.add<IndexDocumentData>(AppJobNames.INDEX_DOCUMENT, { accountStatus: AccountStatus.TEMPORARY, bookmark: bookmark});
+			await this.appQueue.add<IndexDocumentData>(AppJobNames.INDEX_DOCUMENT, { accountStatus: AccountStatus.TEMPORARY, bookmarkId: bookmark.id});
 		})
 		return bookmark;
 	}
@@ -64,13 +70,17 @@ export class BookmarkService {
 			if(data.html === undefined) {
 				htmlTmp = await this.fetchWebsiteContent(data.url);
 			}
-			
+			const $ = cheerio.load(htmlTmp);
+			const title = $("head").find("title").text() || "";
+			const metaDescription = $("meta[name='description']").attr("content") || "";
 			bookmark.html = data.html || htmlTmp;
-
+			bookmark.title = title;
+			bookmark.summary = metaDescription;
+			
 			bookmark.collectionId = data.collectionId;
 			await transactionalEntityManager.save(bookmark);
 
-			await this.appQueue.add<IndexDocumentData>(AppJobNames.INDEX_DOCUMENT, { accountStatus: AccountStatus.PERMANENT, bookmark: bookmark});
+			await this.appQueue.add<IndexDocumentData>(AppJobNames.INDEX_DOCUMENT, { accountStatus: AccountStatus.PERMANENT, bookmarkId: bookmark.id});
 		})
 		return bookmark;
 	}

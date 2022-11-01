@@ -1,4 +1,4 @@
-import { Authorized, Body, CurrentUser, Get, JsonController, Param, Post, Put, UseBefore } from "routing-controllers";
+import { Authorized, Body, CurrentUser, Get, JsonController, Param, Patch, Post, Put, UseBefore } from "routing-controllers";
 import { Service } from "typedi";
 
 import { Customer } from "../entity/Customer";
@@ -20,7 +20,7 @@ export class CustomerControler {
 	public constructor(private customerService: CustomerService){}
 
 	@UseBefore(AuthMiddleware, UpdateCustomerValidator)
-	@Put('/')
+	@Patch('/')
 	public async updateCustomer(
 		@JwtPayloadData() JwtPayloadData: JwtPayload,
 		@Body() body: UpdateCustomerReqBodyDto
@@ -34,7 +34,7 @@ export class CustomerControler {
 		@Param('customerId') customerId: string
 	): Promise<GetCustomerPublicInfoByIdRespBodyDto> {
 		return await this.customerService.getCustomerPublicInfoById(customerId);
-	}
+	}	
 
 	@Authorized()
 	@Get('/me')

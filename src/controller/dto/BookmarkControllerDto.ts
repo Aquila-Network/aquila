@@ -5,7 +5,7 @@ export interface AddBookmarkReqBodyDto {
 }
 
 export interface GetBookmarksByCollectionIdReqQueryParamsDto {
-	q?: string;
+	query?: string;
 	limit?: string;
 	page?: string;
 }

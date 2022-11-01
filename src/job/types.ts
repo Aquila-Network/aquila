@@ -7,7 +7,7 @@ export enum AppJobNames {
 }
 
 export interface IndexDocumentData {
-	bookmark: Bookmark | BookmarkTemp;
+	bookmarkId: string;
 	accountStatus: AccountStatus
 }
 
