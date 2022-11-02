@@ -108,7 +108,8 @@ export class BookmarkService {
 			author: item.author,
 			coverImg: item.coverImg,
 			summary: item.summary,
-			description: paras.find(para => para.bookmarkId === item.id)?.content || ''
+			description: paras.find(para => para.bookmarkId === item.id)?.content || '',
+			createdAt: item.createdAt
 		}));
 		return {
 			totalRecords,
@@ -135,7 +136,8 @@ export class BookmarkService {
 			author: item.author,
 			coverImg: item.coverImg,
 			summary: item.summary,
-			description: paras.find(para => para.bookmarkId === item.id)?.content || ''
+			description: paras.find(para => para.bookmarkId === item.id)?.content || '',
+			createdAt: item.createdAt
 		}));
 		return {
 			totalRecords,
