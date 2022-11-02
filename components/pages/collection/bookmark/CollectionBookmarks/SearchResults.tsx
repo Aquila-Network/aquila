@@ -37,7 +37,8 @@ const SearchResults: FC<SearchResultsProps> = (props) => {
 					<SearchResultItem
 						title={bookmark.title}
 						url={bookmark.url}
-						summary={bookmark.summary}
+						summary={bookmark.summary || bookmark.description || ""}
+						createdAt={bookmark.createdAt}
 					/>
 				</div>
 				))}

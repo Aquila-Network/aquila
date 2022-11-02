@@ -62,6 +62,7 @@ const ViewCollectionBookmarks = () => {
     const onSearchHandler = (data: string) => {
         if(data) {
             setQuery(data);
+            setCurrentPage(1);
         }else {
             setQuery(null);
         }

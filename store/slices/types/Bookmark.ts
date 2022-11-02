@@ -15,7 +15,9 @@ export interface Bookmark {
     author: string;
     coverImg: string;
     summary: string;
+    description?: string;
     links: string;
     isHidden: boolean;
     status: BookmarkStatus
+    createdAt: string;
 }

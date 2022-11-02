@@ -29,7 +29,7 @@ const SearchResults: FC<SearchResultsProps> = (props) => {
 	return (
 		<div className={classes["search-result"]}>
 			<div className={classes["search-result__header-info"]}>
-				{totalRecords && <p className={classes["search-result__header-info-desc"]}>Received {totalRecords} results</p>}
+				{totalRecords !== null ? <p className={classes["search-result__header-info-desc"]}>Received {totalRecords} results</p>: null}
 			</div>
 			<div className={classes["search-result__results"]}>
 				{bookmarks.map((bookmark, index) => (
@@ -37,7 +37,8 @@ const SearchResults: FC<SearchResultsProps> = (props) => {
 					<SearchResultItem
 						title={bookmark.title}
 						url={bookmark.url}
-						summary={bookmark.summary}
+						summary={bookmark.summary || bookmark.description || ""}
+						createdAt={bookmark.createdAt}
 					/>
 				</div>
 				))}

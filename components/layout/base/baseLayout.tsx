@@ -1,7 +1,5 @@
 import { FC } from 'react';
-import { ToastContainer} from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
 import { ProgressLoaderProvider } from '../../ui/progressLoader/ProgressLoader';
 
 
@@ -13,8 +11,7 @@ const BaseLayout: FC<BaseLayoutProps> = (props) => {
     return (
         <>
             <ProgressLoaderProvider>
-            {props.children}
-            <ToastContainer />
+                {props.children}
             </ProgressLoaderProvider>
         </>
     )

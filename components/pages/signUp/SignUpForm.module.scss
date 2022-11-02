@@ -56,6 +56,12 @@
 		border: 1px solid #0FBD86;
 	}
 
+	&__form-btn:disabled {
+		color: #CED7E3;
+		border: 1px solid #CED7E3;
+		cursor: not-allowed
+	}
+
 	&__footer-text {
 		font-size: 12px;
 	}

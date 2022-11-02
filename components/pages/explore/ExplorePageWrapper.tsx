@@ -6,13 +6,14 @@ import ExploreCategoryList from "./ExploreCategoryList";
 
 interface ExplorePageWrapperProps {
     featuredCollectionsState: AppState["getFeaturedCollections"];
+    publicCollectionsState: AppState["getAllPublicCollections"];
 }
 
 const ExplorePageWrapper: FC<ExplorePageWrapperProps> = (props) => {
     return (
         <MainLayout>
             <Container>
-                <ExploreCategoryList featuredCollectionsState={props.featuredCollectionsState} />
+                <ExploreCategoryList publicCollectionsState={props.publicCollectionsState} featuredCollectionsState={props.featuredCollectionsState} />
             </Container>
         </MainLayout>
     )

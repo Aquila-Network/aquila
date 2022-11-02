@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { SessionProvider } from 'next-auth/react';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { wrapper } from '../store';
 import '../styles/globals.scss';
@@ -17,6 +19,7 @@ function MyApp({ Component, pageProps: { session, ...rest} }: AppProps<Applicati
 
   return (
     <SessionProvider session={session}>
+      <ToastContainer />
       <Provider store={store}>
         <InitComponent>
           <BaseLayout>

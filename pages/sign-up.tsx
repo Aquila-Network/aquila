@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast, ToastOptions } from 'react-toastify';
 
 import SignUpPageWrapper from "../components/pages/signUp/SignUpPageWrapper";
+import { useProgressLoader } from "../components/ui/progressLoader/ProgressLoader";
 import { useAppDispatch, useAppSelector } from "../store";
 import { selectAuth } from "../store/slices/auth";
 import { fetchNames, removeGeneratedNames, selectGeneratedName } from "../store/slices/generateName";
@@ -16,6 +17,7 @@ const SignUpPage: NextPage = () => {
 	const authState = useAppSelector(selectAuth);
 	const signUpState = useAppSelector(selectSignUp);
 	const [accountCreated, setAccountCreated] = useState(false);
+	const { setLoader } = useProgressLoader();
 
 	useEffect(() => {
 		if(authState.isSignedIn && !accountCreated) {
@@ -34,22 +36,28 @@ const SignUpPage: NextPage = () => {
 
 	const generatedName = useAppSelector(selectGeneratedName);
 
-	const signUpHandler = (data: any) => {
+	const signUpHandler = async (data: any) => {
 		const toastOptions: ToastOptions = {
 			position: "top-center",
 			hideProgressBar: true,
 		}
-		dispatch(signUp(data)).unwrap()
-		.then(async (data) => {
+		setLoader(true);
+		try{
+			const signUpResult = await dispatch(signUp(data)).unwrap()
+			setLoader(false);
 			toast("Account Genreated", { ...toastOptions, type: "success"})
-			const result = await signIn("credentials", {secretKey: data.secretKey, redirect: false});
+			const result = await signIn("credentials", {secretKey: signUpResult.secretKey, redirect: false});
+			debugger;
 			if(result?.ok) {
 				setAccountCreated(true);
 			}
-		})
-		.catch((e) => {
+			return true;
+		}catch(e: any) {
+			debugger;
+			setLoader(false);
 			toast(e.message, { ...toastOptions, type: "error"});
-		})
+			return false;
+		}
 	} 
 
 	return (

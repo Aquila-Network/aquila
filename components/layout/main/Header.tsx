@@ -68,17 +68,21 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
 								<li>
 									<Link href="/"><a className={`${classes["header__nav-list-link"]} ${router.pathname === '/' ? classes["header__nav-list-link--active"]: ''} `} >Home</a></Link>
 								</li>
+								{props.isAuth &&
 								<li>
 									<Link href="/home"><a className={classes["header__nav-list-link"]} >My Index</a></Link>
 								</li>
+								}
 								{props.isAuth &&
 								<li>
 									<a href="#" onClick={addLinkHandler} className={classes["header__nav-list-link"]} >Add Link</a>
 								</li>
 								}
+								{props.isAuth &&
 								<li>
 									<Link href="/subscription"><a className={classes["header__nav-list-link"]} >Subscription</a></Link>
 								</li>
+								}
 								<li>
 									<Link href="/explore"><a className={classes["header__nav-list-link"]} >Explore</a></Link>
 								</li>

@@ -18,6 +18,7 @@ import getCollectionByIdReducer from './slices/collection/getCollectionById';
 import subscribeCollectionByIdReducer from './slices/collection/subscribeCollectionById';
 import isCollectionSubscribedReducer from './slices/collection/isCollectionSubscribed';
 import unSubscribbeCollectionByIdReducer from './slices/collection/unSubscribeCollectionById';
+import getAllPublicCollectionsReducer from "./slices/collection/getAllPublicCollections";
 
 export const createStore = () => {
 	return configureStore({
@@ -38,6 +39,7 @@ export const createStore = () => {
 			subscribeCollectionById: subscribeCollectionByIdReducer,
 			isCollectionSubscribed: isCollectionSubscribedReducer,
 			unSubscribeCollectionById: unSubscribbeCollectionByIdReducer,
+			getAllPublicCollections: getAllPublicCollectionsReducer,
 		},
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware({
 			serializableCheck: false
