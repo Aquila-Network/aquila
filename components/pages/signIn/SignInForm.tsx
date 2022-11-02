@@ -1,13 +1,18 @@
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import classes from './SignInForm.module.scss';
 
 const SignInForm = (props:any) => {
 	const secretKeyRef = useRef<HTMLInputElement>(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const submitHandler = (e: any) => {
 		e.preventDefault();
-		props.onSignIn(secretKeyRef.current?.value);
+		setIsLoading(true);
+		props.onSignIn(secretKeyRef.current?.value)
+			.then(() => {
+				setIsLoading(false);
+			})
 	}
 
 	return (
@@ -22,7 +27,7 @@ const SignInForm = (props:any) => {
 						<input ref={secretKeyRef} className={classes["login-box__form-control"]} type="text" placeholder="Enter Secret key" />
 					</div>
 					<div className={`${classes["login-box__form-item"]} ${classes["login-box__form-item--btn-container"]}`}>
-						<button type="submit" className={classes["login-box__form-btn"]}>Login</button>
+						<button disabled={isLoading} type="submit" className={classes["login-box__form-btn"]}>Login</button>
 					</div>
 				</div>
 				<div className={classes["login-box__footer"]}>

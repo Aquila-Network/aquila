@@ -6,6 +6,7 @@ import classes from './ExploreCategoryList.module.scss';
 
 interface ExploreCategoryListProps {
 	featuredCollectionsState: AppState["getFeaturedCollections"];
+	publicCollectionsState: AppState["getAllPublicCollections"];
 }
 
 const ExploreCategoryList: FC<ExploreCategoryListProps> = (props) => {
@@ -14,6 +15,11 @@ const ExploreCategoryList: FC<ExploreCategoryListProps> = (props) => {
 			{props.featuredCollectionsState.collections &&
 			<div className={classes["explore-category-list__item"]}>
 				<ExploreCategoryItem title="Featured" collections={props.featuredCollectionsState.collections} />
+			</div>
+			}
+			{props.publicCollectionsState.collections &&
+			<div className={classes["explore-category-list__item"]}>
+				<ExploreCategoryItem title="Public" collections={props.publicCollectionsState.collections} />
 			</div>
 			}
 			{/* <div className={classes["explore-category-list__item"]}>

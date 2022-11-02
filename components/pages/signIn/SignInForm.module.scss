@@ -49,6 +49,11 @@
 		border: 1px solid #0FBD86;
 	}
 
+	&__form-btn:disabled {
+		color: #CED7E3;
+		border-color: #CED7E3;
+	}
+
 	&__footer-text {
 		font-size: 12px;
 	}

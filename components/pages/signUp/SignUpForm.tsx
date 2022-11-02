@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { AppState } from '../../../store';
@@ -28,6 +28,7 @@ const SignUpForm: FC<SignUpFormProps> = (props) => {
 	} = props;
 
 	const { register, handleSubmit, setValue, setError, formState: { errors } } = useForm<FormData>();
+	const [ isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if(name.firstName && name.lastName) {
@@ -44,7 +45,11 @@ const SignUpForm: FC<SignUpFormProps> = (props) => {
 	}, [signUpState])
 
 	const onSubmitHandler = (data: any) => {
-		onSignUp(data);
+		setIsLoading(true);
+		onSignUp(data)
+			.then(() => {
+				setIsLoading(false);
+			})
 	};
 
 	return (
@@ -75,7 +80,7 @@ const SignUpForm: FC<SignUpFormProps> = (props) => {
 						{errors.lastName && <p className={classes["signup-box__form-error"]}>{errors.lastName.message}</p>}
 					</div>
 					<div className={`${classes["signup-box__form-item"]} ${classes["signup-box__form-item--btn-container"]}`}>
-						<button className={classes["signup-box__form-btn"]}>Generate Account</button>
+						<button disabled={isLoading} className={classes["signup-box__form-btn"]}>Generate Account</button>
 					</div>
 				</div>
 				<div className={classes["signup-box__footer"]}>
