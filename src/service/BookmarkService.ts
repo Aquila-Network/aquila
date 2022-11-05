@@ -17,6 +17,7 @@ import { AquilaClientService } from "../lib/AquilaClientService";
 import { AccountStatus } from "./dto/AuthServiceDto";
 import { AddBookmarkInputDto, GetAllBookmarksByCollectionIdOptionsInputDto, GetBookmarksByCollectionIdOutputDto, GetBookmarksByCollectionIdOptionsInputDto, GetFeaturedBookmarksOutputDto } from "./dto/BookmarkServiceDto";
 import { ConfigService } from "../lib/ConfigService";
+import { fstat } from "fs";
 
 @Service()
 export class BookmarkService {
@@ -231,9 +232,10 @@ export class BookmarkService {
 		}
 
 		// search on aquiladb
-		const { docs, dists } = await this.aquilaClientService.getDbServer().searchKDocuments(collection.aquilaDbName, vector, 10)
+		const { docs, dists } = await this.aquilaClientService.getDbServer().searchKDocuments(collection.aquilaDbName, vector, 100)
 		const documentObjs: any = {};
-		const newDists = dists[0].map(dist => (1 - dist))
+		// const newDists = dists[0].map(dist => (1 - dist))
+		const newDists = dists[0];
 		docs[0].forEach((doc: any, index: number) => {
 			const docExists = documentObjs[doc.metadata.bookmark_id];
 			if(docExists) {

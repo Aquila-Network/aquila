@@ -38,8 +38,8 @@ export class AquilaClientService {
 			const schema: Schema = {
 				description: desc,
 				unique: hashSecret.update(secretKey).digest('hex'),
-				encoder: "ftxt:https://x.aquila.network/fasttext/en_10d.bin",
-				codelen: 10,
+				encoder: "strn:msmarco-distilbert-base-tas-b",
+				codelen: 768,
 				metadata: {
 						"para": "string",
 						"bookmark_para_id": "string",
