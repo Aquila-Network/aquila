@@ -158,7 +158,7 @@ export class BookmarkService {
 			throw new BadRequestError("Invalid collection id");
 		}
 		// generate vector from hub for the search query
-		const vector = await this.aquilaClientService.getHubServer().compressDocument(collection.aquilaDbName, options.query) as number[][];
+		const vector = await this.aquilaClientService.getHubServer().compressDocument(collection.aquilaDbName, [options.query]) as number[][];
 		if(vector.length === 0) {
 			throw new InternalServerError("Something went wrong");
 		}
@@ -169,10 +169,7 @@ export class BookmarkService {
 		const newDists = dists[0].map(dist => (1 - dist))
 		docs[0].forEach((doc: any, index: number) => {
 			const docExists = documentObjs[doc.metadata.bookmark_id];
-			if(docExists) {
-				docExists.dist = docExists.dist + newDists[index];
-				docExists.paras.push({ dist: newDists[index], para: doc.metadata.para});
-			}else {
+			if(!docExists) {
 				documentObjs[doc.metadata.bookmark_id] = {
 					bookmarkParaId: doc.metadata.bookmark_para_id,
 					bookmarkId: doc.metadata.bookmark_id,
@@ -226,7 +223,7 @@ export class BookmarkService {
 			throw new BadRequestError("Invalid collection id");
 		}
 		// generate vector from hub for the search query
-		const vector = await this.aquilaClientService.getHubServer().compressDocument(collection.aquilaDbName, options.query) as number[][];
+		const vector = await this.aquilaClientService.getHubServer().compressDocument(collection.aquilaDbName, [options.query]) as number[][];
 		if(vector.length === 0) {
 			throw new InternalServerError("Something went wrong");
 		}
@@ -238,10 +235,7 @@ export class BookmarkService {
 		const newDists = dists[0];
 		docs[0].forEach((doc: any, index: number) => {
 			const docExists = documentObjs[doc.metadata.bookmark_id];
-			if(docExists) {
-				docExists.dist = docExists.dist + newDists[index];
-				docExists.paras.push({ dist: newDists[index], pata: doc.metadata.para});
-			}else {
+			if(!docExists) {
 				documentObjs[doc.metadata.bookmark_id] = {
 					bookmarkParaId: doc.metadata.bookmark_para_id,
 					bookmarkId: doc.metadata.bookmark_id,

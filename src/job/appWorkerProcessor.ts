@@ -48,6 +48,12 @@ export default async function(job: Job<AppJobData, void, AppJobNames>) {
 				const parsedHtml = await Mercury.parse(bookmark.url, { html: bookmark.html});
 				// generate array summary from text content
 				const summary = await summarize(parsedHtml.content || "");
+				if(bookmark.title) {
+					summary.push(bookmark.title);
+				}
+				if(bookmark.summary) {
+					summary.push(bookmark.summary);
+				}
 
 				// connect to aquila
 				const aquilaClient = Container.get(AquilaClientService)
