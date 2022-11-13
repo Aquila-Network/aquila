@@ -15,7 +15,7 @@ export class Bookmark extends BaseEntity {
 	@Column({ name: 'collection_id', type: 'uuid', nullable: false})
 	public collectionId: string;
 
-	@Column({ type: 'varchar', length: 255, nullable: false})
+	@Column({ type: 'varchar', length: 2048, nullable: false})
 	public url: string;
 
 	@Column({ type: 'text', nullable: false})
