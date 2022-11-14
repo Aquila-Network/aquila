@@ -89,7 +89,7 @@ const ViewCollectionBookmarks = () => {
             return resp;
         }catch(e: any) {
             setLoader(false);
-            toast(e.message || "Something went wrong!", { position: "top-center"});
+            toast(e.message || "Something went wrong!", { position: "top-center", type: "error"});
             return false;
         }
     }

@@ -3,7 +3,7 @@ import HomePageWrapper from "../components/pages/home/HomePageWrapper";
 import { useAppSelector, useAppDispatch } from "../store";
 import {getLoggedInCustBookmarksByCollectionId, GetLoggedInCustBookmarksByCollectionIdInputOptions, selectGetLoggedInCustBookmarksByCollectionId } from "../store/slices/bookmark/getLoggedInCustBookmarksByCollectionId";
 import { selectGetLoggedInCustCollections } from "../store/slices/collection/getLoggedInCustCollections";
-import { getCurrentLoggedInCustomer, getCurrentLoggedInCustomerSlice, selectGetCurrentLoggedInCustomer } from "../store/slices/customer/getCurrentLoggedInCustomer";
+import { getCurrentLoggedInCustomer, selectGetCurrentLoggedInCustomer } from "../store/slices/customer/getCurrentLoggedInCustomer";
 
 const HomePage = () => {
     const currentLoggedInCustomerState = useAppSelector(selectGetCurrentLoggedInCustomer);
