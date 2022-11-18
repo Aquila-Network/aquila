@@ -1,0 +1,25 @@
+.subscribed-collections {
+    border: 1px solid #CED7E3;
+    border-radius: 3px;
+
+    &__header {
+        padding: 20px;
+    }
+
+    &__header-title {
+        font-size: 20px;
+        color: #202A38;
+    }
+
+    &__body {
+        padding: 20px;
+    }
+
+    &__list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 20px
+    }
+
+}

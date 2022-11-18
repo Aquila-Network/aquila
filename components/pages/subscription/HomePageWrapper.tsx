@@ -6,21 +6,22 @@ import { Collection } from "../../../store/slices/types/Collection";
 import { Customer } from "../../../store/slices/types/Customer";
 import MainLayout from "../../layout/main/MainLayout"
 import Container from "../../ui/layout/Container";
-import classes from "./SubscriptionPageWrapper.module.scss";
+import classes from "./HomePageWrapper.module.scss";
 import SearchBar from "./SearchBar";
+import SearchPageProfile from "./SearchPageProfile";
 import SearchResults from "./SearchResults";
-import SubscribedCollections from "./SubscribedCollections";
 
-interface SubscriptionPageWrapperProps {
-    subscribedCollections: Collection[] | null;
-    bookmarksState: AppState["getCustomerSubscriptions"];
+interface HomePageWrapperProps {
+    customer: Customer | null;
+    collection: Collection | null;
+    bookmarksState: AppState["getLoggedInCustBookmarksByCollectionId"];
     onSearch: Function;
     onClickNextPage: Function;
     onClickPrevPage: Function;
 }
 
-const SubscriptionPageWrapper: FC<SubscriptionPageWrapperProps> = (props) => {
-    const { bookmarksState, onSearch, onClickNextPage, onClickPrevPage, subscribedCollections } = props;
+const HomePageWrapper: FC<HomePageWrapperProps> = (props) => {
+    const { collection, customer, bookmarksState, onSearch, onClickNextPage, onClickPrevPage } = props;
     const [hasNext, setHasNext] = useState(false);
     const [hasPrev, setHasPrev] = useState(false);
     
@@ -42,12 +43,12 @@ const SubscriptionPageWrapper: FC<SubscriptionPageWrapperProps> = (props) => {
     return (
         <MainLayout>
             <Container>
-                <div className={classes["subscription-page"]}>
-                    <section className={classes["subscription-page__search-area"]}>
-                        <div className={classes["subscription-page__search-bar"]}>
+                <div className={classes["home-page"]}>
+                    <section className={classes["home-page__search-area"]}>
+                        <div className={classes["home-page__search-bar"]}>
                             <SearchBar onSearch={onSearch} />
                         </div>
-                        <div className={classes["subscription-page__search-results"]}>
+                        <div className={classes["home-page__search-results"]}>
                             {bookmarksState.status === "pending" && <Oval height={30} width="100%" strokeWidth={5} color="#0FBD86" strokeWidthSecondary={5} />}
                             {bookmarksState.bookmarks && <SearchResults 
                                 totalRecords={bookmarksState.totalRecords}
@@ -59,8 +60,8 @@ const SubscriptionPageWrapper: FC<SubscriptionPageWrapperProps> = (props) => {
                                 />}
                         </div>
                     </section>
-                    <section className={classes["subscription-page__sidebar"]}>
-                        {Array.isArray(subscribedCollections) &&  <SubscribedCollections collections={subscribedCollections} />}
+                    <section className={classes["home-page__sidebar"]}>
+                       {collection && customer && <SearchPageProfile collection={collection} customer={customer} />}
                     </section>
                 </div>
             </Container>
@@ -68,4 +69,4 @@ const SubscriptionPageWrapper: FC<SubscriptionPageWrapperProps> = (props) => {
     )
 }
 
-export default SubscriptionPageWrapper;
+export default HomePageWrapper;

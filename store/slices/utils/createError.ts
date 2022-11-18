@@ -69,7 +69,7 @@ export const createSubmissionErrorFromErrObj = <T extends {}> (error: AxiosError
     let validationErrors: T | null = null;
     if(error instanceof AxiosError) {
         message = error.response?.data.message || message;
-        if(error.response?.status === 400) {
+        if(error.response?.status === 400 && error.response.data.errors) {
             validationErrors = collectValidationErrors(error.response.data.errors);
         }
     }

@@ -1,0 +1,18 @@
+.collection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #EFF2F6;
+    padding: 10px;
+    border-radius: 3px;
+
+    &__link {
+        color: #202A38;
+        text-decoration: none;
+        transition: all .3s;
+    }
+
+    &__link:hover {
+        color: #0FBD86;
+    }
+}
