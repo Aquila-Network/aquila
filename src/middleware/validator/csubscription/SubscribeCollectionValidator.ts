@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ExpressMiddlewareInterface } from "routing-controllers";
+import { BadRequestError, ExpressMiddlewareInterface } from "routing-controllers";
 import { Service } from "typedi";
 
 import { JwtPayloadData } from "../../../helper/decorators/jwtPayloadData";
@@ -16,7 +16,12 @@ export class SubscribeCollectionValidator implements ExpressMiddlewareInterface 
 		if(jwtPayloadData) {
 			const status = await this.collectionSubService.isCollectionSubscribedByCustomer(req.params.collectionId, jwtPayloadData.customerId, jwtPayloadData.accountStatus);
 			if(status) {
-				throw new Error("Collection is already subscribed");	
+				throw new BadRequestError("Collection is already subscribed");	
+			}
+
+			const totalSubscriptions = await this.collectionSubService.getTotalCollectionSubscribedByCustomer(jwtPayloadData.customerId, jwtPayloadData.accountStatus);
+			if(totalSubscriptions > 5) {
+				throw new BadRequestError("You have reached maximum number of subscriptions");
 			}
 		}
 		next();

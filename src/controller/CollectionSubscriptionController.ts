@@ -1,5 +1,6 @@
 import { Body, Get, JsonController, Param, Post, QueryParams, UseBefore } from "routing-controllers";
 import { Service } from "typedi";
+import { Collection } from "../entity/Collection";
 import { CollectionSubscription } from "../entity/CollectionSubscription";
 import { CollectionSubscriptionTemp } from "../entity/CollectionSubscriptionTemp";
 
@@ -9,6 +10,8 @@ import { SubscribeCollectionValidator } from "../middleware/validator/csubscript
 import { UnSubscribeCollectionValidator } from "../middleware/validator/csubscription/UnSubscribeCollectionValidator";
 import { CollectionSubscriptionService } from "../service/CollectionSubscriptionService";
 import { JwtPayload } from "../service/dto/AuthServiceDto";
+import { GetSubscriptionsByCustomerIdOptionsInputDto } from "../service/dto/CollectionSubscriptionServiceDto";
+import { GetSubscriptionsByCustomerIdReqQueryParamsDto, GetSubscriptionsByCustomerIdResBodyDto } from "./dto/CollectionSubscriptionControllerDto";
 
 @Service()
 @JsonController('/subscription')
@@ -53,6 +56,30 @@ export class CollectionSubscriptionController {
 	): Promise<CollectionSubscription | CollectionSubscriptionTemp | null> {
 		
 		return await this.collectionSubscriptionService.unSubscribeCollection(collectionId, JwtPayloadData.customerId, JwtPayloadData.accountStatus);
+	}
+
+	@Get('/')
+	@UseBefore(AuthMiddleware)
+	public async getSubscriptionsByCustomerId(
+		@JwtPayloadData() jwtPayloadData: JwtPayload,
+		@QueryParams() queryParams: GetSubscriptionsByCustomerIdReqQueryParamsDto,
+	): Promise<GetSubscriptionsByCustomerIdResBodyDto> {
+		const options: GetSubscriptionsByCustomerIdOptionsInputDto = {
+			limit: queryParams.limit ? parseInt(queryParams.limit, 10) : 10,
+			page: queryParams.page ? parseInt(queryParams.page, 10) : 1
+		}
+		if(queryParams.query) {
+			options.query = queryParams.query;
+		}
+		return await this.collectionSubscriptionService.getSubscriptionsByCustomerId(jwtPayloadData.customerId, options, jwtPayloadData.accountStatus);
+	}
+
+	@UseBefore(AuthMiddleware)
+	@Get('/collections')
+	public async getCustomerSubscribedCollections(
+		@JwtPayloadData() jwtPayloadData: JwtPayload,
+	): Promise<Collection[]> {
+		return await this.collectionSubscriptionService.getCustomerSubscribedCollections(jwtPayloadData.customerId, jwtPayloadData.accountStatus);
 	}
 
 }
