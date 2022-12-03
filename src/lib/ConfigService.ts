@@ -1,3 +1,4 @@
+import fs from 'fs';
 import dotenv from 'dotenv';
 import { Service } from 'typedi';
 
@@ -21,7 +22,11 @@ export class ConfigService {
         envFile = '.env.development';
     }
     const path = `${__dirname}/../../${envFile}`;
-    dotenv.config({ path });
+    const options: dotenv.DotenvConfigOptions = {}
+    if(fs.existsSync(path)) {
+      options.path = path;
+    }
+    dotenv.config(options);
   }
 
   get(key: string, defaultValue?: string): string {

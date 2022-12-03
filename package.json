@@ -7,8 +7,9 @@
    "author": "manekshms <manekshms@gmail.com>",
    "scripts": {
       "build": "tsc",
-      "listen": "cross-env NODE_ENV=development node dist/index.js",
-      "start": "cross-env NODE_ENV=development nodemon  -e './**/*.ts' --exec 'yarn build && yarn listen'",
+      "listen": "node dist/index.js",
+      "start": "yarn listen",
+      "dev": "cross-env NODE_ENV=development nodemon  -e './**/*.ts' --exec 'yarn build && yarn listen'",
       "typeorm": "typeorm-ts-node-commonjs"
    },
    "license": "MIT",
