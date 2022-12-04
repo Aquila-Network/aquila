@@ -8,4 +8,4 @@ RUN yarn
 
 RUN yarn build
 
-CMD yarn run typeorm -- migration:generate src/migrations/bookmark --dataSource src/config/db.ts && yarn run typeorm -- migration:run --dataSource src/config/db.ts && yarn start
+CMD yarn run typeorm -- migration:run --dataSource src/config/db.ts && yarn start
