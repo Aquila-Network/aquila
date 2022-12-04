@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { AppState } from '../../../store';
 
-import classes from './SignupForm.module.scss';
+import classes from './SignUpForm.module.scss';
 
 interface SignUpFormProps {
 	onSignUp: Function;
