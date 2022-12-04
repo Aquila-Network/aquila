@@ -93,7 +93,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children, headerBorder = true}) => {
 							addLinkState={addLinkState}
 							onSubmitAddLink={onSubmitAddLinkHandler}
 							signedInUser={signedInUser}
-							isAuth={authState.isSignedIn}
+							isAuth={authState.isSignedIn ? true : false}
 							onSignOut={signOutHandler}
 						/>
 					</section>
