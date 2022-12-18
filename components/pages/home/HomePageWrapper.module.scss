@@ -3,7 +3,7 @@
     gap: 50px;
 
     &__search-area {
-        flex-basis: 900px;    
+        flex-basis: 800px;    
     }
 
     &__search-bar {
@@ -19,4 +19,49 @@
         padding-top: 20vh;
         flex: 1 1 0;
     }
+    
+    &__sidebar-close {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .home-page {
+        gap: 20px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+   .home-page {
+    flex-direction: column;
+
+    &__sidebar {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        padding-top: 0px;
+    }
+
+    &__search-bar {
+        width: 80%;
+    }
+
+    &__sidebar--close {
+        display: none;
+    }
+
+    &__sidebar-close {
+        display: block;
+        position: absolute;
+        background: none;
+        font-size: 18px;
+        outline: none;
+        border: none;
+        top: 25px;
+        right: 5px;
+        cursor: pointer;
+    }
+
+   } 
 }

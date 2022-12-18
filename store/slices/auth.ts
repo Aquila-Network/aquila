@@ -10,6 +10,7 @@ interface AuthState {
 		customerId: string;
 		firstName: string;
 		lastName: string;
+		createdAt: string;
 	} | null;
 	status: 'idle' | 'pending' | 'succeeded' | 'failed';
 }
@@ -21,6 +22,7 @@ interface SignInPayloadAction {
 		customerId: string;
 		firstName: string;
 		lastName: string;
+		createdAt: string;
 	}
 }
 

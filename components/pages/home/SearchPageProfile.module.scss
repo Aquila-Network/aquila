@@ -3,6 +3,7 @@
 	margin-top: 20px;
 	border: 1px solid #CED7E3;
 	border-radius: 3px;
+	background: #fff;
 
 	&__header {
 		display: flex;
@@ -24,6 +25,10 @@
 	&__header-subscribe-btn:hover {
 		color: #0FBD86;
 		border-color: #0FBD86;
+	}
+
+	&__header-avatar {
+		width: 80px;
 	}
 
 	&__header-left {
@@ -101,5 +106,22 @@
 
 	&__body-feedback-txt:hover {
 		color: #0FBD86;
+	}
+}
+
+@media only screen and (max-width: 992px) {
+	.search-profile {
+		padding-top: 25px;
+
+		&__header-left {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 10px;
+		}
+
+		&__header-avatar {
+			width: 40px;
+		}
 	}
 }
