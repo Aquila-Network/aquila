@@ -13,3 +13,14 @@
         color: #0FBD86;
     }
 }
+
+
+@media only screen and (max-width: 768px) {
+    .story {
+        padding: 50px 10px;
+
+        &__title {
+            font-size: 18px;
+        }
+    }
+}

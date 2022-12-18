@@ -58,3 +58,36 @@
         color: #2E3D51;
     }
 }
+
+@media only screen and (max-width: 768px) {
+    .hero {
+        &__text-main-title {
+            font-size: 45px;
+        }
+
+        &__text-main-desc {
+            font-size: 18px;
+            line-height: 30px;
+        }
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .hero {
+        padding-left: 10px;
+        padding-right: 10px;
+
+        &__text-main-title {
+            font-size: 35px;
+        }
+
+        &__text-main-desc {
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        &__footer-text {
+            font-size: 18px;
+        }
+    }
+}
