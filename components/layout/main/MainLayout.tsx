@@ -24,14 +24,15 @@ const MainLayout: FC<MainLayoutProps> = ({ children, headerBorder = true}) => {
 	const addLinkState = useAppSelector(selectAddLink)
 	const currentCustomerCollections = useAppSelector(selectGetLoggedInCustCollections);
 	const dispatch = useAppDispatch();
-	const [signedInUser, setSignedInUser] = useState<{ firstName: string, lastName: string} | null>(null);
+	const [signedInUser, setSignedInUser] = useState<{ firstName: string, lastName: string, createdAt: string} | null>(null);
 	const { setLoader } = useProgressLoader();
 
 	useEffect(() => {
 		if(authState.isSignedIn && authState.customer) {
 			setSignedInUser({
 				firstName: authState.customer.firstName,
-				lastName: authState.customer.lastName
+				lastName: authState.customer.lastName,
+				createdAt: authState.customer.createdAt
 			})
 		}
 	}, [authState]);
@@ -101,7 +102,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children, headerBorder = true}) => {
 				</div>
 				<div className={classes["main-layout__bottom"]}>
 					<section className={classes["main-layout__footer"]}>
-						<Footer />
+						<Footer signedInUser={signedInUser} accountStatus={authState?.accountStatus || null}  />
 					</section>
 				</div>
 			</div>

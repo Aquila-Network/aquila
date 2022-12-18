@@ -9,6 +9,7 @@ interface AuthPayload {
 	customerId: string;
 	firstName: string;
 	lastName: string;
+	createdAt: string;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -36,6 +37,7 @@ export const authOptions: NextAuthOptions = {
 					customerId: data.customerId,
 					firstName: data.firstName,
 					lastName: data.lastName,
+					createdAt: data.createdAt,
 					accountStatus: data.accountStatus,
 					token: token
 				} as User;
@@ -55,6 +57,9 @@ export const authOptions: NextAuthOptions = {
 				session.user.lastName = token.lastName;
 			}
 			if(token.accountStatus) {
+				session.user.createdAt = token.createdAt;
+			}
+			if(token.accountStatus) {
 				session.user.accountStatus = token.accountStatus;
 			}
 			if(token.token) {
@@ -67,6 +72,7 @@ export const authOptions: NextAuthOptions = {
 				token.customerId = user.customerId;
 				token.firstName = user.firstName;
 				token.lastName = user.lastName;
+				token.createdAt = user.createdAt;
 				token.accountStatus = user.accountStatus;
 				token.token = user.token;
 			}

@@ -5,6 +5,7 @@ declare module "next-auth" {
         customerId: string;
         firstName: string;
         lastName: string;
+        createdAt: string;
         accountStatus: string;
         token: string;
     }
@@ -14,6 +15,7 @@ declare module "next-auth" {
             customerId: string;
             firstName: string;
             lastName: string;
+            createdAt: string;
             accountStatus: string;
             token: string;
        } & DefaultSession 
@@ -25,6 +27,7 @@ declare module "next-auth/jwt" {
         customerId: string;
         firstName: string;
         lastName: string;
+        createdAt: string;
         accountStatus: string;
         token: string;
     }

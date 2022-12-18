@@ -1,5 +1,5 @@
 .explore {
-	width: 250px;
+	// width: 250px;
 	padding: 20px 15px;
 	border-radius: 3px;
 	border: 1px solid #ddd;
@@ -35,3 +35,21 @@
 	}
 
 }
+
+// @media only screen and (max-width: 1200px) {
+// 	.explore {
+// 		width: 200px;
+// 	}	
+// }
+
+// @media only screen and (max-width: 992px) {
+// 	.explore {
+// 		width: 225px;
+// 	}	
+// }
+
+// @media only screen and (max-width: 992px) {
+// 	.explore {
+// 		width: 250px;
+// 	}	
+// }
