@@ -56,6 +56,7 @@ export class AuthService {
 			customerId: customer.id,
 			firstName: customer.firstName,
 			lastName: customer.lastName,
+			createdAt: customer.createdAt,
 			accountStatus: AccountStatus.PERMANENT
 		};
 		const token = this.generateToken(payload);
