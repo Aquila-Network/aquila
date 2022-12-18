@@ -8,6 +8,10 @@
         align-items: center;
     }
 
+    &__brand-contaner {
+        order: 1;
+    }
+
     &__brand-link {
         display: flex;
         text-decoration: none;
@@ -24,6 +28,10 @@
         color: #202A38;
     }
 
+    &__nav-container {
+        order: 3;
+    }
+
     &__nav-list-container {
         display: flex;
         list-style: none;
@@ -31,8 +39,21 @@
         gap: 10px;
     }
 
+    &__nav-mobile-menu-close {
+        display: none;
+        border: none;
+        outline: none;
+        background: none;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
     &__nav-list-item {
         position: relative;
+    }
+
+    &__nav-list-item--mobile-menu {
+        display: none;
     }
 
     &__nav-list-link {
@@ -86,5 +107,72 @@
 
     &__nav-dropdown-link:hover {
         background: #EFF2F6;
+    }
+
+    &__mobile-menu-btn-container {
+        order: 2;
+        display: none;
+    }
+
+    &__mobile-menu-btn {
+        border: none;
+        outline: none;
+        background: none;
+        cursor: pointer;
+        font-size: 25px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .header {
+        &__mobile-menu-btn-container {
+            display: block;
+        }
+
+        &__nav-container {
+            position:fixed;
+            width: 100vw;
+            height: 100vh;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            z-index: 200;
+            background: #fff;
+            display: none;
+        }
+
+        &__nav-container--show {
+            display: block
+        }
+
+        &__nav-list-container {
+            height: 100%;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        &__nav-mobile-menu-close {
+            display: block;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        &__nav-list-item {
+            padding: 20px 0px;
+        }
+
+        &__nav-list-item--profile-item {
+            display: none;
+        }
+
+        &__nav-list-item--mobile-menu {
+            display: block;
+        }
+
+        &__mobile-menu-btn {
+
+        }
     }
 }
