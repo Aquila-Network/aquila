@@ -68,9 +68,9 @@ const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus, onS
         const data = getValues();
         e.preventDefault();
         const status = await onSubmit(data)
-        // if(status){
-        //     reset();
-        // }
+        if(status){
+            reset();
+        }
     }
 
     return (

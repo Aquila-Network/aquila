@@ -19,7 +19,6 @@ const Footer: FC<FooterProps> = (props) => {
 	const [showBanner, setShowBanner] = useState(true);
 	const { signedInUser, accountStatus } = props;
 	let accountExpiryData;
-	debugger;
 	if(signedInUser) {
 		accountExpiryData = moment(signedInUser.createdAt).add(14, 'days').format('Mo MMMM');
 	}
@@ -28,7 +27,7 @@ const Footer: FC<FooterProps> = (props) => {
 		<>
 			{accountStatus === 'TEMPORARY' && showBanner && <div className={classes["footer-banner"]}>
 				<button onClick={() => setShowBanner(false)} className={classes["footer-banner__close-btn"]}><FiX /></button>
-				<p className={classes["footer-banner__text"]}>${`Your Account is temporary and will be deleted automatically on ${accountExpiryData}.`}Please <Link href="/account/edit-profile">Activate</Link> you account</p>
+				<p className={classes["footer-banner__text"]}>{`Your Account is temporary and will be deleted automatically on ${accountExpiryData}.`}Please <Link href="/account/edit-profile">Activate</Link> you account</p>
 			</div>
 			}
 			<footer className={classes.footer}>
