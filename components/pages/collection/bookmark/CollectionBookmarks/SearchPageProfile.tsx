@@ -46,7 +46,7 @@ const SearchPageProfile: FC<SearchPageProfileProps> = ({ customer, collection, o
 			<div className={classes["search-profile__header"]}>
 				<div className={classes["search-profile__header-left"]}>
 					<div className={classes["search-profile__header-avatar"]}>
-						<Avatar size="80" variant="beam" name={`${customer.firstName} ${customer.lastName}`} />
+						<Avatar size="100%" variant="beam" name={`${customer.firstName} ${customer.lastName}`} />
 					</div>
 					<h3 className={classes["search-profile__header-name"]}>{`${customer.firstName} ${customer.lastName}`}</h3>
 				</div>

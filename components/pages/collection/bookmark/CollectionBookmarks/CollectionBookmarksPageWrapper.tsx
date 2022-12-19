@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Oval } from 'react-loader-spinner';
+import { FiX } from 'react-icons/fi';
 
 import { AppState } from "../../../../../store";
 import { Collection } from "../../../../../store/slices/types/Collection";
@@ -28,6 +29,7 @@ const CollectionBookmarksPageWrapper: FC<CollectionBookmarksPageWrapperProps> = 
     const { collection, customer, bookmarksState, onSearch, onClickNextPage, onClickPrevPage, onSubscribe, isCollectionSubscribed, isSignedIn, onUnsubscribe } = props;
     const [hasNext, setHasNext] = useState(false);
     const [hasPrev, setHasPrev] = useState(false);
+    const [showSidebar, setShowSidebar] = useState(true);
     
     useEffect(() => {
         if(bookmarksState.currentPage && bookmarksState.totalPages) {
@@ -64,7 +66,8 @@ const CollectionBookmarksPageWrapper: FC<CollectionBookmarksPageWrapperProps> = 
                                 />}
                         </div>
                     </section>
-                    <section className={classes["collection-bookmarks__sidebar"]}>
+                    <section className={`${classes["collection-bookmarks__sidebar"]} ${!showSidebar? classes["collection-bookmarks__sidebar--close"] : ''}`}>
+                        <button onClick={() => setShowSidebar(false)} className={classes["collection-bookmarks__sidebar-close"]}><FiX /></button>
                        {collection && customer && <SearchPageProfile
                         collection={collection}
                         customer={customer}
