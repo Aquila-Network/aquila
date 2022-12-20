@@ -3012,11 +3012,6 @@ querystring@0.2.0:
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
   integrity sha512-X/xY82scca2tau62i9mDyU9K+I+djTMUsvwf7xnUX5GLvVzgJybOJf4Y6o9Zx3oJK/LSXg5tTZBjwzqVPaPO2g==
 
-random-animal-name@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/random-animal-name/-/random-animal-name-0.1.1.tgz#9e1112fb5b8a922308b141a3b3e2011745e0e0c0"
-  integrity sha512-6LtEegc1FzFsD77WF5KmxhXPCbcI33qlAgxd8aHVrwOW595yh3Kkw52dTaqGmLXb05JiRf1ypzUXPKEosTCoAA==
-
 random-bytes@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/random-bytes/-/random-bytes-1.0.0.tgz#4f68a1dc0ae58bd3fb95848c30324db75d64360b"

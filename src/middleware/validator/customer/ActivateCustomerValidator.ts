@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import { ExpressMiddlewareInterface } from "routing-controllers";
-import { Service } from "typedi";
+import Container, { Service } from "typedi";
+import { CustomerService } from "../../../service/CustomerService";
 import { validate } from "../../../utils/validate";
 
 @Service()
@@ -30,7 +31,15 @@ export class ActivateCustomerValidator implements ExpressMiddlewareInterface {
 				.trim().not().isEmpty()
 				.withMessage("Email is required")	
 				.isEmail()
-				.withMessage("Invalid email"),
+				.withMessage("Invalid email")
+				.bail()
+				.custom(async (value) => {
+					const customerService = Container.get(CustomerService);
+					const customer = await customerService.findCustomerByEmailId(value);
+					if(customer) {
+						throw new Error("Email already exists");
+					}
+				}),
 
 			body('desc')
 				.trim().not().isEmpty()

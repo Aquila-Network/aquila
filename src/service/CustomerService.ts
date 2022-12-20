@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import randomAnimalName from 'random-animal-name';
+import randomAnimalName from '../utils/randomAnimals';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import base58 from 'bs58';
@@ -27,7 +27,7 @@ export class CustomerService {
 	public constructor(private aquilaClientService: AquilaClientService) {}
 
 	public async getRandomCustomerName(): Promise<GetRandomCustomerNameOutputDto> {
-		const [firstName, lastName] = randomAnimalName().split(' ');
+		const [firstName, lastName] = randomAnimalName();
 
 		return {
 			firstName, 
@@ -219,6 +219,11 @@ export class CustomerService {
 			transactionalEntityManager.remove(bookmarkParasTemp);
 			transactionalEntityManager.remove(collectionSubTemp);
 		});
+		return customer;
+	}
+
+	public async findCustomerByEmailId(email: string) {
+		const customer = await Customer.findOne({where: { email }});
 		return customer;
 	}
 
