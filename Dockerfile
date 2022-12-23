@@ -6,4 +6,4 @@ COPY . .
 
 RUN yarn
 
-CMD yarn build && yarn start
+CMD export NEXT_PUBLIC_AQUILA_API_URL=$NEXT_PUBLIC_AQUILA_API_URL_BUILD && yarn build && export NEXT_PUBLIC_AQUILA_API_URL=$NEXT_PUBLIC_AQUILA_API_URL_DEPLOYMENT && yarn start
