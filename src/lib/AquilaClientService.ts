@@ -12,10 +12,10 @@ export class AquilaClientService {
 	public constructor(private configService: ConfigService) {}
 
 	public async connect() {
-		const wallet = new Wallet( path.join(__dirname, '../../private_unencrypted.pem'));
+		const wallet = new Wallet( path.join(__dirname, this.configService.get("AQUILA_DB_KEY_PATH")));
 		const dbUrl = this.configService.get("AQUILA_DB_HOST");
 		const dbPort = parseInt(this.configService.get("AQUILA_DB_PORT"), 10);
-		const hubWallet = new Wallet( path.join(__dirname, '../../private_unencrypted_hub.pem'));
+		const hubWallet = new Wallet( path.join(__dirname, this.configService.get("AQUILA_HUB_KEY_PATH")));
 		const hubUrl = this.configService.get("AQUILA_HUB_HOST");
 		const hubPort = parseInt(this.configService.get("AQUILA_HUB_PORT"), 10);
 
