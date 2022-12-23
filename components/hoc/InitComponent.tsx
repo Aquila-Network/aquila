@@ -19,7 +19,8 @@ const InitComponent: FC<InitCompoentProps> = (props) => {
                 customer: {
                     customerId: data.user.customerId,
                     firstName: data.user.firstName,
-                    lastName: data.user.lastName
+                    lastName: data.user.lastName,
+                    createdAt: data.user.createdAt
                 }
             })) 
         }
