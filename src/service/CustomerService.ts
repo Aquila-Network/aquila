@@ -1,7 +1,7 @@
 import { Service } from "typedi";
 import randomAnimalName from '../utils/randomAnimals';
 import crypto from 'crypto';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4, parse as parseUuid } from 'uuid';
 import base58 from 'bs58';
 
 import dataSource from '../config/db';
@@ -71,8 +71,10 @@ export class CustomerService {
 			const hash = crypto.createHash('sha256');
 			const avatar = hash.update(randomNumber).digest('hex');
 
-			const randomData = Buffer.from(uuidv4().substring(0, 14) + Date.now());
-			const secretKey = base58.encode(randomData);
+			const uuidV4ParsedId = new Uint8Array(parseUuid(uuidv4()));
+			const base58String = base58.encode(uuidV4ParsedId).slice(0, 8);
+			const timestampString = Date.now().toString().slice(0, -3);
+			const secretKey = base58String+timestampString;
 
 			const desc = 'Hi I’m using Aquila Network to help curate the web. I’ll be sharing some awesome websites with you. Don’t forget to follow me and support my work.';
 
