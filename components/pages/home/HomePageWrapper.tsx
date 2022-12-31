@@ -19,10 +19,13 @@ interface HomePageWrapperProps {
     onSearch: Function;
     onClickNextPage: Function;
     onClickPrevPage: Function;
+    isCollectionSubscribed: boolean | null;
+    onSubscribe: Function;
+    onUnsubscribe: Function;
 }
 
 const HomePageWrapper: FC<HomePageWrapperProps> = (props) => {
-    const { collection, customer, bookmarksState, onSearch, onClickNextPage, onClickPrevPage } = props;
+    const { collection, customer, bookmarksState, onSearch, onClickNextPage, onClickPrevPage, onSubscribe, onUnsubscribe, isCollectionSubscribed } = props;
     const [hasNext, setHasNext] = useState(false);
     const [hasPrev, setHasPrev] = useState(false);
     const [showSidebar, setShowSidebar] = useState(true);
@@ -64,7 +67,13 @@ const HomePageWrapper: FC<HomePageWrapperProps> = (props) => {
                     </section>
                     <section className={`${classes["home-page__sidebar"]} ${!showSidebar? classes["home-page__sidebar--close"] : ''}`}>
 			           <button onClick={() => setShowSidebar(false)} className={classes["home-page__sidebar-close"]}><FiX /></button>
-                       {collection && customer && <SearchPageProfile collection={collection} customer={customer} />}
+                       {collection && customer && <SearchPageProfile 
+                        collection={collection}
+                        customer={customer}
+                        onSubscribe={onSubscribe}
+                        onUnsubscribe={onUnsubscribe}
+                        isCollectionSubscribed={isCollectionSubscribed}
+                       />}
                     </section>
                 </div>
             </Container>
