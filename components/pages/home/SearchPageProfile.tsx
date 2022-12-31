@@ -4,21 +4,40 @@ import Avatar from "boring-avatars";
 
 import classes from './SearchPageProfile.module.scss';
 import { Customer } from '../../../store/slices/types/Customer';
-import { FC, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Collection } from '../../../store/slices/types/Collection';
 
 interface SearchPageProfileProps {
 	customer: Customer;
 	collection: Collection;
+	onSubscribe: Function;
+	onUnsubscribe: Function;
+	isCollectionSubscribed: boolean | null;
 }
 
-const SearchPageProfile: FC<SearchPageProfileProps> = ({ customer, collection }) => {
+const SearchPageProfile: FC<SearchPageProfileProps> = ({ customer, collection, onSubscribe, onUnsubscribe, isCollectionSubscribed }) => {
 
 	const bookmarkShareLinkRef = useRef<HTMLInputElement | null>(null);
+	const [isSubscribing, setIsSubscribing] = useState(false);
+	const [isUnSubscribing, setIsUnSubscribing] = useState(false);
 
 	const OnClickCopyBtnHandler = () => {
 		navigator.clipboard.writeText(bookmarkShareLinkRef.current?.value || "");
         toast("Collection link copied", { position: "top-center"});
+	}
+
+	const onClickSubscribeHandler = async (e: any) => {
+		e.preventDefault()
+		setIsSubscribing(true);
+		await onSubscribe(collection.id)
+		setIsSubscribing(false);
+	}
+
+	const onClickUnSubscribeHandler = async (e: any) => {
+		e.preventDefault()
+		setIsUnSubscribing(true);
+		await onUnsubscribe(collection.id)
+		setIsUnSubscribing(false);
 	}
 
 	return (
@@ -31,7 +50,8 @@ const SearchPageProfile: FC<SearchPageProfileProps> = ({ customer, collection })
 					<h3 className={classes["search-profile__header-name"]}>{`${customer.firstName} ${customer.lastName}`}</h3>
 				</div>
 				<div className={classes["search-profile__header-right"]}>
-					<button className={classes["search-profile__header-subscribe-btn"]}>Subscribe</button>
+					{!isCollectionSubscribed && <button disabled={isSubscribing} onClick={onClickSubscribeHandler} className={classes["search-profile__header-subscribe-btn"]}>Subscribe</button>}
+					{isCollectionSubscribed && <button disabled={isUnSubscribing} onClick={onClickUnSubscribeHandler} className={classes["search-profile__header-subscribe-btn"]}>UnSubscribe</button>}
 				</div>
 			</div>
 			<div className={classes["search-profile__body"]}>

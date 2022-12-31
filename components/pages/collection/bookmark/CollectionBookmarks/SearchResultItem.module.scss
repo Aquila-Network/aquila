@@ -2,16 +2,18 @@
 	border-bottom: 1px solid #CED7E3;
 	padding-bottom: 15px;
 	margin-bottom: 10px;
+	word-wrap: break-word;
 
-	&__title {
+	&__title-link {
 		font-size: 22px;
+		text-decoration: none;
 		margin-bottom: 2px;
 		color: #202A38;
 		transition: all .3s;
 		cursor: pointer;
 	}
 
-	&__title:hover {
+	&__title-link:hover {
 		color: #0FBD86;
 	}
 

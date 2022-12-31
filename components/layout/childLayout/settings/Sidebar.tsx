@@ -6,15 +6,15 @@ const Sidebar = () => {
     return (
         <ul className={classes.sidebar}>
             <li className={classes.sidebar__item}>
-                <Link href="/">
+                <Link href="/account/edit-profile">
                     <a className={classes["sidebar__item-link"]}>Edit Profile</a>
                 </Link>
             </li>
-            <li className={classes.sidebar__item}>
+            {/* <li className={classes.sidebar__item}>
                 <Link href="/">
                     <a className={classes["sidebar__item-link"]}>General</a>
                 </Link>
-            </li>
+            </li> */}
         </ul>
     )
 }

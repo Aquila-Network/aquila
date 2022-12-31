@@ -14,7 +14,7 @@ const Collection: FC<CollectionProps> = (props) => {
         <div className={classes["collection"]} >
             <Avatar name={name} />
             <Link href={`/collection/bookmark/${collectionId}`}>
-                <a className={classes["collection__link"]}><h3 className={classes["collection__title"]}>{name}</h3></a>
+                <a rel="nofollow" className={classes["collection__link"]}><h3 className={classes["collection__title"]}>{name}</h3></a>
             </Link>
         </div>
     )

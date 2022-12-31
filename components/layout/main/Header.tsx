@@ -73,7 +73,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
 								</li>
 								{props.isAuth &&
 								<li className={classes["header__nav-list-item"]}>
-									<Link href="/home"><a className={classes["header__nav-list-link"]} >My Index</a></Link>
+									<Link href="/home"><a className={`${classes["header__nav-list-link"]} ${router.pathname === '/home' ? classes["header__nav-list-link--active"]: ''}`} >My Index</a></Link>
 								</li>
 								}
 								{props.isAuth &&
@@ -83,18 +83,18 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
 								}
 								{props.isAuth &&
 								<li className={classes["header__nav-list-item"]}>
-									<Link href="/subscription"><a className={classes["header__nav-list-link"]} >Subscription</a></Link>
+									<Link href="/subscription"><a className={`${classes["header__nav-list-link"]} ${router.pathname === '/subscription' ? classes["header__nav-list-link--active"]: ''}`} >Subscription</a></Link>
 								</li>
 								}
 								<li className={classes["header__nav-list-item"]}>
-									<Link href="/explore"><a className={classes["header__nav-list-link"]} >Explore</a></Link>
+									<Link href="/explore"><a className={`${classes["header__nav-list-link"]} ${router.pathname === '/explore' ? classes["header__nav-list-link--active"]: ''}`} >Explore</a></Link>
 								</li>
 								<li className={classes["header__nav-list-item"]}>
 									<a className={classes["header__nav-list-link"]}  href="https://blog.aquila.network/">Blog</a>
 								</li>
 								{!props.isAuth &&	
 								<li className={classes["header__nav-list-item"]}>
-									<Link href="/sign-in"><a className={classes["header__nav-list-link"]} >Sign In</a></Link>
+									<Link href="/sign-in"><a className={`${classes["header__nav-list-link"]} ${router.pathname === '/sign-in' ? classes["header__nav-list-link--active"]: ''}`} >Sign In</a></Link>
 								</li>
 								}
 								{props.isAuth &&

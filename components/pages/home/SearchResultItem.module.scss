@@ -5,14 +5,18 @@
 	word-wrap: break-word;
 
 	&__title {
-		font-size: 22px;
 		margin-bottom: 2px;
+	}
+
+	&__title-link {
+		font-size: 22px;
 		color: #202A38;
 		transition: all .3s;
 		cursor: pointer;
+		text-decoration: none;
 	}
 
-	&__title:hover {
+	&__title-link:hover {
 		color: #0FBD86;
 	}
 
