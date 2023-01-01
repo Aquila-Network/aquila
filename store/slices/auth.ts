@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { AppState } from "..";
 
-interface AuthState {
+export interface AuthState {
 	isSignedIn: boolean | null;
 	token: string | null;
 	accountStatus: string | null;

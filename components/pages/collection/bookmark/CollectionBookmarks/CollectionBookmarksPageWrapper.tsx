@@ -11,6 +11,7 @@ import classes from "./CollectionBookmarksPageWrapper.module.scss";
 import SearchBar from "./SearchBar";
 import SearchPageProfile from "./SearchPageProfile";
 import SearchResults from "./SearchResults";
+import { AuthState } from "../../../../../store/slices/auth";
 
 interface CollectionBookmarksPageWrapperProps {
     customer: Customer | null;
@@ -22,11 +23,12 @@ interface CollectionBookmarksPageWrapperProps {
     onSubscribe: Function;
     isCollectionSubscribed: boolean | null;
     isSignedIn: boolean | null;
+    currentLoggedInCustomer: AuthState['customer'] | null;
     onUnsubscribe: Function;
 }
 
 const CollectionBookmarksPageWrapper: FC<CollectionBookmarksPageWrapperProps> = (props) => {
-    const { collection, customer, bookmarksState, onSearch, onClickNextPage, onClickPrevPage, onSubscribe, isCollectionSubscribed, isSignedIn, onUnsubscribe } = props;
+    const { collection, customer, bookmarksState, onSearch, onClickNextPage, onClickPrevPage, onSubscribe, isCollectionSubscribed, isSignedIn, onUnsubscribe, currentLoggedInCustomer } = props;
     const [hasNext, setHasNext] = useState(false);
     const [hasPrev, setHasPrev] = useState(false);
     const [showSidebar, setShowSidebar] = useState(true);
@@ -74,6 +76,7 @@ const CollectionBookmarksPageWrapper: FC<CollectionBookmarksPageWrapperProps> = 
                         onSubscribe={onSubscribe}
                         isCollectionSubscribed={isCollectionSubscribed}
                         isSignedIn={isSignedIn}
+                        isCurrentLoggedInCustProfile={(isSignedIn && currentLoggedInCustomer && currentLoggedInCustomer.customerId === customer.id) ? true : false}
                         onUnsubscribe={onUnsubscribe}
                         />}
                     </section>

@@ -121,6 +121,7 @@ const ViewCollectionBookmarks = () => {
         onUnsubscribe={onUnSubscribeHandler}
         isCollectionSubscribed={isCollectionSubscribedState.isSubscribed}
         isSignedIn={authState.isSignedIn}
+        currentLoggedInCustomer={authState.customer}
    />
 }
 
