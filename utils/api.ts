@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import { store } from "../store";
 
 
@@ -22,6 +22,12 @@ api.interceptors.request.use(async (config) => {
         config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
+})
+
+api.interceptors.response.use((request) => request, (err) => {
+    if(err.response.data.code === 401) {
+        signOut();
+    }
 })
 
 export default api;
