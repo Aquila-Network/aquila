@@ -47,7 +47,7 @@ const SearchPageProfile: FC<SearchPageProfileProps> = ({ customer, collection, o
 					<div className={classes["search-profile__header-avatar"]}>
 						<Avatar size="100%" variant="beam" name={`${customer.firstName} ${customer.lastName}`} />
 					</div>
-					<h3 className={classes["search-profile__header-name"]}>{`${customer.firstName} ${customer.lastName}`}</h3>
+					<h3 className={classes["search-profile__header-name"]}>{`${customer.firstName} ${customer.lastName} (Me)`}</h3>
 				</div>
 				<div className={classes["search-profile__header-right"]}>
 					{!isCollectionSubscribed && <button disabled={isSubscribing} onClick={onClickSubscribeHandler} className={classes["search-profile__header-subscribe-btn"]}>Subscribe</button>}
