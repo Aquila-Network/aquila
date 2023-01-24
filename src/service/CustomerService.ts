@@ -112,6 +112,7 @@ export class CustomerService {
 		customer.lastName = data.lastName;
 		customer.desc = data.desc;
 		customer.email = data.email;
+		customer.lightningAddress = data.lightningAddress || null;
 		customer.save();
 		return customer;
 	}
@@ -155,6 +156,7 @@ export class CustomerService {
 		customer.desc = data.desc;
 		customer.secretKey = customerTemp.secretKey;
 		customer.createdAt = customerTemp.createdAt;
+		customer.lightningAddress = data.lightningAddress || null;
 
 		// create collections
 		const collections = collectionsTemp.map(item => {

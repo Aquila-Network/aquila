@@ -16,6 +16,7 @@ export interface ActivateCustomerReqBodyDto {
 	lastName: string;
 	email: string;
 	desc: string;
+	lightningAddress: string;
 }
 
 export interface UpdateCustomerReqBodyDto {
@@ -23,6 +24,7 @@ export interface UpdateCustomerReqBodyDto {
 	lastName: string;
 	email: string;
 	desc: string;
+	lightningAddress: string;
 }
 
 export interface GetCustomerPublicInfoByIdRespBodyDto {

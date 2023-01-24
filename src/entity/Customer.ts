@@ -42,6 +42,15 @@ export class Customer extends BaseEntity {
 	public secretKey: string;
 
 	@Column({
+		name: 'lightning_address',
+		type: 'varchar',
+		length: 255,
+		unique: true,
+		default: null
+	})
+	public lightningAddress: string | null;
+
+	@Column({
 		name: 'is_active',
 		type: 'boolean',
 		default: true

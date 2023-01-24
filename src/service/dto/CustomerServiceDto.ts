@@ -1,3 +1,4 @@
+import { string } from "@tensorflow/tfjs";
 import { CollectionTemp } from "../../entity/CollectionTemp";
 import { CustomerTemp } from "../../entity/CustomerTemp";
 
@@ -16,6 +17,7 @@ export interface ActivateCustomerByIdInputDataDto {
 	lastName: string;
 	email: string;
 	desc: string;
+	lightningAddress: string;
 }
 
 export interface UpdateCustomerByIdInputDataDto {
@@ -23,6 +25,7 @@ export interface UpdateCustomerByIdInputDataDto {
 	lastName: string;
 	email: string;
 	desc: string;
+	lightningAddress: string;
 }
 
 export interface GetCustomerPublicInfoByIdOutputDto {
