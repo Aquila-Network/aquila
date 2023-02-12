@@ -14,6 +14,7 @@ export interface ActivateCustomerData {
     lastName: string;
     email: string;
     desc: string;
+    lightningAddress: string;
 }
 
 type ActivateCustomerReqPayload = ActivateCustomerData;

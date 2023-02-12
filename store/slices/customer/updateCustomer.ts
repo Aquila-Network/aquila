@@ -14,6 +14,7 @@ export interface UpdateCustomerData {
     lastName: string;
     email: string;
     desc: string;
+    lightningAddress: string;
 }
 
 type UpdateCustomerReqPayload = UpdateCustomerData;

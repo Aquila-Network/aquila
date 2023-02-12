@@ -6,6 +6,7 @@ export interface Customer {
     avatar: string;
     secretKey: string;
     desc: string;
+    lightningAddress: string;
     isActive: boolean;
     createdAt: string;
     updatedAt: string;
