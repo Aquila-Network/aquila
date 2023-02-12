@@ -25,7 +25,7 @@ api.interceptors.request.use(async (config) => {
 })
 
 api.interceptors.response.use((request) => request, (err) => {
-    if(err.response.data.code === 401) {
+    if(!err.response || err.response.data.code === 401) {
         signOut();
     }
 })

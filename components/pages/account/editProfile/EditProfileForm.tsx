@@ -18,6 +18,7 @@ interface EditProfileFormData {
     lastName: string;
     email: string;
     desc: string;
+    lightningAddress: string;
 }
 
 const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus, onSubmit, activateCustomerState, updateCustomerState}) => {
@@ -25,6 +26,7 @@ const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus, onS
         firstName: customer.firstName,
         lastName: customer.lastName,
         email: customer.email,
+        lightningAddress: customer.lightningAddress,
         desc: customer.desc
     } });
 
@@ -69,7 +71,7 @@ const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus, onS
         e.preventDefault();
         const status = await onSubmit(data)
         if(status){
-            reset();
+            reset(undefined, { keepValues: true});
         }
     }
 
@@ -89,6 +91,14 @@ const EditProfileForm: FC<EditProfileFormProps> = ({customer, accountStatus, onS
                 <label className={classes["edit-profile-form__form-label"]}>Email</label>
                 <input {...register("email")} className={classes["edit-profile-form__form-control"]} type="email" />
                 {errors.email && <p className={classes["edit-profile-form__form-control-error"]}>{errors.email.message}</p>}
+            </div>
+            <div className={classes["edit-profile-form__form-group"]}>
+                <label className={classes["edit-profile-form__form-label"]}>Lightning address</label>
+                <input {...register("lightningAddress")} className={classes["edit-profile-form__form-control"]} type="text" />
+                <p className={classes["edit-profile-form__form-control-error"]}>
+                    <a target="_blank" rel="noreferrer" href="https://lightningaddress.com/">Get a Lightning address ?</a>
+                </p>
+                {errors.lightningAddress && <p className={classes["edit-profile-form__form-control-error"]}>{errors.lightningAddress.message}</p>}
             </div>
             <div className={classes["edit-profile-form__form-group"]}>
                 <label className={classes["edit-profile-form__form-label"]}>Description</label>
