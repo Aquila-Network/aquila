@@ -1,3 +1,4 @@
+import { exit } from 'process';
 import main from './app';
 import { ConfigService } from './lib/ConfigService';
 
@@ -8,4 +9,5 @@ main().then(app => {
     app.listen(port, () => console.log(`App running on port ${port}`))
 }).catch(err => {
     console.log(err);
+    exit(1);
 })
