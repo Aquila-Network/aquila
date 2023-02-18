@@ -21,19 +21,19 @@ export class Bookmark extends BaseEntity {
 	@Column({ type: 'text', nullable: false})
 	public html: string;
 
-	@Column({ type: 'varchar', length: 100, nullable: true})
+	@Column({ type: 'varchar', length: 2048, nullable: true})
 	public title: string;
 
 	@Column({ type: 'varchar', length: 100, nullable: true})
 	public author: string;
 
-	@Column({ name: 'cover_img', type: 'varchar', length: 255, nullable: true})
+	@Column({ name: 'cover_img', type: 'varchar', length: 2048, nullable: true})
 	public coverImg: string;
 
-	@Column({ type: 'varchar', length: 255, nullable: true})
+	@Column({ type: 'text', nullable: true})
 	public summary: string;
 
-	@Column({ type: 'varchar', length: 255, nullable: true})
+	@Column({ type: 'varchar', length: 2048, nullable: true})
 	public links: string;
 
 	@Column({ name: 'is_hidden', type: 'boolean', default: false})
