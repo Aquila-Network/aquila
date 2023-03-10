@@ -11,7 +11,7 @@ api.interceptors.request.use(async (config) => {
     const authState = store.getState().auth;
     let accessToken = authState.token;
     // console.log(authState);
-    if(!accessToken && authState.status === "idle") {
+    if(!accessToken && authState.status === "idle" && typeof window !== "undefined") {
         const session = await getSession();
         // console.log(session, "Output");
         if(session) {
