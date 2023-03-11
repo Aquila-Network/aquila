@@ -36,7 +36,8 @@ export const getStaticProps = wrapper.getStaticProps((store) => async () => {
     store.dispatch(setGetFeaturedCollections(featuredCollections))
     store.dispatch(setGetAllPublicCollections(publicCollections))
     return {
-        props: {}
+        props: {},
+        revalidate: 600
     }
 })
 
