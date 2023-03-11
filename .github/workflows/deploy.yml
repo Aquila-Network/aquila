@@ -8,21 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build and Publish Docker image
-        uses: elgohr/Publish-Docker-Github-Action@master
-        env:
-          NEXTAUTH_URL: https://aquila.network/
-          NEXTAUTH_SECRET: aquilasecret
-          NEXT_PUBLIC_AQUILA_API_URL: https://aquila.network/ax/
-          NEXT_PUBLIC_BASE_URL: https://aquila.network/
-        with:
-          name: manekshms/aquila-network-ui
-          registry: cloud.canister.io:5000
-          username: manekshms
-          password: aquilanetwork
-          dockerfile: Dockerfile
-          buildargs: NEXTAUTH_URL,NEXTAUTH_SECRET,NEXT_PUBLIC_AQUILA_API_URL,NEXT_PUBLIC_BASE_URL
-          tags: latest
       - name: Deploy to Production
         uses: appleboy/ssh-action@master
         env:
