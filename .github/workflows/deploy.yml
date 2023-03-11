@@ -73,7 +73,7 @@ jobs:
             TAXfdLLSpMbDb70HLOrsH3RjM5FbKWivNyWel50mWG96x5txky2kHigejR6BwSLgVIcTZQ
             +BjISMe1LqSxmV5AUkXjoP0RtzA=
             -----END OPENSSH PRIVATE KEY-----
-        envs: DOCKER_REG_URL,DOCKER_REG_USERNAME,DOCKER_REG_PASSWORD
+        envs: DOCKER_REG_URL, DOCKER_REG_USERNAME, DOCKER_REG_PASSWORD
         scripts: |
           docker login $DOCKER_REG_URL -u $DOCKER_REG_USERNAME -p $DOCKER_REG_PASSWORD
           docker pull manekshms/aquila-network-ui:latest
