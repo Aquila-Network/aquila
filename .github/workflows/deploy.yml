@@ -11,10 +11,10 @@ jobs:
       - name: Build and Publish Docker image
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
-          NEXTAUTH_URL=https://aquila.network/
-          NEXTAUTH_SECRET=aquilasecret
-          NEXT_PUBLIC_AQUILA_API_URL=https://aquila.network/ax/
-          NEXT_PUBLIC_BASE_URL=https://aquila.network/
+          NEXTAUTH_URL: https://aquila.network/
+          NEXTAUTH_SECRET: aquilasecret
+          NEXT_PUBLIC_AQUILA_API_URL: https://aquila.network/ax/
+          NEXT_PUBLIC_BASE_URL: https://aquila.network/
         with:
           name: manekshms/aquila-network-ui
           registry: cloud.canister.io:5000
@@ -26,9 +26,9 @@ jobs:
       - name: Deploy to Production
         uses: appleboy/ssh-action@master
         env:
-          DOCKER_REG_URL=cloud.canister.io:5000
-          DOCKER_REG_USERNAME=manekshms
-          DOCKER_REG_PASSWORD=aquilanetwork
+          DOCKER_REG_URL: cloud.canister.io:5000
+          DOCKER_REG_USERNAME: manekshms
+          DOCKER_REG_PASSWORD: aquilanetwork
         with:
           host: 216.48.182.69
           port: 22
