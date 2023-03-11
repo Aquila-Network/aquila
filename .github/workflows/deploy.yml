@@ -18,6 +18,7 @@ jobs:
           host: 216.48.182.69
           port: 22
           passphrase: 123456
+          username: root
           key: |-
             -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABDzcNYOa4
