@@ -62,6 +62,6 @@ jobs:
           envs: DOCKER_REG_URL, DOCKER_REG_USERNAME, DOCKER_REG_PASSWORD
           script: |
             docker login $DOCKER_REG_URL -u $DOCKER_REG_USERNAME -p $DOCKER_REG_PASSWORD
-            docker pull manekshms/aquila-network-ui:latest
+            docker pull ${DOCKER_REG_URL}/manekshms/aquila-network-ui:latest
             docker stop aquila-network-ui
-            docker run --name aquila-network-ui -d -p 3000:3000 manekshms/aquila-network-ui:latest
+            docker run --name aquila-network-ui -d -p 3000:3000 ${DOCKER_REG_URL}/manekshms/aquila-network-ui:latest
