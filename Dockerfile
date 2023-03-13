@@ -6,6 +6,8 @@ ARG BROWSERLESS_API_KEY=your-api-key-here
 WORKDIR /app
 
 RUN apk add curl bash
+RUN apk add --no-cache git openssh
+
 
 # install node-prune (https://github.com/tj/node-prune)
 RUN curl -sfL https://gobinaries.com/tj/node-prune | bash -s -- -b /usr/local/bin
