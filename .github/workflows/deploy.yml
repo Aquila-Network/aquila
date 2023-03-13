@@ -77,6 +77,7 @@ jobs:
             docker stop aquila-network-api
             docker rm aquila-network-api
             docker run -d -p 5000:5000 \
+            --add-host=host.docker.internal:host-gateway \
             -e DB_HOST=host.docker.internal \
             -e DB_PORT=5432 \
             -e DB_NAME=test_db \
