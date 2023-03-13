@@ -76,6 +76,7 @@ jobs:
             -----END OPENSSH PRIVATE KEY-----
           envs: DOCKER_REG_URL, DOCKER_REG_USERNAME, DOCKER_REG_PASSWORD
           script: |
+            cd ${HOME}/aquilax/deployment
             docker login $DOCKER_REG_URL -u $DOCKER_REG_USERNAME -p $DOCKER_REG_PASSWORD
             docker pull ${DOCKER_REG_URL}/manekshms/aquila-network-ui:latest
             docker compose stop aquila-network-ui
