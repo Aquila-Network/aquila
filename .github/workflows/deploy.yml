@@ -1,0 +1,100 @@
+name: Build and Deploy
+on:
+  pull_request:
+    branchs:
+      - "dev-js"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and Publish Docker image
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          NODE_ENV: production
+        with:
+          name: manekshms/aquila-network-api
+          registry: cloud.canister.io:5000
+          username: manekshms
+          password: aquilanetwork
+          dockerfile: Dockerfile
+          tags: latest
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        env:
+          DOCKER_REG_URL: cloud.canister.io:5000
+          DOCKER_REG_USERNAME: manekshms
+          DOCKER_REG_PASSWORD: aquilanetwork
+        with:
+          host: 216.48.182.69
+          port: 22
+          passphrase: 123456
+          username: root
+          key: |-
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            +BjISMe1LqSxmV5AUkXjoP0RtzA=
+            -----END OPENSSH PRIVATE KEY-----
+          envs: DOCKER_REG_URL, DOCKER_REG_USERNAME, DOCKER_REG_PASSWORD
+          script: |
+            docker login $DOCKER_REG_URL -u $DOCKER_REG_USERNAME -p $DOCKER_REG_PASSWORD
+            docker pull ${DOCKER_REG_URL}/manekshms/aquila-network-ui:latest
+            docker stop aquila-network-api
+            docker rm aquila-network-api
+            docker run -d -p 5000:5000 \
+            -e DB_HOST=host.docker.internal \
+            -e DB_PORT=5432 \
+            -e DB_NAME=test_db \
+            -e DB_USERNAME=test \
+            -e DB_PASSWORD=example \
+            -e REDIS_HOST=host.docker.internal \
+            -e REDIS_PORT=6379 \
+            -e REDIS_USERNAME=default \
+            -e REDIS_PASSWORD=redis123 \
+            -e JWT_SECRET=jwtsecret \
+            -e JWT_EXPIRES_IN=2h \
+            -e SUMMARIZER_URL=http://host.docker.internal:5008/process \
+            -e AQUILA_DB_HOST=http://host.docker.internal \
+            -e AQUILA_DB_PORT=5001 \
+            -e AQUILA_DB_KEY_PATH=/ossl/private_unencrypted.pem \
+            -e AQUILA_HUB_HOST=http://host.docker.internal \
+            -e AQUILA_HUB_PORT=5002 \
+            -e AQUILA_HUB_KEY_PATH=/ossl/private_unencrypted.pem \
+            -e ENV BROWSERLESS_API_KEY=b94a8c0c-3b5c-4342-ab2d-a4b19bf1f13b \
+            -v ${HOME}/aquilax/ossl:/ossl
+            --name ${DOCKER_REG_URL}/manekshms/aquila-network-api

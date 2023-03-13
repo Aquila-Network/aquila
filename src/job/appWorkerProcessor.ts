@@ -1,8 +1,7 @@
 import { Job } from "bullmq";
-import Mercury from "@postlight/mercury-parser";
+import Parser from "@postlight/parser";
 import axios from 'axios';
 import Container from "typedi";
-import * as tf from '@tensorflow/tfjs';
 import { DataSource } from "typeorm";
 
 import db from '../config/db';
@@ -45,7 +44,7 @@ export default async function(job: Job<AppJobData, void, AppJobNames>) {
 			if(bookmarkObj) {
 				const bookmark: Bookmark | BookmarkTemp = bookmarkObj;
 				// extract metadata from html
-				const parsedHtml = await Mercury.parse(bookmark.url, { html: bookmark.html});
+				const parsedHtml = await Parser.parse(bookmark.url, { html: bookmark.html});
 				// generate array summary from text content
 				const summary = await summarize(parsedHtml.content || "");
 				if(bookmark.title) {

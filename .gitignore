@@ -130,6 +130,7 @@ dist
 .pnp.*
 
 # Custom
+.DS_Store
 dist
 .env.development
 .env.production
