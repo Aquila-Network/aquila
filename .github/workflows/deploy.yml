@@ -13,7 +13,7 @@ jobs:
         env:
           NEXTAUTH_URL: https://aquila.network/
           NEXTAUTH_SECRET: aquilasecret
-          NEXT_PUBLIC_AQUILA_API_URL: https://aquila.network/ax/
+          NEXT_PUBLIC_AQUILA_API_URL: https://aquila.network/data-api/
           NEXT_PUBLIC_BASE_URL: https://aquila.network/
         with:
           name: manekshms/aquila-network-ui
