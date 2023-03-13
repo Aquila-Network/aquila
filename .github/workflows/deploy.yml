@@ -73,7 +73,7 @@ jobs:
           envs: DOCKER_REG_URL, DOCKER_REG_USERNAME, DOCKER_REG_PASSWORD
           script: |
             docker login $DOCKER_REG_URL -u $DOCKER_REG_USERNAME -p $DOCKER_REG_PASSWORD
-            docker pull ${DOCKER_REG_URL}/manekshms/aquila-network-ui:latest
+            docker pull ${DOCKER_REG_URL}/manekshms/aquila-network-api:latest
             docker stop aquila-network-api
             docker rm aquila-network-api
             docker run -d -p 5000:5000 \
@@ -97,4 +97,4 @@ jobs:
             -e AQUILA_HUB_KEY_PATH=/ossl/private_unencrypted.pem \
             -e ENV BROWSERLESS_API_KEY=b94a8c0c-3b5c-4342-ab2d-a4b19bf1f13b \
             -v ${HOME}/aquilax/ossl:/ossl
-            --name ${DOCKER_REG_URL}/manekshms/aquila-network-api
+            --name aquila-network-api
