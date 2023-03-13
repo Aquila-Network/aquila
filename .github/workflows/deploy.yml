@@ -2,7 +2,7 @@ name: Build and Deploy
 on:
   pull_request:
     branchs:
-      - "dev-js"
+      - "master"
 jobs:
   build:
     runs-on: ubuntu-latest
