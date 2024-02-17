@@ -14,7 +14,7 @@
     "boring-avatars": "^1.7.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
-    "next": "12.3.1",
+    "next": "13.5.0",
     "next-auth": "^4.14.0",
     "next-redux-wrapper": "^8.0.0",
     "react": "18.2.0",
