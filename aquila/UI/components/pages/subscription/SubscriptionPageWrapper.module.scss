@@ -1,0 +1,41 @@
+.subscription-page {
+    display: flex;
+    gap: 50px;
+
+    &__search-area {
+        flex-basis: 900px;    
+    }
+
+    &__search-bar {
+        margin-top: 20px;
+        width: 600px;
+    }
+
+    &__search-results {
+        margin-top: 30px;
+    }
+
+    &__sidebar {
+        padding-top: 20vh;
+        flex: 1 1 0;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+   .subscription-page {
+    gap: 0px;
+    flex-direction: column;
+    
+    &__search-area {
+        flex-basis: auto;
+    }
+
+    &__search-bar {
+        width: 80%;
+    }
+
+    &__sidebar {
+        display: none;
+    }
+   } 
+}

@@ -1,0 +1,47 @@
+.edit-profile-form {
+    &__form-group {
+        margin-bottom: 15px;
+    }
+
+    &__form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 18px;
+    }
+
+    &__form-control {
+        width: 100%;
+        padding: 8px 5px;
+        box-sizing: border-box;
+    }
+
+    &__form-control-error {
+        color: #F87272;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
+    &__form-btn {
+        padding: 5px 10px;
+        background: #fff;
+        outline: none;
+        border-radius: 3px;
+        font-size: 16px;
+        transition: all .3s;
+        border: 1px solid #202A38;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    } 
+
+    &__form-btn:hover {
+        border-color: #36D399;
+        color: #36D399;
+    }
+
+    &__form-btn:disabled {
+        border-color: #6D87AC;
+        color: #6D87AC;
+        cursor:not-allowed;
+    }
+}

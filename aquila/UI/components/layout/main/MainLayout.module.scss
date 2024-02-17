@@ -1,0 +1,11 @@
+.main-layout {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	&__header--with-border {
+		box-shadow: inset 0px -1px 1px #EFF2F6;
+	}
+
+}

@@ -1,0 +1,51 @@
+.footer {
+    padding: 20px 0px;
+    text-align: center;
+    box-sizing: border-box;
+
+    &__icon-menu {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0px;
+    }
+
+    &__icon-menu-link {
+        font-size: 25px;
+        color: #202A38;
+        transition: all .3s;
+    }
+
+
+    &__icon-menu-link:hover {
+        color: #0FBD86;
+    }
+}
+
+.footer-banner {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background: #F87272;
+    color: #fff;
+    padding: 10px 5px;
+    text-align: center;
+
+    &__close-btn {
+        background: none;
+        border: none;
+        outline: none;
+        color: #fff;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    &__text {
+        font-size: 14px;
+    }
+}

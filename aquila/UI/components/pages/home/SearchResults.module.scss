@@ -1,0 +1,34 @@
+.search-result {
+
+	&__results {
+		margin-top: 20px;
+	}
+
+	&__item {
+		margin-bottom: 25px;
+	}
+
+	&__header-info-desc {
+		color: #536E92;
+	}
+
+	&__pagination {
+		margin-top: 15px;
+		display: flex;
+		gap: 10px;
+	}
+
+	&__pagination-link {
+		font-size: 14px;
+		text-decoration: none;
+		background: #EFF2F6;
+		color: #202A38;
+		padding: 5px;
+		transition: all .3s;
+		border-radius: 3px;
+	}
+
+	&__pagination-link:hover {
+		background: #CED7E3;
+	}
+}

@@ -1,0 +1,43 @@
+.search-result-item {
+	border-bottom: 1px solid #CED7E3;
+	padding-bottom: 15px;
+	margin-bottom: 10px;
+	word-wrap: break-word;
+
+	&__title-link {
+		font-size: 22px;
+		text-decoration: none;
+		margin-bottom: 2px;
+		color: #202A38;
+		transition: all .3s;
+		cursor: pointer;
+	}
+
+	&__title-link:hover {
+		color: #0FBD86;
+	}
+
+	&__meta-info {
+		padding-bottom: 0px;
+		margin-bottom: 0px;
+		font-size: 12px;
+		color: #8DA2BE;
+	}
+
+	&__site-link {
+		font-size: 14px;
+		color: #536E92;
+		transition: all .3s;
+	}
+
+	&__site-link:hover {
+		color: #9B5094;
+	}
+
+	&__site-desc {
+		color: #415572;
+		margin-top: 5px;
+		margin-bottom: 3px;
+		padding-bottom: 0px;
+	}
+}
